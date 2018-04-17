@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_join_team_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="12dp" />
+
+
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/tv_join_team_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textSize="15sp"
+            android:layout_toRightOf="@+id/img_join_team_avatar"
+            android:text="志愿者协会" />
+
+
+        <TextView
+            android:id="@+id/tv_join_team_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/img_join_team_avatar"
+            android:layout_marginBottom="2dp"
+            android:layout_toRightOf="@+id/img_join_team_avatar"
+            android:text="济南市"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/light_gray"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="2dp"
+            android:src="@mipmap/arrow_right"
+            android:text="2017-12-02 10:33"
+            android:textColor="#bfbfbf"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</LinearLayout>
+

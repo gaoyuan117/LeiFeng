@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jzbwlkj.leifeng">
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.SET_DEBUG_APP" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <application
+        android:name=".BaseApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/logo"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="ybGZPSP5NDVntAY2zOiSjGczE4phICfA" />
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".base.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".MyReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!-- Required  用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!-- Required  用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!-- Required  用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" /> <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.jzbwlkj.navigation" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".LocaltionService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" />
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop" />
+
+        <!-- ShareSDK -->
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+            <!-- 调用新浪原生SDK，需要注册的回调activity -->
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- 集成line客户端登录授权，需要添如下格式的过滤器 -->
+            <intent-filter>
+                <data android:scheme="line.1477692153" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- ShareSDK<strong>3.1.0版本之前</strong>才需要在MobUIShell下面注册此意图，3.1.0版本之后（包含3.1.0）不需要注册此intent -->
+            <intent-filter>
+                <data android:scheme="tencent100371282" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- 填写您从Mob开发者后台中得到的Appkey和AppSecret -->
+        <meta-data
+            android:name="Mob-AppKey"
+            android:value="您的AppKey" />
+        <meta-data
+            android:name="Mob-AppSecret"
+            android:value="您的AppSecret" />
+
+        <activity android:name=".ui.activity.LoginActivity" />
+        <activity android:name=".saomiao.Sao1SaoResultActivity" />
+        <activity android:name=".saomiao.CaptureActivity" />
+        <activity android:name=".ui.activity.NewsDetalActivity" />
+        <activity android:name=".ui.activity.CommitHelpActivity" />
+        <activity android:name=".ui.activity.HelpHistoryActivity" />
+        <activity android:name=".ui.activity.MyInfoActivity" />
+        <activity android:name=".ui.activity.MyTeamActivity" />
+        <activity android:name=".ui.activity.MyAcActivity" />
+        <activity android:name=".ui.activity.ChangePwdActivity" />
+        <activity android:name=".ui.activity.AboutActivity" />
+        <activity android:name=".ui.activity.SettingActivity" />
+        <activity android:name=".ui.activity.TeamActivity" />
+        <activity android:name=".ui.activity.AcDetailActivity" />
+        <activity
+            android:name=".ui.activity.RegisterTeamActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ui.activity.ProtocolActivity" />
+        <activity android:name=".ui.activity.SelectAreaActivity" />
+        <activity android:name=".ui.activity.ChatListActivity" />
+        <activity
+            android:name=".ui.activity.RegisterPersonalActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ui.activity.TrainingActivity" />
+        <activity android:name=".ui.activity.TrainingDetailsActivity" />
+        <activity android:name=".ui.activity.LearningGardenActivity" />
+        <activity android:name=".ui.activity.UsingHelpActivity" />
+        <activity android:name=".ui.activity.LoveShopActivity" />
+        <activity android:name=".ui.activity.LoveShopInstructionsActivity" />
+        <activity android:name=".ui.activity.JoinTeamActivity" />
+        <activity android:name=".ui.activity.ActivitiesRecruitActivity" />
+        <activity android:name=".ui.activity.ProjectRecruitActivity" />
+        <activity android:name=".ui.activity.RankActivity" />
+        <activity
+            android:name=".ui.activity.LaunchEventActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.activity.PublishProjectActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ui.activity.AcManagementActivity" />
+        <activity android:name=".ui.activity.ProjectManagementActivity" />
+        <activity android:name=".ui.activity.AcManagementDetailsActivity" />
+        <activity android:name=".ui.activity.RegisteredStaffActivity" />
+        <activity android:name=".ui.activity.ProjectManagementDetailsActivity" />
+        <activity android:name=".ui.activity.LeaveWordActivity" />
+        <activity android:name=".ui.activity.ForgetPwdActivity"></activity>
+    </application>
+
+</manifest>
