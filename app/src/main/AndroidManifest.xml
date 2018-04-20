@@ -181,7 +181,8 @@
         <activity android:name=".ui.activity.RegisteredStaffActivity" />
         <activity android:name=".ui.activity.ProjectManagementDetailsActivity" />
         <activity android:name=".ui.activity.LeaveWordActivity" />
-        <activity android:name=".ui.activity.ForgetPwdActivity"></activity>
+        <activity android:name=".ui.activity.ForgetPwdActivity" />
+        <activity android:name=".ui.activity.ChatDeticalActivity"></activity>
     </application>
 
 </manifest>

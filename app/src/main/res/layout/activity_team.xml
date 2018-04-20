@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/global"
     android:orientation="vertical"
     tools:context="com.jzbwlkj.leifeng.ui.activity.TeamActivity">
 
     <include layout="@layout/layout_title" />
-
+    <!--这里修改了整个的背景颜色，将白色改为红色，scrollview的背景改成了白色，这样可防止scrollview下滑的时候顶部出现白色顶部-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <LinearLayout

@@ -1,9 +1,16 @@
 package com.jzbwlkj.leifeng.retrofit;
 
+import com.jzbwlkj.leifeng.ui.bean.ChatListBean;
+import com.jzbwlkj.leifeng.ui.bean.ChatListDeticalBean;
+import com.jzbwlkj.leifeng.ui.bean.CommitBean;
 import com.jzbwlkj.leifeng.ui.bean.ConfigBean;
+import com.jzbwlkj.leifeng.ui.bean.HelpListBean;
 import com.jzbwlkj.leifeng.ui.bean.HomeBean;
 import com.jzbwlkj.leifeng.ui.bean.LoginBean;
 import com.jzbwlkj.leifeng.ui.bean.NewsBean;
+import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
+import com.jzbwlkj.leifeng.ui.bean.ProjectDetialBean;
+import com.jzbwlkj.leifeng.ui.bean.TeamInfoBean;
 import com.jzbwlkj.leifeng.ui.bean.TeamListBean;
 import com.jzbwlkj.leifeng.ui.bean.UserInfoBean;
 
@@ -42,6 +49,11 @@ public interface Api {
     @POST("/api/team/getTeamList")
     Observable<HttpResult<List<TeamListBean>>> getTeamList(@Field("mobile") String mobile);
 
+    //获取队伍信息,2018.4.20  现在是在加入队伍的队伍详情使用，但是返回数据并不正确，不确定是否使用正确
+    @FormUrlEncoded
+    @POST("/api/team/getTeamInfo")
+    Observable<HttpResult<TeamInfoBean>> getTeamInfo(@Field("id") String team_id);
+
     //新闻列表
     @FormUrlEncoded
     @POST("/api/news/index")
@@ -72,9 +84,40 @@ public interface Api {
     @POST("/api/user/getUserInfo")
     Observable<HttpResult<UserInfoBean>> getUserInfo(@Field("token") String token);
 
-    //登录
+    //信息列表
     @FormUrlEncoded
-    @POST("http://mw.yigouweb.com/mapi/index.php")
-    Observable<HttpResult<CommonBean>> test(@Field("token") String token);
+    @POST("/api/message/getMessageList")
+    Observable<HttpResult<ChatListBean>> chatlist(@Field("token") String token,@Field("page") int page);
 
+    //信息详情
+    @FormUrlEncoded
+    @POST("/api/message/getMessageInfo")
+    Observable<HttpResult<ChatListDeticalBean>> chatlistDetical(@Field("id") String id);
+
+    //发布求助信息
+    @FormUrlEncoded
+    @POST("/api/help/addHelp")
+    Observable<HttpResult<CommitBean>> commitHelp(@Field("fullname") String name,@Field("mobile") String phone,@Field("address") String address,@Field("content") String content,@Field("is_anonymous") String anonymous);
+
+    //求助列表
+    @FormUrlEncoded
+    @POST("/api/help/getHelpList")
+    Observable<HttpResult<List<HelpListBean>>> helpList(@Field("") String name);
+
+    //1活动，0项目列表,通用接口参数非必传
+    @FormUrlEncoded
+    @POST("/api/activity/getList")
+    Observable<HttpResult<List<ProjectBean>>> projevtList(@Field("type") String type, @Field("status") String status, @Field("page") int page,
+                                                          @Field("city_id") String city_id, @Field("service_type") String service_type,
+                                                          @Field("keyword") String keyword, @Field("team_id") String team_id);
+
+    //活动详情
+    @FormUrlEncoded
+    @POST("/api/activity/getInfo")
+    Observable<HttpResult<ProjectDetialBean>> projectDetial(@Field("token") String token, @Field("id") String id);
+
+    //申请加入活动
+    @FormUrlEncoded
+    @POST("/api/activity/joinActivity")
+    Observable<HttpResult<CommitBean>> joinProject(@Field("token") String token,@Field("activity_id") String activity_id);
 }

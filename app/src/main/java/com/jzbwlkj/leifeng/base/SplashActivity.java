@@ -35,7 +35,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void initView() {
         getConfig();
-        getUserInfo();
         token = SharedPreferencesUtil.getInstance().getString("token");
         Observable.timer(1, TimeUnit.SECONDS)
                 .subscribe(new Consumer<Long>() {
@@ -72,17 +71,5 @@ public class SplashActivity extends BaseActivity {
                 });
     }
 
-    /**
-     * 获取用户信息
-     */
-    private void getUserInfo() {
-        RetrofitClient.getInstance().createApi().test(token)
-                .compose(RxUtils.<HttpResult<CommonBean>>io_main())
-                .subscribe(new BaseObjObserver<CommonBean>(activity) {
-                    @Override
-                    protected void onHandleSuccess(CommonBean commonBean) {
 
-                    }
-                });
-    }
 }

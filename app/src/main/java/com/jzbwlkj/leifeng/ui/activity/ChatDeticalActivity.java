@@ -1,9 +1,9 @@
-
 package com.jzbwlkj.leifeng.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
+import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -14,18 +14,13 @@ import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
 import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
-import com.jzbwlkj.leifeng.ui.bean.ChatListBean;
 import com.jzbwlkj.leifeng.ui.bean.ChatListDeticalBean;
 import com.jzbwlkj.leifeng.utils.CommonApi;
 import com.jzbwlkj.leifeng.utils.FormatUtils;
 
-import java.util.HashMap;
-
 import butterknife.BindView;
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
 
-public class NewsDetalActivity extends BaseActivity {
+public class ChatDeticalActivity extends BaseActivity {
 
     public static void toActivity(Context activity, String title, String content, long time) {
         Intent intent = new Intent(activity, NewsDetalActivity.class);
@@ -48,28 +43,24 @@ public class NewsDetalActivity extends BaseActivity {
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_news_detal;
+        return R.layout.activity_chat_detical;
     }
 
     @Override
     public void initView() {
-        title = getIntent().getStringExtra("title");
-        content = getIntent().getStringExtra("content");
-        time = getIntent().getLongExtra("time", 0);
         id = getIntent().getIntExtra("id", 0);
-        setCenterTitle("新闻详情");
-
-        setData();
-        setRightTitle("分享").setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CommonApi.share(activity, title, null);
-            }
-        });
+        setCenterTitle("消息详情");
+//        setRightTitle("分享").setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                CommonApi.share(activity, title, null);
+//            }
+//        });
     }
 
     @Override
     public void initData() {
+        getNetData();
     }
 
 
@@ -94,4 +85,20 @@ public class NewsDetalActivity extends BaseActivity {
         webview.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
     }
 
+    /**
+     * 获取网络数据
+     */
+    private void getNetData() {
+        RetrofitClient.getInstance().createApi().chatlistDetical(String.valueOf(id))
+                .compose(RxUtils.<HttpResult<ChatListDeticalBean>>io_main())
+                .subscribe(new BaseObjObserver<ChatListDeticalBean>(this, "消息详情") {
+                    @Override
+                    protected void onHandleSuccess(ChatListDeticalBean chatListDeticalBean) {
+                        time = chatListDeticalBean.getAdd_time();
+                        title = chatListDeticalBean.getTitle();
+                        content = chatListDeticalBean.getContent();
+                        setData();
+                    }
+                });
+    }
 }

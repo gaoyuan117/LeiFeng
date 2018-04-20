@@ -1,5 +1,6 @@
 package com.jzbwlkj.leifeng.ui.activity;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -104,7 +105,10 @@ public class JoinTeamActivity extends BaseActivity implements SwipeRefreshLayout
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                toActivity(TeamActivity.class);
+                TeamListBean teamListBean = mList.get(i);
+                Intent info = new Intent( JoinTeamActivity.this, TeamActivity.class);
+                info.putExtra("id",teamListBean.getId());
+                startActivity(info);
             }
         });
 

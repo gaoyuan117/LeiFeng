@@ -142,6 +142,10 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                 toActivity(ChatListActivity.class);
                 break;
             case R.id.tv_home_team_register://队伍注册
+                if (noLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                }
                 toActivity(RegisterTeamActivity.class);
                 break;
             case R.id.tv_home_personal_register://个人注册

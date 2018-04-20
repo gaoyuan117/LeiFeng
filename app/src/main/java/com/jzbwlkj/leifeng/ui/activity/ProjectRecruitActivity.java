@@ -13,8 +13,13 @@ import android.widget.PopupWindow;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
+import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
+import com.jzbwlkj.leifeng.retrofit.HttpResult;
+import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
+import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.adapter.FilterPopAdapter;
 import com.jzbwlkj.leifeng.ui.adapter.MyTeamAdapter;
+import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
 import com.jzbwlkj.leifeng.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -54,7 +59,12 @@ public class ProjectRecruitActivity extends BaseActivity {
 
     private List<String> mList = new ArrayList<>();
     private MyTeamAdapter adapter;
+    private String city_id = "";
+    private String service_type = "";
+    private String keyword = "";
 
+    private int page = 1;
+    private int all = 1;
     @Override
     public int getLayoutId() {
         return R.layout.activity_join_team;
@@ -83,21 +93,20 @@ public class ProjectRecruitActivity extends BaseActivity {
         filterList.add("距离最近");
         filterList.add("最新发布");
 
-
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-
-        adapter = new MyTeamAdapter(R.layout.item_my_ac, mList, "0");
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerView.addItemDecoration(rvDivider(1));
-        recyclerView.setAdapter(adapter);
+        initAdapter();
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mList.clear();
+                page = 1;
+                getNetData(city_id,service_type,keyword);
+            }
+        });
     }
 
     @Override
     public void initData() {
-
+        getNetData(city_id,service_type,keyword);
     }
 
     @Override
@@ -197,6 +206,53 @@ public class ProjectRecruitActivity extends BaseActivity {
             }
         });
 
+    }
+
+    /**
+     * 获取网络数据
+     */
+    private void getNetData(String city_id,String service_type,String keyword){
+        RetrofitClient.getInstance().createApi().projevtList("0","",page,city_id,service_type,keyword,"")
+                .compose(RxUtils.<HttpResult<List<ProjectBean>>>io_main())
+                .subscribe(new BaseObjObserver<List<ProjectBean>>(this,refresh) {
+                    @Override
+                    protected void onHandleSuccess(List<ProjectBean> projectBeans) {
+
+                    }
+                });
+    }
+
+    /**
+     * 初始化适配器
+     */
+    private void initAdapter() {
+        adapter = new MyTeamAdapter(R.layout.item_my_ac, mList, "2");
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                if(page<all){
+                    page++;
+                    getNetData(city_id,service_type,keyword);
+                }else{
+                    showToastMsg("没有更多数据了");
+                }
+
+            }
+        }, recyclerView);
+        adapter.disableLoadMoreIfNotFullPage();
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                ChatListBean.AllListBean allListBean= mList.get(position);
+//                Intent intent = new Intent(ChatListActivity.this,ChatDeticalActivity.class);
+//                intent.putExtra("id",allListBean.getId());
+//                startActivity(intent);
+            }
+        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.addItemDecoration(rvDivider(1));
+        recyclerView.setAdapter(adapter);
     }
 
 }

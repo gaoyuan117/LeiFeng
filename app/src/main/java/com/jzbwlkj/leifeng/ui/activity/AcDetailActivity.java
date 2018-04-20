@@ -1,19 +1,28 @@
 package com.jzbwlkj.leifeng.ui.activity;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
+import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
+import com.jzbwlkj.leifeng.retrofit.HttpResult;
+import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
+import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.adapter.AcDetailAdapter;
+import com.jzbwlkj.leifeng.ui.bean.ProjectDetialBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class AcDetailActivity extends BaseActivity {
@@ -64,12 +73,32 @@ public class AcDetailActivity extends BaseActivity {
     TextView tvAcStatus;
     @BindView(R.id.tv_ac_cancle)
     TextView tvAcCancle;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.exit_layout)
+    LinearLayout exitLayout;
+    @BindView(R.id.tv_left_title)
+    TextView tvLeftTitle;
+    @BindView(R.id.center_title_tv)
+    TextView centerTitleTv;
+    @BindView(R.id.tv_right_text)
+    TextView tvRightText;
+    @BindView(R.id.iv_right2)
+    ImageView ivRight2;
+    @BindView(R.id.img_right)
+    ImageView imgRight;
+    @BindView(R.id.title_linLayout)
+    LinearLayout titleLinLayout;
+    @BindView(R.id.tv_no_ping)
+    TextView tvNoPing;
 
     private List<String> mList = new ArrayList<>();
     private AcDetailAdapter adapter;
+    private int id;
 
     @Override
     public int getLayoutId() {
+        id = getIntent().getIntExtra("id", 0);
         return R.layout.activity_ac_detail;
     }
 
@@ -85,7 +114,7 @@ public class AcDetailActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        getNetData();
     }
 
     @Override
@@ -102,4 +131,16 @@ public class AcDetailActivity extends BaseActivity {
                 break;
         }
     }
+
+    private void getNetData() {
+        RetrofitClient.getInstance().createApi().projectDetial(BaseApp.token, String.valueOf(id))
+                .compose(RxUtils.<HttpResult<ProjectDetialBean>>io_main())
+                .subscribe(new BaseObjObserver<ProjectDetialBean>(this, "活动详情") {
+                    @Override
+                    protected void onHandleSuccess(ProjectDetialBean projectDetialBean) {
+
+                    }
+                });
+    }
+
 }
