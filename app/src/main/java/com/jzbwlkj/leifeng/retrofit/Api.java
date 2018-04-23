@@ -6,12 +6,16 @@ import com.jzbwlkj.leifeng.ui.bean.CommitBean;
 import com.jzbwlkj.leifeng.ui.bean.ConfigBean;
 import com.jzbwlkj.leifeng.ui.bean.HelpListBean;
 import com.jzbwlkj.leifeng.ui.bean.HomeBean;
+import com.jzbwlkj.leifeng.ui.bean.JoinProjectBean;
+import com.jzbwlkj.leifeng.ui.bean.JoinTeamListBean;
+import com.jzbwlkj.leifeng.ui.bean.LiuYanBean;
 import com.jzbwlkj.leifeng.ui.bean.LoginBean;
 import com.jzbwlkj.leifeng.ui.bean.NewsBean;
 import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
 import com.jzbwlkj.leifeng.ui.bean.ProjectDetialBean;
 import com.jzbwlkj.leifeng.ui.bean.TeamInfoBean;
 import com.jzbwlkj.leifeng.ui.bean.TeamListBean;
+import com.jzbwlkj.leifeng.ui.bean.TeamStatusBean;
 import com.jzbwlkj.leifeng.ui.bean.UserInfoBean;
 
 import java.util.List;
@@ -49,10 +53,20 @@ public interface Api {
     @POST("/api/team/getTeamList")
     Observable<HttpResult<List<TeamListBean>>> getTeamList(@Field("mobile") String mobile);
 
-    //获取队伍信息,2018.4.20  现在是在加入队伍的队伍详情使用，但是返回数据并不正确，不确定是否使用正确
+    //获取队伍信息
     @FormUrlEncoded
     @POST("/api/team/getTeamInfo")
     Observable<HttpResult<TeamInfoBean>> getTeamInfo(@Field("id") String team_id);
+
+    //用户申请加入队伍
+    @FormUrlEncoded
+    @POST("/api/team/joinTeam")
+    Observable<HttpResult<CommitBean>> joinTeam(@Field("team_id") String team_id,@Field("token") String token);
+
+    //用户加入的队伍列表
+    @FormUrlEncoded
+    @POST("/api/team/getUserTeam")
+    Observable<HttpResult<List<JoinTeamListBean>>> joinTeamList(@Field("token") String token);
 
     //新闻列表
     @FormUrlEncoded
@@ -107,7 +121,7 @@ public interface Api {
     //1活动，0项目列表,通用接口参数非必传
     @FormUrlEncoded
     @POST("/api/activity/getList")
-    Observable<HttpResult<List<ProjectBean>>> projevtList(@Field("type") String type, @Field("status") String status, @Field("page") int page,
+    Observable<HttpResult<ProjectBean>> projevtList(@Field("type") String type, @Field("status") String status, @Field("page") int page,
                                                           @Field("city_id") String city_id, @Field("service_type") String service_type,
                                                           @Field("keyword") String keyword, @Field("team_id") String team_id);
 
@@ -120,4 +134,34 @@ public interface Api {
     @FormUrlEncoded
     @POST("/api/activity/joinActivity")
     Observable<HttpResult<CommitBean>> joinProject(@Field("token") String token,@Field("activity_id") String activity_id);
+
+    //点赞
+    @FormUrlEncoded
+    @POST("/api/activity/setPraise")
+    Observable<HttpResult<CommitBean>> dianzan(@Field("token") String token,@Field("activity_id") String activity_id);
+
+    //留言
+    @FormUrlEncoded
+    @POST("/api/activity/addMessage")
+    Observable<HttpResult<CommitBean>> liuyan(@Field("token") String token,@Field("activity_id") String activity_id,@Field("content") String content,@Field("pid") String pid);
+
+    //留言列表
+    @FormUrlEncoded
+    @POST("/api/activity/getMessageList")
+    Observable<HttpResult<List<LiuYanBean>>> liuyanList(@Field("activity_id") String activity_id);
+
+    //获得用户参加的活动列表
+    @FormUrlEncoded
+    @POST("/api/activity/getUserJoinList")
+    Observable<HttpResult<List<JoinProjectBean>>>userProList(@Field("token") String token);
+
+    //获得参加活动的人员列表
+    @FormUrlEncoded
+    @POST("/api/activity/getJoinMemberList")
+    Observable<HttpResult<List<JoinProjectBean>>>userList(@Field("token") String token,@Field("activity_id") String activity_id);
+
+    //报名培训   参数2表示培训项目的id
+    @FormUrlEncoded
+    @POST("/api/message/applyPeixun")
+    Observable<HttpResult<List<JoinProjectBean>>>joinTraining(@Field("token") String token,@Field("id") String id);
 }

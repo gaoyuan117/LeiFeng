@@ -13,7 +13,7 @@
         android:src="@color/global" />
 
     <TextView
-        android:id="@+id/img_ac_comment_name"
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/img_ac_comment_avatar"
@@ -22,10 +22,10 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tv_ac_comment_time"
+        android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img_ac_comment_name"
+        android:layout_below="@id/tv_name"
         android:layout_marginTop="2dp"
         android:layout_toRightOf="@id/img_ac_comment_avatar"
         android:text="2018.1.18 13:45"
@@ -33,10 +33,10 @@
         android:textSize="10sp" />
 
     <TextView
-        android:id="@+id/tv_ac_comment_des"
+        android:id="@+id/tv_describe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_ac_comment_time"
+        android:layout_below="@id/tv_time"
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/img_ac_comment_avatar"
         android:text="描述"
@@ -48,7 +48,9 @@
         android:id="@+id/img_ac_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_ac_comment_des"
+        android:layout_below="@id/tv_describe"
+        android:paddingLeft="14dp"
+        android:paddingRight="@dimen/sp_14"
         android:layout_marginTop="4dp"
         android:src="@mipmap/login_account"
         android:layout_alignParentRight="true" />
@@ -58,7 +60,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tv_ac_comment_des"
+        android:layout_alignLeft="@+id/tv_describe"
         android:layout_below="@id/img_ac_comment"
         android:layout_marginTop="12dp" />
 

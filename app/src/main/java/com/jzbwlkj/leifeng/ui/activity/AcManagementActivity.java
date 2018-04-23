@@ -57,13 +57,10 @@ public class AcManagementActivity extends BaseActivity implements TabLayout.OnTa
      * 设置Tablayout
      */
     private void setTabViewPager() {
-        for (int i = 0; i < 3; i++) {
-            AcManagementFragment f = new AcManagementFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("type", i + "");
-            f.setArguments(bundle);
-            mList.add(f);
-        }
+        creatFragment("1");
+        creatFragment("0");
+        creatFragment("-1");
+
 
         mTitles.add("进行中");
         mTitles.add("审核中");
@@ -77,6 +74,14 @@ public class AcManagementActivity extends BaseActivity implements TabLayout.OnTa
         mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getActivity(), R.color.global));
         mTabLayout.setOnTabSelectedListener(this);
 
+    }
+
+    private void creatFragment(String i){
+        AcManagementFragment f = new AcManagementFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", i);
+        f.setArguments(bundle);
+        mList.add(f);
     }
 
     @Override

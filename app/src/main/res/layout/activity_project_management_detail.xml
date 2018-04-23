@@ -10,8 +10,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,12 +29,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="活动名称："
+                    android:text="项目名称："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <EditText
-                    android:id="@+id/et_launch_event_name"
+                    android:id="@+id/et_publish_project_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
@@ -59,7 +58,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="活动类型："
+                    android:text="项目类型："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -103,7 +102,7 @@
                     android:textSize="14sp" />
 
                 <EditText
-                    android:id="@+id/et_launch_event_baoming_time"
+                    android:id="@+id/et_publish_project_baoming_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
@@ -132,7 +131,7 @@
                     android:textSize="14sp" />
 
                 <EditText
-                    android:id="@+id/et_launch_event_jiezhi_time"
+                    android:id="@+id/et_publish_project_jiezhi_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
@@ -142,6 +141,39 @@
                     android:textSize="13sp" />
 
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="10dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时间周期："
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_gray"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <Spinner
+                        android:id="@+id/sp_publish_project_cycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -162,7 +194,7 @@
                     android:textSize="14sp" />
 
                 <EditText
-                    android:id="@+id/et_launch_event_start_time"
+                    android:id="@+id/et_publish_project_start_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
@@ -192,7 +224,7 @@
 
 
                 <EditText
-                    android:id="@+id/et_launch_event_end_time"
+                    android:id="@+id/et_publish_project_end_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
@@ -222,7 +254,7 @@
 
 
                 <EditText
-                    android:id="@+id/et_launch_event_length_time"
+                    android:id="@+id/et_publish_project_length_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
@@ -252,7 +284,7 @@
 
 
                 <EditText
-                    android:id="@+id/et_launch_event_number"
+                    android:id="@+id/et_publish_project_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
@@ -276,16 +308,46 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="活动地址："
+                    android:text="项目地址："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
 
                 <EditText
-                    android:id="@+id/et_launch_event_address"
+                    android:id="@+id/et_publish_project_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
+                    android:padding="6dp"
+                    android:textColor="@color/text_black"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="10dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="签到位置："
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+
+                <EditText
+                    android:id="@+id/et_publish_project_sign_up_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_gray"
+                    android:inputType="number"
                     android:padding="6dp"
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -318,7 +380,7 @@
                     android:padding="4dp">
 
                     <Spinner
-                        android:id="@+id/sp_launch_event_range"
+                        android:id="@+id/sp_publish_project_range"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:spinnerMode="dropdown" />
@@ -338,20 +400,145 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="发起单位(组织)："
+                    android:text="签到有效时间："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
 
                 <EditText
-                    android:id="@+id/et_launch_event_unit"
+                    android:id="@+id/et_publish_project_sign_up_valid_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
+                    android:inputType="number"
                     android:padding="6dp"
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="10dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="政府补贴："
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/cb_publish_project_cantie"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="餐贴"
+                            android:textColor="@color/text_black"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/et_publish_project_fee"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_gray"
+                            android:gravity="center"
+                            android:hint="元/人"
+                            android:maxLength="10"
+                            android:textColor="@color/global"
+                            android:textSize="11sp" />
+
+                        <CheckBox
+                            android:id="@+id/cb_publish_project_traffic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="交通"
+                            android:textColor="@color/text_black"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/cb_publish_project_insurance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="保险"
+                            android:textColor="@color/text_black"
+                            android:textSize="13sp" />
+
+                        <CheckBox
+                            android:id="@+id/cb_publish_project_training"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="培训"
+                            android:textColor="@color/text_black"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="10dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发起单位："
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_gray"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <Spinner
+                        android:id="@+id/sp_publish_project_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -373,7 +560,7 @@
 
 
                 <EditText
-                    android:id="@+id/et_launch_event_linkman"
+                    android:id="@+id/et_publish_project_linkman"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
@@ -402,7 +589,7 @@
 
 
                 <EditText
-                    android:id="@+id/et_launch_event_linkphone"
+                    android:id="@+id/et_publish_project_linkphone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
@@ -432,7 +619,7 @@
                     android:textSize="14sp" />
 
                 <EditText
-                    android:id="@+id/et_launch_event_email"
+                    android:id="@+id/et_publish_project_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
@@ -444,7 +631,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
                 android:paddingLeft="32dp"
@@ -455,14 +643,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="活动要求："
+                    android:text="项目要求："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <WebView
-                    android:id="@+id/et_launch_event_demand"
+                    android:id="@+id/et_publish_project_demand"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_gray"/>
             </LinearLayout>
 
             <LinearLayout
@@ -477,35 +666,38 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="活动详情："
+                    android:text="项目详情："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <WebView
-                    android:id="@+id/et_launch_event_details"
+                    android:id="@+id/et_publish_project_details"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="120dp"
+                    android:background="@drawable/shape_gray"
+                    />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/shape_gray"
-                android:padding="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="10dp"
                 android:visibility="visible">
 
 
                 <ImageView
-                    android:id="@+id/img_launch_event"
+                    android:id="@+id/img_publish_project"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
-                    android:scaleType="fitXY" />
+                    android:background="@drawable/shape_gray"
+                    android:gravity="start" />
 
             </LinearLayout>
+
 
             <LinearLayout
                 android:visibility="gone"
@@ -532,14 +724,14 @@
 
 
             <TextView
-                android:id="@+id/tv_launch_event_publish"
+                android:id="@+id/tv_publish_project_publish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="32dp"
                 android:background="@drawable/coner_gloal_all"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="发布"
+                android:text="结束"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 

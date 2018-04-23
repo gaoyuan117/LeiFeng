@@ -1,5 +1,6 @@
 package com.jzbwlkj.leifeng.ui.activity;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.adapter.FilterPopAdapter;
 import com.jzbwlkj.leifeng.ui.adapter.MyTeamAdapter;
+import com.jzbwlkj.leifeng.ui.adapter.ProjectAdapter;
 import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
 import com.jzbwlkj.leifeng.utils.LogUtils;
 
@@ -57,14 +59,15 @@ public class ProjectRecruitActivity extends BaseActivity {
     private int area, type = -1, filter = -1;
     private ListPopupWindow window;
 
-    private List<String> mList = new ArrayList<>();
-    private MyTeamAdapter adapter;
-    private String city_id = "";
-    private String service_type = "";
-    private String keyword = "";
+    private List<ProjectBean.DataBean> mList = new ArrayList<>();
+    private ProjectAdapter adapter;
+    private String city_id = null;
+    private String service_type = null;
+    private String keyword = null;
 
     private int page = 1;
     private int all = 1;
+    private int ll = 0;//每页数据的长度
     @Override
     public int getLayoutId() {
         return R.layout.activity_join_team;
@@ -111,12 +114,7 @@ public class ProjectRecruitActivity extends BaseActivity {
 
     @Override
     public void configViews() {
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                toActivity(TeamActivity.class);
-            }
-        });
+
     }
 
     @OnClick({R.id.cb_area, R.id.ll_area, R.id.cb_type, R.id.ll_type, R.id.cb_filtrate, R.id.ll_filtrate})
@@ -212,12 +210,22 @@ public class ProjectRecruitActivity extends BaseActivity {
      * 获取网络数据
      */
     private void getNetData(String city_id,String service_type,String keyword){
-        RetrofitClient.getInstance().createApi().projevtList("0","",page,city_id,service_type,keyword,"")
-                .compose(RxUtils.<HttpResult<List<ProjectBean>>>io_main())
-                .subscribe(new BaseObjObserver<List<ProjectBean>>(this,refresh) {
+        RetrofitClient.getInstance().createApi().projevtList("0",null,page,city_id,service_type,keyword,null)
+                .compose(RxUtils.<HttpResult<ProjectBean>>io_main())
+                .subscribe(new BaseObjObserver<ProjectBean>(this,refresh) {
                     @Override
-                    protected void onHandleSuccess(List<ProjectBean> projectBeans) {
-
+                    protected void onHandleSuccess(ProjectBean projectBean) {
+                        if(projectBean == null){
+                            return;
+                        }
+                        all = projectBean.getTotal();
+                        ll = projectBean.getPer_page();
+                        if(projectBean.getData().size()>0){
+                            mList.addAll(projectBean.getData());
+                        }else{
+                            showToastMsg("暂无相关数据");
+                        }
+                        adapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -226,7 +234,7 @@ public class ProjectRecruitActivity extends BaseActivity {
      * 初始化适配器
      */
     private void initAdapter() {
-        adapter = new MyTeamAdapter(R.layout.item_my_ac, mList, "2");
+        adapter = new ProjectAdapter(R.layout.item_my_ac, mList, "2",this);
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -244,10 +252,10 @@ public class ProjectRecruitActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                ChatListBean.AllListBean allListBean= mList.get(position);
-//                Intent intent = new Intent(ChatListActivity.this,ChatDeticalActivity.class);
-//                intent.putExtra("id",allListBean.getId());
-//                startActivity(intent);
+                ProjectBean.DataBean dataBean= mList.get(position);
+                Intent intent = new Intent(ProjectRecruitActivity.this,AcDetailActivity.class);
+                intent.putExtra("id",dataBean.getId());
+                startActivity(intent);
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));

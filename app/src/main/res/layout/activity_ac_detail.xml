@@ -18,7 +18,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/white"
             android:orientation="vertical">
 
@@ -416,7 +416,7 @@
                 android:textColor="@color/global"
                 android:textSize="15sp" />
 
-            <TextView
+            <WebView
                 android:id="@+id/tv_ac_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -436,7 +436,7 @@
                 android:textColor="@color/global"
                 android:textSize="15sp" />
 
-            <TextView
+            <WebView
                 android:id="@+id/tv_ac_demand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -481,6 +481,7 @@
                     android:layout_centerInParent="true"
                     android:drawablePadding="@dimen/dp_10"
                     android:textSize="@dimen/sp_14"
+                    android:padding="30dp"
                     android:textColor="@color/text_black"
                     android:text="暂无留言评论"/>
 
@@ -499,27 +500,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:elevation="@dimen/dp_10"
+        android:background="@color/white">
 
         <TextView
-            android:id="@+id/tv_ac_status"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_liuyan"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#e5e5e5"
+            android:background="@drawable/white_gray_background_selector"
             android:gravity="center"
             android:padding="12dp"
-            android:text="已报名" />
+            android:text="留言" />
 
         <TextView
-            android:id="@+id/tv_ac_cancle"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_dianzan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/white_gray_background_selector"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="点赞" />
+
+        <TextView
+            android:id="@+id/tv_baoming"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/global"
             android:gravity="center"
             android:padding="12dp"
-            android:text="取消报名"
+            android:text="我要报名"
             android:textColor="@color/white" />
 
     </LinearLayout>

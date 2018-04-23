@@ -58,13 +58,9 @@ public class ProjectManagementActivity extends BaseActivity implements TabLayout
      * 设置Tablayout
      */
     private void setTabViewPager() {
-        for (int i = 0; i < 3; i++) {
-            ProjectManagementFragment f = new ProjectManagementFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("type", i + "");
-            f.setArguments(bundle);
-            mList.add(f);
-        }
+        creatFragment("1");
+        creatFragment("0");
+        creatFragment("-1");
 
         mTitles.add("进行中");
         mTitles.add("审核中");
@@ -78,6 +74,14 @@ public class ProjectManagementActivity extends BaseActivity implements TabLayout
         mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getActivity(), R.color.global));
         mTabLayout.setOnTabSelectedListener(this);
 
+    }
+
+    private void creatFragment(String i){
+        ProjectManagementFragment f = new ProjectManagementFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", i);
+        f.setArguments(bundle);
+        mList.add(f);
     }
 
     @Override

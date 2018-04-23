@@ -25,7 +25,6 @@ public class AcManagementAdapter extends BaseQuickAdapter<String, BaseViewHolder
     @Override
     protected void convert(BaseViewHolder baseViewHolder, String s) {
         LinearLayout layout = baseViewHolder.getView(R.id.ll_my_team_refuse);
-
         layout.setVisibility(View.GONE);
 
     }
