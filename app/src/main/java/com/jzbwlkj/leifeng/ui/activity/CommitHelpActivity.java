@@ -164,7 +164,8 @@ public class CommitHelpActivity extends BaseActivity {
                     @Override
                     protected void onHandleSuccess(CommitBean commitBean) {
 
-                        showToastMsg(commitBean.getMessage());
+                        showToastMsg("提交成功");
+                        setResult(100);
                         finish();
                     }
     });

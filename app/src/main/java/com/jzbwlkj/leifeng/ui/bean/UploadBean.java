@@ -6,10 +6,11 @@ package com.jzbwlkj.leifeng.ui.bean;
 
 public class UploadBean {
 
+
     /**
      * code : 200
      * message : 操作成功
-     * data : {"file":{"filepath":"default/20180414/cfa21863b8b821752f650004d7a1d31c.jpg","name":"file.jpg","id":null,"preview_url":"/upload/default/20180414/cfa21863b8b821752f650004d7a1d31c.jpg","url":"/upload/default/20180414/cfa21863b8b821752f650004d7a1d31c.jpg"}}
+     * data : {"file":{"filepath":"http://leifeng.jzbwlkj.com/upload/default/20180503/460d0ca8237a034e11f248346b6eedba.jpg","name":"magazine-unlock-04-2.3.968-_b46866048a1047f1955390185aa3323b.jpg","id":null,"preview_url":"/upload/default/20180503/460d0ca8237a034e11f248346b6eedba.jpg","url":"http://leifeng.jzbwlkj.com/upload/default/20180503/460d0ca8237a034e11f248346b6eedba.jpg"}}
      */
 
     private int code;
@@ -42,7 +43,7 @@ public class UploadBean {
 
     public static class DataBean {
         /**
-         * file : {"filepath":"default/20180414/cfa21863b8b821752f650004d7a1d31c.jpg","name":"file.jpg","id":null,"preview_url":"/upload/default/20180414/cfa21863b8b821752f650004d7a1d31c.jpg","url":"/upload/default/20180414/cfa21863b8b821752f650004d7a1d31c.jpg"}
+         * file : {"filepath":"http://leifeng.jzbwlkj.com/upload/default/20180503/460d0ca8237a034e11f248346b6eedba.jpg","name":"magazine-unlock-04-2.3.968-_b46866048a1047f1955390185aa3323b.jpg","id":null,"preview_url":"/upload/default/20180503/460d0ca8237a034e11f248346b6eedba.jpg","url":"http://leifeng.jzbwlkj.com/upload/default/20180503/460d0ca8237a034e11f248346b6eedba.jpg"}
          */
 
         private FileBean file;
@@ -57,11 +58,11 @@ public class UploadBean {
 
         public static class FileBean {
             /**
-             * filepath : default/20180414/cfa21863b8b821752f650004d7a1d31c.jpg
-             * name : file.jpg
+             * filepath : http://leifeng.jzbwlkj.com/upload/default/20180503/460d0ca8237a034e11f248346b6eedba.jpg
+             * name : magazine-unlock-04-2.3.968-_b46866048a1047f1955390185aa3323b.jpg
              * id : null
-             * preview_url : /upload/default/20180414/cfa21863b8b821752f650004d7a1d31c.jpg
-             * url : /upload/default/20180414/cfa21863b8b821752f650004d7a1d31c.jpg
+             * preview_url : /upload/default/20180503/460d0ca8237a034e11f248346b6eedba.jpg
+             * url : http://leifeng.jzbwlkj.com/upload/default/20180503/460d0ca8237a034e11f248346b6eedba.jpg
              */
 
             private String filepath;

@@ -27,7 +27,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/login_account"
+                android:drawableLeft="@mipmap/xxingming"
                 android:drawablePadding="6dp"
                 android:text="姓名:" />
 
@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/login_account"
+                android:drawableLeft="@mipmap/lianxifangsh"
                 android:drawablePadding="6dp"
                 android:text="联系方式:" />
 
@@ -83,7 +83,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/login_account"
+                android:drawableLeft="@mipmap/dizhi"
                 android:drawablePadding="6dp"
                 android:text="地址:" />
 
@@ -115,7 +115,7 @@
                     android:id="@+id/iv_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/login_account" />
+                    android:src="@mipmap/qianbi" />
 
                 <EditText
                     android:id="@+id/et_commit_help_comment"
@@ -125,8 +125,7 @@
                     android:gravity="start"
                     android:maxLength="600"
                     android:textColor="@color/text_black"
-                    android:textSize="14sp"
-                    android:hint="请输入您的留言内容"/>
+                    android:textSize="14sp" />
             </RelativeLayout>
 
 

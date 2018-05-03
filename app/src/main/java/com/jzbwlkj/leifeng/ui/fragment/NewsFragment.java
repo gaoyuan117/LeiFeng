@@ -50,7 +50,7 @@ public class NewsFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         headView = View.inflate(activity, R.layout.head_banner, null);
         banner = headView.findViewById(R.id.banner);
 
-        adapter = new NewsAdapter(R.layout.item_news, mList);
+        adapter = new NewsAdapter(R.layout.item_news, mList,getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(adapter);
         adapter.addHeaderView(headView);
@@ -67,7 +67,6 @@ public class NewsFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void configViews() {
         adapter.setOnItemClickListener(this);
         refresh.setOnRefreshListener(this);
-
     }
 
     @Override

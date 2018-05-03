@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.ui.bean.LiuYanBean;
+import com.jzbwlkj.leifeng.ui.bean.ProjectDetialBean;
 import com.jzbwlkj.leifeng.utils.FormatUtils;
 
 import java.util.ArrayList;
@@ -22,16 +23,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Administrator on 2018/4/2.
  */
 
-public class AcDetailAdapter extends BaseQuickAdapter<LiuYanBean, BaseViewHolder> {
+public class AcDetailAdapter extends BaseQuickAdapter<ProjectDetialBean.MessageListBean, BaseViewHolder> {
 
     private Activity activity;
-    public AcDetailAdapter(int layoutResId, @Nullable List<LiuYanBean> data,Activity activity) {
+    public AcDetailAdapter(int layoutResId, @Nullable List<ProjectDetialBean.MessageListBean> data,Activity activity) {
         super(layoutResId, data);
         this.activity = activity;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, LiuYanBean item) {
+    protected void convert(BaseViewHolder helper, ProjectDetialBean.MessageListBean item) {
 
         helper.setText(R.id.tv_name,item.getUser_nickname());
         long tt = item.getAdd_time();
@@ -45,7 +46,7 @@ public class AcDetailAdapter extends BaseQuickAdapter<LiuYanBean, BaseViewHolder
         RecyclerView recyclerView = helper.getView(R.id.recyclerView);
         helper.addOnClickListener(R.id.img_ac_comment);
         item.getReply_info();
-        List<LiuYanBean.ReplyInfoBean> list = new ArrayList<>();
+        List<ProjectDetialBean.MessageListBean.ReplyInfoBean> list = new ArrayList<>();
         if(item.getReply_info().size()>0){
             list.addAll(item.getReply_info());
         }

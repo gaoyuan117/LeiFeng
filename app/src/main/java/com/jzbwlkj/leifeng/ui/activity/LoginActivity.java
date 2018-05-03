@@ -99,6 +99,7 @@ public class LoginActivity extends BaseActivity {
                         });
 
                         SharedPreferencesUtil.getInstance().putString("token", bean.getToken());
+                        SharedPreferencesUtil.getInstance().putString("phone", bean.getMobile());
                         BaseApp.token = bean.getToken();
                         toActivity(MainActivity.class);
                         showToastMsg("登录成功");

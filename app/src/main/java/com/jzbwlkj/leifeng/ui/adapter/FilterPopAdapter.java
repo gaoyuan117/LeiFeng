@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.jzbwlkj.leifeng.R;
+import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
 
 import java.util.List;
 
@@ -19,11 +20,11 @@ import butterknife.ButterKnife;
 
 public class FilterPopAdapter extends BaseAdapter {
     private Context context;
-    private List<String> mList;
+    private List<MySelfModel> mList;
     private int pos = -1;
     private ClickInterface clickInterface;
 
-    public FilterPopAdapter(Context context, List<String> mList) {
+    public FilterPopAdapter(Context context, List<MySelfModel> mList) {
         this.context = context;
         this.mList = mList;
     }
@@ -60,7 +61,7 @@ public class FilterPopAdapter extends BaseAdapter {
             viewHolder.tvPopFilter.setTextColor(context.getResources().getColor(R.color.text_black));
         }
 
-        viewHolder.tvPopFilter.setText(mList.get(position));
+        viewHolder.tvPopFilter.setText(mList.get(position).getName());
 
         viewHolder.tvPopFilter.setOnClickListener(new View.OnClickListener() {
             @Override

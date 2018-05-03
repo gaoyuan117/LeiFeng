@@ -1,6 +1,9 @@
 package com.jzbwlkj.leifeng.ui.activity;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
@@ -12,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
 import com.jzbwlkj.leifeng.ui.fragment.HomeFragment;
@@ -19,6 +23,7 @@ import com.jzbwlkj.leifeng.ui.fragment.MyFragment;
 import com.jzbwlkj.leifeng.ui.fragment.NewsFragment;
 import com.jzbwlkj.leifeng.utils.AppManager;
 import com.jzbwlkj.leifeng.utils.CommonApi;
+import com.jzbwlkj.leifeng.utils.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +50,16 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.activity_main)
     RelativeLayout activityMain;
 
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_PHONE_STATE
+    };
+
     private List<Fragment> mList;
     private List<RadioButton> mRadioButtos;
     private int count, cuuret, target;//RadioButton的个数,当前位置，目标位置
@@ -60,6 +75,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        getQuanxian();
         mList = new ArrayList<>();
         mRadioButtos = new ArrayList<>();
         homeFragment = new HomeFragment();
@@ -68,12 +84,26 @@ public class MainActivity extends BaseActivity {
         mList.add(homeFragment);
         mList.add(newsFragment);
         mList.add(myFragment);
-
         count = mRadiogroup.getChildCount();
         for (int i = 0; i < count; i++) {
             mRadioButtos.add((RadioButton) mRadiogroup.getChildAt(i));
         }
         showFirstFragment();
+    }
+
+    private void getQuanxian() {
+        try {
+            //检测是否有写的权限
+            int permission = ActivityCompat.checkSelfPermission(this,
+                    "android.permission.WRITE_EXTERNAL_STORAGE");
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // 没有写的权限，去申请写的权限，会弹出对话框
+                ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+            }else{
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -99,13 +129,21 @@ public class MainActivity extends BaseActivity {
                 chooseFragment();
                 break;
             case R.id.rb_main_help:
+                if (noLogin()) {
+                    toActivity(LoginActivity.class);
+                    return;
+                }
+
                 if (cuuret == 2) {
                     mRadioButtos.get(4).setChecked(true);
                 } else {
                     mRadioButtos.get(cuuret).setChecked(true);
                 }
+
                 mRadioButtos.get(3).setChecked(false);
-                helpDialog("13220122946", "address");
+                String phone = SharedPreferencesUtil.getInstance().getString("phone");
+                helpDialog(phone, BaseApp.address);
+
                 break;
             case R.id.tv_main_sign:
                 if (noLogin()) {
@@ -168,7 +206,8 @@ public class MainActivity extends BaseActivity {
 
         final TextView tvPhone = view.findViewById(R.id.tv_help_phone);
         TextView tvLocation = view.findViewById(R.id.tv_help_location);
-
+        tvPhone.setText(phone);
+        tvLocation.setText(location);
         tvPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

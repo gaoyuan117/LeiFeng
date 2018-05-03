@@ -1,5 +1,7 @@
 package com.jzbwlkj.leifeng.ui.bean;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2018/4/20.
  */
@@ -13,7 +15,7 @@ public class ProjectDetialBean {
      * team_name : 高密市志愿者协会
      * type : 1
      * title : 活动2
-     * pic :
+     * pic : http://leifeng.jzbwlkj.com/upload/default/20180420/5ef6a1a899b0ae144ac605504c429500.jpg
      * service_type : 3
      * join_time_s : 1524240000
      * join_time_e : 1524326400
@@ -44,8 +46,10 @@ public class ProjectDetialBean {
      * contact : 张三
      * contact_mobile : 12521542
      * log_info : null
-     * praise_num : 0
-     * is_praise : 0
+     * praise_num : 2
+     * is_praise : 1
+     * join_info : {"status":1,"add_time":1524282085,"reason":""}
+     * message_list : [{"id":5,"uid":7,"activity_id":4,"team_id":0,"pid":0,"content":"加一条留言","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524298413,"user_nickname":"孙常栋","avatar":"","reply_info":[]},{"id":3,"uid":7,"activity_id":4,"team_id":0,"pid":0,"content":"我在这里对留言做出评价","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524297561,"user_nickname":"孙常栋","avatar":"","reply_info":[{"id":8,"uid":8,"activity_id":4,"team_id":0,"pid":3,"content":"在此留言","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524556286,"user_nickname":"葛汝鑫","avatar":""},{"id":4,"uid":7,"activity_id":4,"team_id":0,"pid":3,"content":"继续对留言做出评价","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524297851,"user_nickname":"孙常栋","avatar":""}]},{"id":2,"uid":7,"activity_id":4,"team_id":0,"pid":0,"content":"我这里实在测试留言","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524297477,"user_nickname":"孙常栋","avatar":"","reply_info":[]},{"id":1,"uid":7,"activity_id":4,"team_id":0,"pid":0,"content":"我的留言","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524282118,"user_nickname":"孙常栋","avatar":"","reply_info":[]}]
      */
 
     private int id;
@@ -84,9 +88,21 @@ public class ProjectDetialBean {
     private String end_time_text;
     private String contact;
     private String contact_mobile;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String email;
     private Object log_info;
     private int praise_num;
     private int is_praise;
+    private JoinInfoBean join_info;
+    private List<MessageListBean> message_list;
 
     public int getId() {
         return id;
@@ -398,6 +414,310 @@ public class ProjectDetialBean {
 
     public void setIs_praise(int is_praise) {
         this.is_praise = is_praise;
+    }
+
+    public JoinInfoBean getJoin_info() {
+        return join_info;
+    }
+
+    public void setJoin_info(JoinInfoBean join_info) {
+        this.join_info = join_info;
+    }
+
+    public List<MessageListBean> getMessage_list() {
+        return message_list;
+    }
+
+    public void setMessage_list(List<MessageListBean> message_list) {
+        this.message_list = message_list;
+    }
+
+    public static class JoinInfoBean {
+        /**
+         * status : 1
+         * add_time : 1524282085
+         * reason :
+         */
+
+        private int status;
+        private int add_time;
+        private String reason;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public int getAdd_time() {
+            return add_time;
+        }
+
+        public void setAdd_time(int add_time) {
+            this.add_time = add_time;
+        }
+
+        public String getReason() {
+            return reason;
+        }
+
+        public void setReason(String reason) {
+            this.reason = reason;
+        }
+    }
+
+    public static class MessageListBean {
+        /**
+         * id : 5
+         * uid : 7
+         * activity_id : 4
+         * team_id : 0
+         * pid : 0
+         * content : 加一条留言
+         * status : 0
+         * is_sys : 0
+         * is_anonymous : 0
+         * add_time : 1524298413
+         * user_nickname : 孙常栋
+         * avatar :
+         * reply_info : []
+         */
+
+        private int id;
+        private int uid;
+        private int activity_id;
+        private int team_id;
+        private int pid;
+        private String content;
+        private int status;
+        private int is_sys;
+        private int is_anonymous;
+        private int add_time;
+        private String user_nickname;
+        private String avatar;
+        private List<ReplyInfoBean> reply_info;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getUid() {
+            return uid;
+        }
+
+        public void setUid(int uid) {
+            this.uid = uid;
+        }
+
+        public int getActivity_id() {
+            return activity_id;
+        }
+
+        public void setActivity_id(int activity_id) {
+            this.activity_id = activity_id;
+        }
+
+        public int getTeam_id() {
+            return team_id;
+        }
+
+        public void setTeam_id(int team_id) {
+            this.team_id = team_id;
+        }
+
+        public int getPid() {
+            return pid;
+        }
+
+        public void setPid(int pid) {
+            this.pid = pid;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public int getIs_sys() {
+            return is_sys;
+        }
+
+        public void setIs_sys(int is_sys) {
+            this.is_sys = is_sys;
+        }
+
+        public int getIs_anonymous() {
+            return is_anonymous;
+        }
+
+        public void setIs_anonymous(int is_anonymous) {
+            this.is_anonymous = is_anonymous;
+        }
+
+        public int getAdd_time() {
+            return add_time;
+        }
+
+        public void setAdd_time(int add_time) {
+            this.add_time = add_time;
+        }
+
+        public String getUser_nickname() {
+            return user_nickname;
+        }
+
+        public void setUser_nickname(String user_nickname) {
+            this.user_nickname = user_nickname;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+
+        public List<ReplyInfoBean> getReply_info() {
+            return reply_info;
+        }
+
+        public void setReply_info(List<ReplyInfoBean> reply_info) {
+            this.reply_info = reply_info;
+        }
+
+        public static class ReplyInfoBean {
+            /**
+             * id : 4
+             * uid : 7
+             * activity_id : 4
+             * pid : 3
+             * content : 继续对留言做出评价
+             * status : 0
+             * is_sys : 0
+             * is_anonymous : 0
+             * add_time : 1524297851
+             * user_nickname : 孙常栋
+             * avatar :
+             */
+
+            private int id;
+            private int uid;
+            private int activity_id;
+            private int pid;
+            private String content;
+            private int status;
+            private int is_sys;
+            private int is_anonymous;
+            private int add_time;
+            private String user_nickname;
+            private String avatar;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public int getUid() {
+                return uid;
+            }
+
+            public void setUid(int uid) {
+                this.uid = uid;
+            }
+
+            public int getActivity_id() {
+                return activity_id;
+            }
+
+            public void setActivity_id(int activity_id) {
+                this.activity_id = activity_id;
+            }
+
+            public int getPid() {
+                return pid;
+            }
+
+            public void setPid(int pid) {
+                this.pid = pid;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public int getIs_sys() {
+                return is_sys;
+            }
+
+            public void setIs_sys(int is_sys) {
+                this.is_sys = is_sys;
+            }
+
+            public int getIs_anonymous() {
+                return is_anonymous;
+            }
+
+            public void setIs_anonymous(int is_anonymous) {
+                this.is_anonymous = is_anonymous;
+            }
+
+            public int getAdd_time() {
+                return add_time;
+            }
+
+            public void setAdd_time(int add_time) {
+                this.add_time = add_time;
+            }
+
+            public String getUser_nickname() {
+                return user_nickname;
+            }
+
+            public void setUser_nickname(String user_nickname) {
+                this.user_nickname = user_nickname;
+            }
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+        }
     }
 
 }

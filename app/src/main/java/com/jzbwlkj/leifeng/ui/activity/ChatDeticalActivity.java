@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
 import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
@@ -21,14 +23,6 @@ import com.jzbwlkj.leifeng.utils.FormatUtils;
 import butterknife.BindView;
 
 public class ChatDeticalActivity extends BaseActivity {
-
-    public static void toActivity(Context activity, String title, String content, long time) {
-        Intent intent = new Intent(activity, NewsDetalActivity.class);
-        intent.putExtra("title", title);
-        intent.putExtra("content", content);
-        intent.putExtra("time", time);
-        activity.startActivity(intent);
-    }
 
     @BindView(R.id.tv_news_detail_title)
     TextView tvNewsDetailTitle;
@@ -89,7 +83,7 @@ public class ChatDeticalActivity extends BaseActivity {
      * 获取网络数据
      */
     private void getNetData() {
-        RetrofitClient.getInstance().createApi().chatlistDetical(String.valueOf(id))
+        RetrofitClient.getInstance().createApi().chatlistDetical(String.valueOf(id), BaseApp.token)
                 .compose(RxUtils.<HttpResult<ChatListDeticalBean>>io_main())
                 .subscribe(new BaseObjObserver<ChatListDeticalBean>(this, "消息详情") {
                     @Override
@@ -97,6 +91,7 @@ public class ChatDeticalActivity extends BaseActivity {
                         time = chatListDeticalBean.getAdd_time();
                         title = chatListDeticalBean.getTitle();
                         content = chatListDeticalBean.getContent();
+                        content = Html.fromHtml(content).toString();
                         setData();
                     }
                 });

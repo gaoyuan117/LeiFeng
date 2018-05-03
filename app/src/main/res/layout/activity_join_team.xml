@@ -7,8 +7,14 @@
 
     <include layout="@layout/layout_title" />
 
-    <include layout="@layout/layout_filtrate"/>
-
+    <LinearLayout
+        android:id="@+id/ll_condition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <include layout="@layout/layout_filtrate"/>
+    </LinearLayout>
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:id="@+id/refresh"

@@ -1,6 +1,9 @@
 package com.jzbwlkj.leifeng.base;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 
 import com.jzbwlkj.leifeng.BaseApp;
@@ -46,6 +49,8 @@ public class SplashActivity extends BaseActivity {
                     }
                 });
     }
+
+
 
     @Override
     public void initData() {

@@ -8,22 +8,24 @@
     <LinearLayout
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="12dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
-            android:src="@mipmap/login_account" />
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_help_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/white_gray_background_selector"
+            android:paddingTop="20dp"
+            android:paddingBottom="16dp"
+            android:paddingRight="12dp"
+            android:paddingLeft="12dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="10dp"
+            android:drawableLeft="@mipmap/lianxifangsh"
+            android:textSize="@dimen/sp_12"
             android:gravity="center"
-            android:text="17615866248" />
+            android:text="17615866248\t\t\t" />
 
     </LinearLayout>
 
@@ -36,17 +38,17 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
-            android:src="@mipmap/login_account" />
-
         <TextView
             android:id="@+id/tv_help_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@mipmap/lansedizhi"
+            android:drawablePadding="10dp"
+            android:textSize="@dimen/sp_12"
+            android:lineSpacingExtra="@dimen/dp_4"
+            android:gravity="start"
             android:text="山东省济南市历下区海信创智谷 12B03" />
 
     </LinearLayout>
@@ -57,8 +59,10 @@
         android:id="@+id/tv_help_history"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/white_gray_background_selector"
         android:gravity="center"
-        android:padding="12dp"
+        android:padding="16dp"
+        android:textSize="@dimen/sp_12"
         android:text="求助留言历史" />
 
     <include layout="@layout/layout_line" />
@@ -67,9 +71,13 @@
         android:id="@+id/tv_help_send"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/white_gray_background_selector"
         android:gravity="center"
-        android:padding="12dp"
+        android:paddingBottom="14dp"
+        android:paddingTop="@dimen/sp_14"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:textSize="@dimen/sp_12"
         android:text="求助留言"
-        android:textColor="@color/green" />
+        android:textColor="@color/light_blue" />
 
 </LinearLayout>

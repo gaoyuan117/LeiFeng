@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
+import com.jzbwlkj.leifeng.utils.RoundCornesTransFormation;
 
 import java.util.List;
 
@@ -41,7 +42,8 @@ public class ProjectAdapter extends BaseQuickAdapter<ProjectBean.DataBean, BaseV
 
         String path = item.getPic();
         if(!TextUtils.isEmpty(path)&&!TextUtils.equals("null",path)){
-            Glide.with(activity).load(path).error(R.color.green).into((ImageView) holder.getView(R.id.img_my_ac));
+            Glide.with(activity).load(path)
+                    .error(R.color.green).into((ImageView) holder.getView(R.id.img_my_ac));
         }
 
         holder.setText(R.id.tv_my_ac_time,item.getService_hour()+"小时");

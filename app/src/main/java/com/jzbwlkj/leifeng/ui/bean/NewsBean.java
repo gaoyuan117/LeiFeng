@@ -79,7 +79,7 @@ public class NewsBean {
         private String desc;
         private String content;
         private int is_recommend;
-        private int add_time;
+        private long add_time;
 
         public int getId() {
             return id;
@@ -145,11 +145,11 @@ public class NewsBean {
             this.is_recommend = is_recommend;
         }
 
-        public int getAdd_time() {
+        public long getAdd_time() {
             return add_time;
         }
 
-        public void setAdd_time(int add_time) {
+        public void setAdd_time(long add_time) {
             this.add_time = add_time;
         }
     }

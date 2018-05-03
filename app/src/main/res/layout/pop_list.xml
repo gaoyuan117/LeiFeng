@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_gray">
+    android:background="@drawable/gray_stroke_white_soild_shape"
+    android:padding="@dimen/dp_4">
 
     <ListView
         android:id="@+id/lv_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:listSelector="@color/gray">
+        android:background="@color/white"
+        android:scrollbars="none">
 
     </ListView>
 </LinearLayout>

@@ -76,7 +76,7 @@ public class ChatListActivity extends BaseActivity {
         if(isloadMore){
             pageCount++;
         }
-        RetrofitClient.getInstance().createApi().chatlist(BaseApp.token,pageCount)
+        RetrofitClient.getInstance().createApi().chatlist(BaseApp.token,pageCount,0)
                 .compose(RxUtils.<HttpResult<ChatListBean>>io_main())
                 .subscribe(new BaseObjObserver<ChatListBean>(this, refresh) {
                     @Override

@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_gray_background_selector"
+        android:padding="10dp">
 
     <ImageView
         android:id="@+id/img_news"
         android:layout_width="100dp"
-        android:layout_height="70dp"
+        android:layout_height="80dp"
         android:layout_marginRight="10dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/cover_default" />
@@ -19,8 +25,8 @@
         android:layout_toRightOf="@id/img_news"
         android:ellipsize="end"
         android:lines="2"
-        android:text=""
-        android:textColor="@color/black"
+        android:text="eyjrtyjtyj"
+        android:textColor="@color/light_black"
         android:textSize="14sp" />
 
     <TextView
@@ -34,5 +40,9 @@
         android:text=""
         android:textColor="#999999"
         android:textSize="11sp" />
-
-</RelativeLayout>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:background="@color/line_color"/>
+</LinearLayout>

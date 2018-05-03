@@ -92,14 +92,14 @@ public class TeamActivity extends BaseActivity {
 
     @OnClick(R.id.tv_team_status)
     public void onViewClicked() {
-        if(TextUtils.equals("1",status)){
+        if(TextUtils.equals("-1",status)){
             joinTeam();
-        } else if(TextUtils.equals("2",status)){
+        } else if(TextUtils.equals("0",status)){
             showToastMsg("报名审核中，请耐心等待");
-        }else if(TextUtils.equals("3",status)){
-            joinTeam();
-        }else if(TextUtils.equals("4",status)){
+        }else if(TextUtils.equals("1",status)){
             showToastMsg("您已在当前队伍中");
+        }else{
+            joinTeam();
         }
     }
 
@@ -107,7 +107,7 @@ public class TeamActivity extends BaseActivity {
      * 获取网络数据
      */
     private void getNetData() {
-        RetrofitClient.getInstance().createApi().getTeamInfo(String.valueOf(id))
+        RetrofitClient.getInstance().createApi().getTeamInfo(String.valueOf(id),BaseApp.token)
                 .compose(RxUtils.<HttpResult<TeamInfoBean>>io_main())
                 .subscribe(new BaseObjObserver<TeamInfoBean>(activity, "队伍信息") {
                     @Override
@@ -116,15 +116,15 @@ public class TeamActivity extends BaseActivity {
                         if(TextUtils.equals("null",teamName)||TextUtils.isEmpty(teamName)){
                             teamName = "----";
                         }
-                        status = "1";
-                        if(TextUtils.equals("1",status)){
-                            tvTeamStatus.setText("我要加入");
-                        } else if(TextUtils.equals("2",status)){
+                        status = teamInfoBeans.getJoin_info().getStatus()+"";
+                        if(TextUtils.equals("0",status)){
                             tvTeamStatus.setText("审核中");
-                        }else if(TextUtils.equals("3",status)){
-                            tvTeamStatus.setText("已拒绝，重新加入");
-                        }else if(TextUtils.equals("4",status)){
+                        }else if(TextUtils.equals("-1",status)){
+                            tvTeamStatus.setText("重新加入");
+                        }else if(TextUtils.equals("1",status)){
                             showToastMsg("已加入");
+                        }else {
+                            tvTeamStatus.setText("我要加入");
                         }
                         tvTeamName.setText(teamName);
                         tvTeamNam.setText(teamName);
@@ -192,7 +192,7 @@ public class TeamActivity extends BaseActivity {
      */
     private void getProJectList(){
         RetrofitClient.getInstance().createApi().projevtList("1",null,1,null,
-                                                            null,null,String.valueOf(id))
+                                                            null,null,String.valueOf(id),null)
                 .compose(RxUtils.<HttpResult<ProjectBean>>io_main())
                 .subscribe(new BaseObjObserver<ProjectBean>(this,"活动列表") {
                     @Override

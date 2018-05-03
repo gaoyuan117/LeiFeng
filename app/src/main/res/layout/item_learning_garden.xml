@@ -10,6 +10,7 @@
         android:id="@+id/img_learning_garden"
         android:layout_width="match_parent"
         android:layout_height="120dp"
+        android:elevation="@dimen/sp_14"
         android:src="@color/global" />
 
     <TextView

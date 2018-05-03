@@ -20,6 +20,7 @@ import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.adapter.FilterPopAdapter;
 import com.jzbwlkj.leifeng.ui.adapter.JoinTeamAdapter;
+import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
 import com.jzbwlkj.leifeng.ui.bean.TeamListBean;
 import com.jzbwlkj.leifeng.utils.LogUtils;
 
@@ -52,9 +53,9 @@ public class JoinTeamActivity extends BaseActivity implements SwipeRefreshLayout
 
     private List<CheckBox> cbList = new ArrayList<>();
     private List<ImageView> imgList = new ArrayList<>();
-    private List<String> areaList = new ArrayList<>();
-    private List<String> typeList = new ArrayList<>();
-    private List<String> filterList = new ArrayList<>();
+    private List<MySelfModel> areaList = new ArrayList<>();
+    private List<MySelfModel> typeList = new ArrayList<>();
+    private List<MySelfModel> filterList = new ArrayList<>();
     private int area, type = -1, filter = -1;
     private ListPopupWindow window;
 
@@ -76,18 +77,6 @@ public class JoinTeamActivity extends BaseActivity implements SwipeRefreshLayout
         cbList.add(cbArea);
         cbList.add(cbType);
         cbList.add(cbFiltrate);
-
-        areaList.add("高密市");
-        areaList.add("高密市");
-        areaList.add("高密市");
-        areaList.add("高密市");
-
-        typeList.add("赛会服务");
-        typeList.add("赛会服务");
-        typeList.add("赛会服务");
-
-        filterList.add("距离最近");
-        filterList.add("最新发布");
 
         adapter = new JoinTeamAdapter(R.layout.item_join_team, mList);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
@@ -156,7 +145,7 @@ public class JoinTeamActivity extends BaseActivity implements SwipeRefreshLayout
 
     }
 
-    private void showPop(final int p, List<String> list) {
+    private void showPop(final int p, List<MySelfModel> list) {
         if (window == null) {
             window = new ListPopupWindow(activity);
         } else {

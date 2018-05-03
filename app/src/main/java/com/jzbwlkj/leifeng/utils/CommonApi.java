@@ -30,6 +30,7 @@ import com.jzbwlkj.leifeng.retrofit.CommonBean;
 import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
+import com.jzbwlkj.leifeng.ui.bean.CodeBean;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -56,10 +57,10 @@ public class CommonApi {
      */
     public static void sendsms(Context context, String type, String phone) {
         RetrofitClient.getInstance().createApi().sendsms(phone, type)
-                .compose(RxUtils.<HttpResult<CommonBean>>io_main())
-                .subscribe(new BaseObjObserver<CommonBean>(context) {
+                .compose(RxUtils.<HttpResult<CodeBean>>io_main())
+                .subscribe(new BaseObjObserver<CodeBean>(context) {
                     @Override
-                    protected void onHandleSuccess(CommonBean commonBean) {
+                    protected void onHandleSuccess(CodeBean codeBean) {
 
                     }
                 });

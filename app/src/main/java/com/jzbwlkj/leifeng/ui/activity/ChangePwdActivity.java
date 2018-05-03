@@ -8,8 +8,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
+import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
+import com.jzbwlkj.leifeng.retrofit.CommonBean;
+import com.jzbwlkj.leifeng.retrofit.HttpResult;
+import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
+import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.utils.CommonApi;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
 
@@ -91,10 +97,10 @@ public class ChangePwdActivity extends BaseActivity {
         oldPwd = etOldPwd.getText().toString();
         newPwd = etNewPwd.getText().toString();
 
-        if (TextUtils.isEmpty(phone)) {
-            ToastUtils.showToast(getResources().getString(R.string.please_input_phone));
-            return;
-        }
+//        if (TextUtils.isEmpty(phone)) {
+//            ToastUtils.showToast(getResources().getString(R.string.please_input_phone));
+//            return;
+//        }
         if (TextUtils.isEmpty(oldPwd)) {
             ToastUtils.showToast(getResources().getString(R.string.please_input_old_pwd));
             return;
@@ -112,19 +118,20 @@ public class ChangePwdActivity extends BaseActivity {
             return;
         }
 
+        if (newPwd.length() < 6) {
+            ToastUtils.showToast("新密码长度不得少于6位");
+            return;
+        }
 
-//        if (newPwd.length() < 8) {
-//            ToastUtils.showToast(getResources().getString(R.string.password_length));
-//            return;
-//        }
-
-//        RetrofitClient.getInstance().createApi().modifypwd(BaseApp.token, phone, newPwd, oldPwd)
-//                .compose(RxUtils.<HttpResult<CommonBean>>io_main())
-//                .subscribe(new BaseObjObserver<CommonBean>(activity, "修改中") {
-//                    @Override
-//                    protected void onHandleSuccess(CommonBean commonBean) {
-//                        EventBus.getDefault().post("change_pwd");
-//                    }
-//                });
+        RetrofitClient.getInstance().createApi().modifyPwd(BaseApp.token, oldPwd, newPwd)
+                .compose(RxUtils.<HttpResult<CommonBean>>io_main())
+                .subscribe(new BaseObjObserver<CommonBean>(activity, "修改中") {
+                    @Override
+                    protected void onHandleSuccess(CommonBean commonBean) {
+                //        EventBus.getDefault().post("change_pwd");
+                        showToastMsg("密码修改成功");
+                        finish();
+                    }
+                });
     }
 }

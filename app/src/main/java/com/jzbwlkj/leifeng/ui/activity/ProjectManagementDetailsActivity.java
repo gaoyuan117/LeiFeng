@@ -1,16 +1,22 @@
 package com.jzbwlkj.leifeng.ui.activity;
 
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -22,7 +28,9 @@ import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.adapter.AcManagementDetailsAdapter;
-import com.jzbwlkj.leifeng.ui.bean.JoinProjectBean;
+import com.jzbwlkj.leifeng.ui.adapter.ListViewAdapter;
+import com.jzbwlkj.leifeng.ui.bean.JoinProjectUserBean;
+import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
 import com.jzbwlkj.leifeng.ui.bean.ProjectDetialBean;
 
 import java.util.ArrayList;
@@ -53,14 +61,14 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
     LinearLayout titleLinLayout;
     @BindView(R.id.et_publish_project_name)
     EditText etPublishProjectName;
-    @BindView(R.id.sp_publish_project_type)
-    Spinner spPublishProjectType;
+    @BindView(R.id.tv_project_type)
+    TextView tvProjectType;
     @BindView(R.id.et_publish_project_baoming_time)
     EditText etPublishProjectBaomingTime;
     @BindView(R.id.et_publish_project_jiezhi_time)
     EditText etPublishProjectJiezhiTime;
-    @BindView(R.id.sp_publish_project_cycle)
-    Spinner spPublishProjectCycle;
+    @BindView(R.id.tv_zhouqi)
+    TextView tvZhouqi;
     @BindView(R.id.et_publish_project_start_time)
     EditText etPublishProjectStartTime;
     @BindView(R.id.et_publish_project_end_time)
@@ -73,8 +81,8 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
     EditText etPublishProjectAddress;
     @BindView(R.id.et_publish_project_sign_up_address)
     EditText etPublishProjectSignUpAddress;
-    @BindView(R.id.sp_publish_project_range)
-    Spinner spPublishProjectRange;
+    @BindView(R.id.tv_range)
+    TextView tvRange;
     @BindView(R.id.et_publish_project_sign_up_valid_time)
     EditText etPublishProjectSignUpValidTime;
     @BindView(R.id.cb_publish_project_cantie)
@@ -87,8 +95,8 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
     CheckBox cbPublishProjectInsurance;
     @BindView(R.id.cb_publish_project_training)
     CheckBox cbPublishProjectTraining;
-    @BindView(R.id.sp_publish_project_unit)
-    Spinner spPublishProjectUnit;
+    @BindView(R.id.tv_unit)
+    TextView tvUnit;
     @BindView(R.id.et_publish_project_linkman)
     EditText etPublishProjectLinkman;
     @BindView(R.id.et_publish_project_linkphone)
@@ -103,16 +111,30 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
     ImageView imgPublishProject;
     @BindView(R.id.tv_number)
     TextView tvNumber;
+    @BindView(R.id.tv_no_data)
+    TextView tvNoData;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.ll_number)
     LinearLayout llNumber;
     @BindView(R.id.tv_publish_project_publish)
     TextView tvPublishProjectPublish;
-    private List<String> mList = new ArrayList<>();
+    private List<JoinProjectUserBean> mList = new ArrayList<>();
     private AcManagementDetailsAdapter adapter;
     private List<EditText> etList = new ArrayList<>();
     private int id;
+
+    private View viewType;
+    private ListView lvContent;
+    private PopupWindow popType;
+    private int flag = 0;
+    private ListViewAdapter lvAdapter;
+    private List<MySelfModel> showList = new ArrayList<>();
+
+    private List<MySelfModel> typeList = new ArrayList<>();//用来展示类型数据的集合
+    private List<MySelfModel> disList = new ArrayList<>();//用来展示签到范围的集合
+    private List<MySelfModel> unitList = new ArrayList<>();//用来展示单位数据的集合
+    private List<MySelfModel> timeList = new ArrayList<>();//用来展示时间周期的集合
 
     @Override
     public int getLayoutId() {
@@ -122,14 +144,38 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        initPop();
         setCenterTitle("项目管理");
         llNumber.setVisibility(View.VISIBLE);
 
-        llNumber.setVisibility(View.VISIBLE);
-        for (int i = 0; i < 10; i++) {
-            mList.add("");
+        for (int i = 0; i < 6; i++) {
+            MySelfModel model = new MySelfModel();
+            model.setName("条件" + (i + 1));
+            model.setId((i + 1) + "");
+            model.setSelected(false);
+            typeList.add(model);
+
+            MySelfModel model2 = new MySelfModel();
+            model2.setName((i + 1) + "00" + "米");
+            model2.setId((i + 1) + "");
+            model2.setSelected(false);
+            disList.add(model2);
+
+            MySelfModel model3 = new MySelfModel();
+            model3.setName((i + 1)+"天");
+            model3.setId((i + 1) + "");
+            model3.setSelected(false);
+            timeList.add(model3);
+
+            MySelfModel model4 = new MySelfModel();
+            model4.setName((i + 1) + "单位");
+            model4.setId((i + 1) + "");
+            model4.setSelected(false);
+            unitList.add(model4);
+
         }
-        adapter = new AcManagementDetailsAdapter(R.layout.item_ac_management_details, mList);
+
+        adapter = new AcManagementDetailsAdapter(R.layout.item_ac_management_details, mList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
     }
@@ -160,16 +206,72 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
         setData();
     }
 
-    @OnClick({R.id.img_publish_project, R.id.tv_publish_project_publish, R.id.tv_number})
+    @OnClick({R.id.img_publish_project, R.id.tv_publish_project_publish, R.id.tv_number, R.id.tv_range,
+            R.id.tv_project_type, R.id.tv_unit, R.id.tv_zhouqi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_publish_project:
                 break;
             case R.id.tv_number:
-                toActivity(RegisteredStaffActivity.class);
+                Intent intent = new Intent(this, RegisteredStaffActivity.class);
+                intent.putExtra("id", id);
+                startActivity(intent);
                 break;
             case R.id.tv_publish_project_publish:
                 break;
+            case R.id.tv_range:
+                flag = 1;
+                showList.clear();
+                showList.addAll(disList);
+                lvAdapter.notifyDataSetChanged();
+                popType.setWidth(tvProjectType.getMeasuredWidth() + 30);
+                if (showList.size() > 6) {
+                    popType.setHeight(500);
+                } else {
+                    popType.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
+                popType.showAsDropDown(tvRange, -12, 20);
+                break;
+            case R.id.tv_project_type:
+                flag = 2;
+                showList.clear();
+                showList.addAll(typeList);
+                lvAdapter.notifyDataSetChanged();
+                popType.setWidth(tvProjectType.getMeasuredWidth() + 30);
+                if (showList.size() > 6) {
+                    popType.setHeight(500);
+                } else {
+                    popType.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
+                popType.showAsDropDown(tvProjectType, -12, 20);
+                break;
+            case R.id.tv_unit:
+                flag = 3;
+                showList.clear();
+                showList.addAll(unitList);
+                lvAdapter.notifyDataSetChanged();
+                popType.setWidth(tvProjectType.getMeasuredWidth() + 30);
+                if (showList.size() > 6) {
+                    popType.setHeight(500);
+                } else {
+                    popType.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
+                popType.showAsDropDown(tvUnit, -12, 20);
+                break;
+            case R.id.tv_zhouqi:
+                flag = 4;
+                showList.clear();
+                showList.addAll(timeList);
+                lvAdapter.notifyDataSetChanged();
+                popType.setWidth(tvProjectType.getMeasuredWidth() + 30);
+                if (showList.size() > 6) {
+                    popType.setHeight(500);
+                } else {
+                    popType.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
+                popType.showAsDropDown(tvZhouqi, -12, 20);
+                break;
+
         }
     }
 
@@ -179,27 +281,6 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
             etList.get(i).setFocusable(false);
             etList.get(i).setEnabled(false);
         }
-        spPublishProjectType.setClickable(false);
-        spPublishProjectCycle.setClickable(false);
-        spPublishProjectRange.setClickable(false);
-        spPublishProjectUnit.setClickable(false);
-//        List<String> typeList = new ArrayList<>();
-//        typeList.add("助老爱残");
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, typeList);
-//        spPublishProjectType.setAdapter(adapter);
-//
-//        List<String> rangeList = new ArrayList<>();
-//        rangeList.add("300米");
-//        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, rangeList);
-//        spPublishProjectCycle.setAdapter(adapter2);
-//        spPublishProjectRange.setAdapter(adapter2);
-//        spPublishProjectUnit.setAdapter(adapter2);
-//
-//
-//        CheckBox cbPublishProjectCantie;
-//        CheckBox cbPublishProjectTraffic;
-//        CheckBox cbPublishProjectInsurance;
-//        CheckBox cbPublishProjectTraining;
     }
 
     /**
@@ -218,9 +299,9 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
                         if (!TextUtils.isEmpty(path) && !TextUtils.equals("null", path)) {
                             Glide.with(ProjectManagementDetailsActivity.this).load(path).error(R.color.green).into(imgPublishProject);
                         }
-                        //        .setText(projectDetialBean.getService_hour() + "小时");
+                        tvZhouqi.setText(projectDetialBean.getService_time());
                         etPublishProjectName.setText(projectDetialBean.getTitle());
-                        //        spPublishProjectType.(projectDetialBean.getService_type_text());
+                        tvProjectType.setText(projectDetialBean.getService_type_text());
                         etPublishProjectBaomingTime.setText(projectDetialBean.getJoin_time_s_text());
                         etPublishProjectJiezhiTime.setText(projectDetialBean.getJoin_time_e_text());
                         etPublishProjectStartTime.setText(projectDetialBean.getStart_time_text());
@@ -228,7 +309,8 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
                         etPublishProjectLengthTime.setText(projectDetialBean.getService_hour() + "小时");
                         etPublishProjectNumber.setText(projectDetialBean.getService_num() + "人");
                         etPublishProjectAddress.setText(projectDetialBean.getAddress());
-                        //        tvAcRange.setText(projectDetialBean.getSign_scope() + "米");
+                        tvRange.setText(projectDetialBean.getSign_scope() + "米");
+                        tvUnit.setText(projectDetialBean.getTeam_name());
                         etPublishProjectSignUpAddress.setText(projectDetialBean.getAddress());
                         etPublishProjectLinkman.setText(projectDetialBean.getContact());
                         etPublishProjectLinkphone.setText(projectDetialBean.getContact_mobile());
@@ -260,14 +342,61 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
     /**
      * 获取已加入人数
      */
-    private void getPeople(){
-        RetrofitClient.getInstance().createApi().userList(BaseApp.token,String.valueOf(id))
-                .compose(RxUtils.<HttpResult<List<JoinProjectBean>>>io_main())
-                .subscribe(new BaseObjObserver<List<JoinProjectBean>>(this,"已加入") {
+    private void getPeople() {
+        RetrofitClient.getInstance().createApi().userList(BaseApp.token, String.valueOf(id))
+                .compose(RxUtils.<HttpResult<List<JoinProjectUserBean>>>io_main())
+                .subscribe(new BaseObjObserver<List<JoinProjectUserBean>>(this, "已加入") {
                     @Override
-                    protected void onHandleSuccess(List<JoinProjectBean> joinProjectBeans) {
-
+                    protected void onHandleSuccess(List<JoinProjectUserBean> joinProjectBeans) {
+                        if (joinProjectBeans.size() > 0) {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            tvNoData.setVisibility(View.GONE);
+                            mList.addAll(joinProjectBeans);
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            recyclerView.setVisibility(View.GONE);
+                            tvNoData.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
+    }
+
+    /**
+     * 初始化popupwindow
+     */
+    private void initPop() {
+        viewType = LayoutInflater.from(this).inflate(R.layout.pop_list, null);
+        lvContent = viewType.findViewById(R.id.lv_content);
+        lvAdapter = new ListViewAdapter(showList, this);
+        lvContent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MySelfModel model = showList.get(position);
+                for (MySelfModel model1 : showList) {
+                    if (TextUtils.equals(model.getName(), model1.getName())) {
+                        model1.setSelected(true);
+                    } else {
+                        model1.setSelected(false);
+                    }
+                }
+                lvAdapter.notifyDataSetChanged();
+                popType.dismiss();
+                if(flag == 2){
+                    tvProjectType.setText(model.getName());
+                }else if(flag == 1){
+                    tvRange.setText(model.getName());
+                }else if(flag == 3){
+                    tvUnit.setText(model.getName());
+                }else if(flag == 4){
+                    tvZhouqi.setText(model.getName());
+                }
+            }
+        });
+        lvContent.setAdapter(lvAdapter);
+        popType = new PopupWindow(this);
+        popType.setFocusable(true);
+        popType.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景防止出现黑色边框
+        popType.setFocusable(true);
+        popType.setContentView(viewType);
     }
 }

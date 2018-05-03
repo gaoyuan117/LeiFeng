@@ -78,7 +78,7 @@ public class ProjectManagementFragment extends BaseFragment {
      * 获取网络数据,这是对于队伍来说的，team_id不为null，此时应该为token，待确定
      */
     private void getNetData(){
-        RetrofitClient.getInstance().createApi().projevtList("0",type,page,null,null,null,null)
+        RetrofitClient.getInstance().createApi().projevtList("0",type,page,null,null,null,null,null)
                 .compose(RxUtils.<HttpResult<ProjectBean>>io_main())
                 .subscribe(new BaseObjObserver<ProjectBean>(getActivity(),refresh) {
                     @Override

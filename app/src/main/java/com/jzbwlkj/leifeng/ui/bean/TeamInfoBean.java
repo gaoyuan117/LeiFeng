@@ -7,20 +7,23 @@ package com.jzbwlkj.leifeng.ui.bean;
 public class TeamInfoBean {
 
     /**
-     * id : 1
-     * uid : 1
-     * team_name : 高密市志愿者协会
-     * pic : http://leifeng.test.com/upload/admin/20180331/5b657db4b37d382f71f1f3d16b47556a.jpg
-     * parent_id : 0
-     * contact : 张三
-     * contact_mobile : 12521542
-     * manager : 张三
-     * manager_mobile : 152121
-     * desc : &lt;p&gt;时代发生地方的风格的风格的&lt;/p&gt;
-     * add_time : 1522461417
-     * audit_time : 1522461417
+     * id : 2
+     * uid : 7
+     * team_name : 测试队伍
+     * pic : http://leifeng.jzbwlkj.com/upload/default/20180425/cac1fd9c7ff9750dc0563ee75f16826a.jpg
+     * parent_id : 1
+     * contact : 李四
+     * contact_mobile : 15688860126
+     * manager : 王五
+     * manager_mobile : 15866706637
+     * desc : <p>这是测试队伍注册</p>
+     * service_hour : 0.00
+     * add_time : 1524639470
+     * audit_time : 1524734510
      * status : 1
+     * sign_auth : 0
      * note :
+     * join_info : {"status":0,"note":"","add_time":1524823927}
      */
 
     private int id;
@@ -33,10 +36,13 @@ public class TeamInfoBean {
     private String manager;
     private String manager_mobile;
     private String desc;
+    private String service_hour;
     private int add_time;
     private int audit_time;
     private int status;
+    private int sign_auth;
     private String note;
+    private JoinInfoBean join_info;
 
     public int getId() {
         return id;
@@ -118,6 +124,14 @@ public class TeamInfoBean {
         this.desc = desc;
     }
 
+    public String getService_hour() {
+        return service_hour;
+    }
+
+    public void setService_hour(String service_hour) {
+        this.service_hour = service_hour;
+    }
+
     public int getAdd_time() {
         return add_time;
     }
@@ -142,11 +156,63 @@ public class TeamInfoBean {
         this.status = status;
     }
 
+    public int getSign_auth() {
+        return sign_auth;
+    }
+
+    public void setSign_auth(int sign_auth) {
+        this.sign_auth = sign_auth;
+    }
+
     public String getNote() {
         return note;
     }
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public JoinInfoBean getJoin_info() {
+        return join_info;
+    }
+
+    public void setJoin_info(JoinInfoBean join_info) {
+        this.join_info = join_info;
+    }
+
+    public static class JoinInfoBean {
+        /**
+         * status : 0
+         * note :
+         * add_time : 1524823927
+         */
+
+        private int status;
+        private String note;
+        private int add_time;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getNote() {
+            return note;
+        }
+
+        public void setNote(String note) {
+            this.note = note;
+        }
+
+        public int getAdd_time() {
+            return add_time;
+        }
+
+        public void setAdd_time(int add_time) {
+            this.add_time = add_time;
+        }
     }
 }

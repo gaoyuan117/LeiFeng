@@ -36,7 +36,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/4/3.
  */
 
-public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
+public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnItemChildClickListener{
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -45,7 +45,7 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
 
     private String type;
     private MyTeamAdapter adapter;
-    private List<String> mList = new ArrayList<>();
+    private List<JoinTeamListBean.ListBean> mList = new ArrayList<>();
 
     private int page = 1;
     private int all = 1;
@@ -77,7 +77,6 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
     @Override
     public void configViews() {
         adapter.setOnItemChildClickListener(this);
-        adapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -90,10 +89,6 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
         });
     }
 
-    @Override
-    public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        toActivity(TeamActivity.class);
-    }
 
     /**
      * 获取数据
@@ -104,27 +99,27 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
                 .subscribe(new BaseObjObserver<List<JoinTeamListBean>>(getActivity(),refresh) {
                     @Override
                     protected void onHandleSuccess(List<JoinTeamListBean> joinTeamListBeans) {
-//                        if(TextUtils.equals("0",type)){//已通过
-//                            mList.clear();
-//                            mList.addAll(recycleList(joinTeamListBeans,"已通过"));
-//                            if(mList.size()<=0){
-//                                ToastUtils.showToast("暂无相关数据");
-//                            }
-//
-//                        }else if(TextUtils.equals("1",type)){//审核中
-//                            mList.clear();
-//                            mList.addAll(recycleList(joinTeamListBeans,"审核中"));
-//                            if(mList.size()<=0){
-//                                ToastUtils.showToast("暂无相关数据");
-//                            }
-//                        }else if(TextUtils.equals("2",type)){//未通过
-//                            mList.clear();
-//                            mList.addAll(recycleList(joinTeamListBeans,"未通过"));
-//                            if(mList.size()<=0){
-//                                ToastUtils.showToast("暂无相关数据");
-//                            }
-//                        }
-//                        adapter.notifyDataSetChanged();
+                        if(TextUtils.equals("0",type)){//已通过
+                            mList.clear();
+                            mList.addAll(recycleList(joinTeamListBeans,"已通过"));
+                            if(mList.size()<=0){
+                                ToastUtils.showToast("暂无相关数据");
+                            }
+
+                        }else if(TextUtils.equals("1",type)){//审核中
+                            mList.clear();
+                            mList.addAll(recycleList(joinTeamListBeans,"审核中"));
+                            if(mList.size()<=0){
+                                ToastUtils.showToast("暂无相关数据");
+                            }
+                        }else if(TextUtils.equals("2",type)){//未通过
+                            mList.clear();
+                            mList.addAll(recycleList(joinTeamListBeans,"未通过"));
+                            if(mList.size()<=0){
+                                ToastUtils.showToast("暂无相关数据");
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -132,22 +127,22 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
     /**
      * 遍历相关集合
      */
-//    private List<JoinTeamListBean.ListBean> recycleList(List<JoinTeamListBean> projectBeans, String type){
-//        List<JoinTeamListBean.ListBean> listBeans = new ArrayList<>();
-//        for (JoinTeamListBean projectBean:projectBeans){
-//            if(TextUtils.equals(type,projectBean.getStatus_text())){
-//                listBeans.addAll(projectBean.getList());
-//            };
-//        }
-//
-//        return listBeans;
-//    }
+    private List<JoinTeamListBean.ListBean> recycleList(List<JoinTeamListBean> projectBeans, String type){
+        List<JoinTeamListBean.ListBean> listBeans = new ArrayList<>();
+        for (JoinTeamListBean projectBean:projectBeans){
+            if(TextUtils.equals(type,projectBean.getStatus_text())){
+                listBeans.addAll(projectBean.getList());
+            };
+        }
+
+        return listBeans;
+    }
 
     /**
      * 初始化adapter
      */
     private void initAdapter(){
-        adapter = new MyTeamAdapter(R.layout.item_my_team, mList, type);
+        adapter = new MyTeamAdapter(R.layout.item_my_team, mList, type,getActivity());
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -165,9 +160,9 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-       //         ProjectBean.DataBean dataBean= mList.get(position);
+                JoinTeamListBean.ListBean dataBean= mList.get(position);
                 Intent intent = new Intent(getActivity(),TeamActivity.class);
-     //           intent.putExtra("id",dataBean.getId());
+                intent.putExtra("id",dataBean.getTeam_id());
                 startActivity(intent);
             }
         });

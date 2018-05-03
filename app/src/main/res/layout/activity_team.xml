@@ -32,7 +32,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="4dp"
-                    android:src="@mipmap/avatar_default" />
+                    android:src="@mipmap/touxiang" />
 
                 <TextView
                     android:id="@+id/tv_team_name"
@@ -233,16 +233,23 @@
 
     </ScrollView>
 
-    <TextView
-        android:id="@+id/tv_team_status"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/global"
-        android:gravity="center_horizontal"
-        android:padding="10dp"
-        android:text="已报名"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_team_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/zhaomu_baoming"
+            android:drawablePadding="10dp"
+            android:background="@color/global"
+            android:layout_centerInParent="true"
+            android:padding="14dp"
+            android:text="我要加入"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
 
 
 </LinearLayout>

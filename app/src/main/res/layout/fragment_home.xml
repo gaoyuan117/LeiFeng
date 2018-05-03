@@ -48,13 +48,27 @@
 
         </LinearLayout>
 
-        <ImageView
+        <RelativeLayout
             android:id="@+id/img_home_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@mipmap/caht" />
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:src="@mipmap/caht" />
+
+            <ImageView
+                android:id="@+id/iv_chat_status"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/yellow_point"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
 
 
     </LinearLayout>
@@ -155,14 +169,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:orientation="horizontal"
-                    android:padding="14dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_home_team_register"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/white_gray_background_selector"
+                        android:padding="@dimen/dp_10"
                         android:drawablePadding="4dp"
                         android:drawableTop="@mipmap/duiwuzhuce"
                         android:gravity="center"
@@ -174,6 +189,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/white_gray_background_selector"
+                        android:padding="@dimen/dp_10"
                         android:drawablePadding="4dp"
                         android:drawableTop="@mipmap/gerenzhuce"
                         android:gravity="center"
@@ -185,6 +202,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/white_gray_background_selector"
+                        android:padding="@dimen/dp_10"
                         android:drawablePadding="4dp"
                         android:drawableTop="@mipmap/jiaruduiwu"
                         android:gravity="center"
@@ -196,6 +215,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/white_gray_background_selector"
+                        android:padding="@dimen/dp_10"
                         android:drawablePadding="4dp"
                         android:drawableTop="@mipmap/zhiyuanpeixun"
                         android:gravity="center"
@@ -207,6 +228,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/white_gray_background_selector"
+                        android:padding="@dimen/dp_10"
                         android:drawablePadding="4dp"
                         android:drawableTop="@mipmap/huodongzhaomu"
                         android:gravity="center"
@@ -219,16 +242,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="14dp"
-                    android:paddingRight="14dp">
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_home_xiangmu_zhaomu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/white_gray_background_selector"
+                        android:padding="@dimen/dp_10"
                         android:drawablePadding="4dp"
                         android:drawableTop="@mipmap/xiangmuzhaomu"
                         android:gravity="center"
@@ -240,6 +263,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/white_gray_background_selector"
+                        android:padding="@dimen/dp_10"
                         android:drawablePadding="4dp"
                         android:drawableTop="@mipmap/aixinyicang"
                         android:gravity="center"
@@ -251,6 +276,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/white_gray_background_selector"
+                        android:padding="@dimen/dp_10"
                         android:drawablePadding="4dp"
                         android:drawableTop="@mipmap/paihangbang"
                         android:gravity="center"
@@ -262,6 +289,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/white_gray_background_selector"
+                        android:padding="@dimen/dp_10"
                         android:drawablePadding="4dp"
                         android:drawableTop="@mipmap/xuexiyuandi"
                         android:gravity="center"
@@ -273,6 +302,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/white_gray_background_selector"
+                        android:padding="@dimen/dp_10"
                         android:drawablePadding="4dp"
                         android:drawableTop="@mipmap/shiyongbangzhu"
                         android:gravity="center"

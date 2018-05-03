@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.jzbwlkj.leifeng"
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         useLibrary 'org.apache.http.legacy'
@@ -53,6 +53,8 @@ android {
     greendao {
         //版本号，升级时可配置
         schemaVersion 1
+        daoPackage 'com.jzbwlkj.leifeng.dao'
+        targetGenDir 'src/main/java'
     }
 
 }

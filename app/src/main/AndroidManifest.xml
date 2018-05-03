@@ -64,6 +64,16 @@
             </intent-filter>
         </activity>
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.jzbwlkj.leifeng.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/aaaa" />
+        </provider>
+
         <receiver
             android:name=".MyReceiver"
             android:enabled="true"
@@ -182,7 +192,9 @@
         <activity android:name=".ui.activity.ProjectManagementDetailsActivity" />
         <activity android:name=".ui.activity.LeaveWordActivity" />
         <activity android:name=".ui.activity.ForgetPwdActivity" />
-        <activity android:name=".ui.activity.ChatDeticalActivity"></activity>
+        <activity android:name=".ui.activity.ChatDeticalActivity" />
+        <activity android:name=".ui.activity.SearchKeyWordsActivity" />
+        <activity android:name=".ui.activity.ModifyPhoneActivity"></activity>
     </application>
 
 </manifest>

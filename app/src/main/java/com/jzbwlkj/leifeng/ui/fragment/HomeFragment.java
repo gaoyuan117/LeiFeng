@@ -2,15 +2,25 @@ package com.jzbwlkj.leifeng.ui.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseFragment;
 import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
@@ -34,13 +44,17 @@ import com.jzbwlkj.leifeng.ui.activity.UsingHelpActivity;
 import com.jzbwlkj.leifeng.ui.adapter.HomeAdapter;
 import com.jzbwlkj.leifeng.ui.bean.HomeBean;
 import com.jzbwlkj.leifeng.utils.CommonApi;
+import com.jzbwlkj.leifeng.utils.SharedPreferencesUtil;
+import com.jzbwlkj.leifeng.utils.ToastUtils;
 import com.youth.banner.Banner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/3/31.
@@ -53,8 +67,10 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     TextView tvHomeLocation;
     @BindView(R.id.img_home_title)
     ImageView imgHomeTitle;
+    @BindView(R.id.iv_chat_status)
+    ImageView ivChatStatus;
     @BindView(R.id.img_home_chat)
-    ImageView imgHomeChat;
+    RelativeLayout imgHomeChat;
     @BindView(R.id.tv_home_zuzhi_num)
     TextView tvHomeZuzhiNum;
     @BindView(R.id.tv_home_zhiyuanzhe_num)
@@ -66,7 +82,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     @BindView(R.id.tv_home_personal_register)
     TextView tvHomePersonalRegister;
     @BindView(R.id.tv_home_join_team)
-    TextView tvHomeAddTeam;
+    TextView tvHomeJoinTeam;
     @BindView(R.id.tv_home_peixun)
     TextView tvHomePeixun;
     @BindView(R.id.tv_home_zhaomu)
@@ -85,17 +101,23 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     Banner banner;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    @BindView(R.id.refresh)
-    SwipeRefreshLayout refresh;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
-
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout refresh;
+    Unbinder unbinder;
     private List<HomeBean.NewsRecommendListBean> mList = new ArrayList<>();
     private List<String> bannerList = new ArrayList<>();
 
     private HomeAdapter adapter;
 
-
+    private View infoView;
+    private TextView web;
+    private CheckBox cbXieYi;
+    private TextView tvButton;
+    private Dialog infoDialog;
+    private String id;//城市id
+    private int flag = -1;//0 队伍注册   1  个人非专业   2  个人专业
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_home;
@@ -104,7 +126,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     @Override
     public void initView() {
         scrollView.scrollTo(0, 0);
-
+        initDialog();
         adapter = new HomeAdapter(R.layout.item_home, mList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
             @Override
@@ -119,7 +141,10 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
     @Override
     public void initDatas() {
-        homeData();
+        id = SharedPreferencesUtil.getInstance().getString("city_id");
+        String name = SharedPreferencesUtil.getInstance().getString("city_name");
+        tvHomeLocation.setText(name);
+        homeData(id);
     }
 
     @Override
@@ -132,7 +157,8 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_home_location://定位
-                toActivity(SelectAreaActivity.class);
+                Intent address = new Intent(getActivity(), SelectAreaActivity.class);
+                startActivityForResult(address, 100);
                 break;
             case R.id.img_home_chat://系统消息
                 if (noLogin()) {
@@ -146,10 +172,16 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     toActivity(LoginActivity.class);
                     return;
                 }
-                toActivity(RegisterTeamActivity.class);
+                flag = 0;
+                web.setText(BaseApp.config.getZhuceshouze());
+                infoDialog.show();
                 break;
             case R.id.tv_home_personal_register://个人注册
-                personalRegisterDialog();
+                if(noLogin()){
+                    personalRegisterDialog();
+                }else{
+                    ToastUtils.showToast("您当前已注册账号");
+                }
                 break;
             case R.id.tv_home_join_team://加入队伍
                 if (noLogin()) {
@@ -180,7 +212,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                 toActivity(ProjectRecruitActivity.class);
                 break;
             case R.id.tv_home_love_shop://爱心义仓
-
                 toActivity(LoveShopActivity.class);
                 break;
             case R.id.tv_home_paihang://排行榜
@@ -204,7 +235,9 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         view.findViewById(R.id.tv_normal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//志愿者注册
-                toPersonalRegisterActivity("normal");
+                flag = 1;
+                web.setText(BaseApp.config.getZhuceshouze());
+                infoDialog.show();
                 dialog.dismiss();
             }
         });
@@ -212,7 +245,9 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         view.findViewById(R.id.tv_professional).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//专业志愿者注册
-                toPersonalRegisterActivity("professional");
+                flag = 2;
+                web.setText(BaseApp.config.getZhuceshouze());
+                infoDialog.show();
                 dialog.dismiss();
             }
         });
@@ -230,8 +265,8 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     }
 
 
-    private void homeData() {
-        RetrofitClient.getInstance().createApi().homeData("")
+    private void homeData(String id) {
+        RetrofitClient.getInstance().createApi().homeData(id)
                 .compose(RxUtils.<HttpResult<HomeBean>>io_main())
                 .subscribe(new BaseObjObserver<HomeBean>(activity, refresh) {
                     @Override
@@ -254,12 +289,73 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                         mList.clear();
                         mList.addAll(homeBean.getNews_recommend_list());
                         adapter.notifyDataSetChanged();
+
+                        if(homeBean.getNew_message_num()>0){
+                            ivChatStatus.setVisibility(View.VISIBLE);
+                        }else{
+                            ivChatStatus.setVisibility(View.GONE);
+                        }
                     }
                 });
     }
 
     @Override
     public void onRefresh() {
-        homeData();
+        homeData(id);
+    }
+
+
+    /**
+     * 初始化说明弹窗
+     */
+    private void initDialog() {
+        infoView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_reason, null);
+        web = infoView.findViewById(R.id.web);
+        cbXieYi = infoView.findViewById(R.id.cb_xieyi);
+        tvButton = infoView.findViewById(R.id.tv_sure);
+        tvButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!cbXieYi.isChecked()){
+                    ToastUtils.showToast("请您先同意志愿者服务守则，再进行下一步");
+                    return;
+                }
+                if(flag == 0){
+                    toActivity(RegisterTeamActivity.class);
+                }else if(flag == 1){
+                    toPersonalRegisterActivity("normal");
+                }else if(flag == 2){
+                    toPersonalRegisterActivity("professional");
+                }
+                infoDialog.dismiss();
+            }
+        });
+        infoDialog = new Dialog(getActivity(), R.style.wx_dialog);
+        infoDialog.setContentView(infoView);
+        infoDialog.setCanceledOnTouchOutside(false);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100&&resultCode == 100){//选择地址
+            id = data.getStringExtra("id");
+            homeData(id);
+            tvHomeLocation.setText(data.getStringExtra("name"));
+        }
     }
 }

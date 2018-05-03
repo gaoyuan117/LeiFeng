@@ -30,6 +30,7 @@ import com.jzbwlkj.leifeng.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Administrator on 2018/3/31.
@@ -37,7 +38,7 @@ import butterknife.OnClick;
 
 public class MyFragment extends BaseFragment {
     @BindView(R.id.img_my_avatar)
-    ImageView imgMyAvatar;
+    CircleImageView imgMyAvatar;
     @BindView(R.id.tv_my_namer)
     TextView tvMyNamer;
     @BindView(R.id.tv_my_phone)
@@ -70,7 +71,8 @@ public class MyFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_my_info://基本信息
-                toActivity(MyInfoActivity.class);
+                Intent intent = new Intent(getActivity(),MyInfoActivity.class);
+                startActivityForResult(intent,100);
                 break;
             case R.id.tv_my_card://名片
 
@@ -134,5 +136,13 @@ public class MyFragment extends BaseFragment {
         tvMyPhone.setText(userBean.getMobile());
         tvMyTime.setText(userBean.getService_hour() + "小时");
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100&&resultCode == 100){
+            getUserInfo();
+        }
     }
 }

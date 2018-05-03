@@ -168,11 +168,18 @@
                     android:orientation="vertical"
                     android:padding="4dp">
 
-                    <Spinner
-                        android:id="@+id/sp_publish_project_cycle"
+                    <TextView
+                        android:id="@+id/tv_zhouqi"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown" />
+                        android:drawablePadding="@dimen/dp_10"
+                        android:drawableRight="@mipmap/sanjiaoxiabiao"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="@dimen/sp_12"
+                        android:paddingTop="4dp"
+                        android:textColor="@color/text_black"
+                        android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -379,11 +386,18 @@
                     android:orientation="vertical"
                     android:padding="4dp">
 
-                    <Spinner
-                        android:id="@+id/sp_publish_project_range"
+                    <TextView
+                        android:id="@+id/tv_range"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown" />
+                        android:drawablePadding="@dimen/dp_10"
+                        android:drawableRight="@mipmap/sanjiaoxiabiao"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="@dimen/sp_12"
+                        android:paddingTop="4dp"
+                        android:textColor="@color/text_black"
+                        android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -533,11 +547,18 @@
                     android:orientation="vertical"
                     android:padding="4dp">
 
-                    <Spinner
-                        android:id="@+id/sp_publish_project_unit"
+                    <TextView
+                        android:id="@+id/tv_unit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown" />
+                        android:drawablePadding="@dimen/dp_10"
+                        android:drawableRight="@mipmap/sanjiaoxiabiao"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="@dimen/sp_12"
+                        android:paddingTop="4dp"
+                        android:textColor="@color/text_black"
+                        android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -715,10 +736,25 @@
                     android:padding="10dp"
                     android:text="已报名人员" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_no_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/sp_12"
+                        android:text="暂时没有队员加入"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14"
+                        android:visibility="gone" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
 
             </LinearLayout>
 

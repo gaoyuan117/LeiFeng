@@ -24,7 +24,6 @@ import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.adapter.AcDetailAdapter;
 import com.jzbwlkj.leifeng.ui.bean.CommitBean;
-import com.jzbwlkj.leifeng.ui.bean.LiuYanBean;
 import com.jzbwlkj.leifeng.ui.bean.ProjectDetialBean;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
 
@@ -103,8 +102,16 @@ public class AcDetailActivity extends BaseActivity {
     TextView tvDianzan;
     @BindView(R.id.tv_baoming)
     TextView tvBaoming;
+    @BindView(R.id.ll_baoming)
+    LinearLayout llBaoming;
+    @BindView(R.id.tv_status)
+    TextView tvStatus;
+    @BindView(R.id.tv_cancel_post)
+    TextView tvCancelPost;
+    @BindView(R.id.ll_ing)
+    LinearLayout llIng;
 
-    private List<LiuYanBean> mList = new ArrayList<>();
+    private List<ProjectDetialBean.MessageListBean> mList = new ArrayList<>();
     private AcDetailAdapter adapter;
     private int id;
     private String pid = null;
@@ -116,6 +123,7 @@ public class AcDetailActivity extends BaseActivity {
     private TextView tvSend;
     private EditText etContent;
     private Dialog addCommenDialog;
+
     @Override
     public int getLayoutId() {
         id = getIntent().getIntExtra("id", 0);
@@ -126,13 +134,13 @@ public class AcDetailActivity extends BaseActivity {
     public void initView() {
         setCenterTitle("招募详情");
         initDialog();
-        adapter = new AcDetailAdapter(R.layout.item_ac_comment, mList,this);
+        adapter = new AcDetailAdapter(R.layout.item_ac_comment, mList, this);
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                LiuYanBean liuYanBean = mList.get(position);
+                ProjectDetialBean.MessageListBean liuYanBean = mList.get(position);
                 pid = String.valueOf(liuYanBean.getId());
-                if(!addCommenDialog.isShowing()){
+                if (!addCommenDialog.isShowing()) {
                     addCommenDialog.show();
                 }
             }
@@ -144,7 +152,6 @@ public class AcDetailActivity extends BaseActivity {
     @Override
     public void initData() {
         getNetData();
-        getLiuYan();
     }
 
     @Override
@@ -166,7 +173,7 @@ public class AcDetailActivity extends BaseActivity {
                         if (!TextUtils.isEmpty(path) && !TextUtils.equals("null", path)) {
                             Glide.with(AcDetailActivity.this).load(path).error(R.color.green).into(imgAcDetail);
                         }
-                        tvAcTime.setText(projectDetialBean.getService_hour() + "小时");
+                        tvAcTime.setText(projectDetialBean.getPraise_num() + "");
                         tvAcTitle.setText(projectDetialBean.getTitle());
                         tvAcName.setText(projectDetialBean.getTitle());
                         tvAcType.setText(projectDetialBean.getService_type_text());
@@ -181,27 +188,48 @@ public class AcDetailActivity extends BaseActivity {
                         tvAcUnit.setText(projectDetialBean.getTeam_name());
                         tvAcLinkman.setText(projectDetialBean.getContact());
                         tvAcLinkphone.setText(projectDetialBean.getContact_mobile());
-                        tvAcEmail.setText("缺少字段");
+                        tvAcEmail.setText(projectDetialBean.getEmail());
                         setweb(tvAcDetail, projectDetialBean.getContent());
                         setweb(tvAcDemand, projectDetialBean.getRequirement());
 
                         int dian = projectDetialBean.getIs_praise();
                         joinStatus = 1;
-                        if(dian == 0){
+                        if (dian == 0) {
                             zan = false;
-                        }else{
+                        } else {
                             zan = true;
                         }
-                        if(joinStatus == 1){
-                            tvBaoming.setText("我要报名");
-                        }else if(joinStatus == 2){
-                            tvBaoming.setText("报名审核中");
-                        }else if(joinStatus == 3){
+                        if (joinStatus == 0) {
+                            llBaoming.setVisibility(View.GONE);
+                            llIng.setVisibility(View.VISIBLE);
+                            tvStatus.setText("审核中");
+                        } else if (joinStatus == -1) {
+                            llBaoming.setVisibility(View.VISIBLE);
+                            llIng.setVisibility(View.GONE);
                             tvBaoming.setText("重新报名");
-                        }else if(joinStatus == 4){
+                        } else if (joinStatus == 1) {
+                            llBaoming.setVisibility(View.VISIBLE);
+                            llIng.setVisibility(View.GONE);
                             tvBaoming.setText("已报名");
+                        } else {
+                            llBaoming.setVisibility(View.VISIBLE);
+                            llIng.setVisibility(View.GONE);
+                            tvBaoming.setText("我要报名");
                         }
                         initZan();
+
+                        if (projectDetialBean.getMessage_list().size() > 0) {
+                            mList.clear();
+                            mList.addAll(projectDetialBean.getMessage_list());
+                            recyclerView.setVisibility(View.VISIBLE);
+                            tvNoPing.setVisibility(View.GONE);
+                            tvAcCommentNum.setText("共" + mList.size() + "条留言");
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            recyclerView.setVisibility(View.GONE);
+                            tvNoPing.setVisibility(View.VISIBLE);
+                            tvAcCommentNum.setText("暂无留言");
+                        }
                     }
                 });
 
@@ -250,15 +278,15 @@ public class AcDetailActivity extends BaseActivity {
                 .subscribe(new BaseObjObserver<CommitBean>(this, "留言") {
                     @Override
                     protected void onHandleSuccess(CommitBean commitBean) {
-                        if(TextUtils.isEmpty(pid)){
+                        if (TextUtils.isEmpty(pid)) {
                             ToastUtils.showToast("留言添加成功");
-                        }else{
+                        } else {
                             ToastUtils.showToast("添加评价成功");
                         }
                         pid = null;
                         addCommenDialog.dismiss();
                         etContent.setText("");
-                        getLiuYan();
+                        getNetData();
                     }
                 });
     }
@@ -274,33 +302,33 @@ public class AcDetailActivity extends BaseActivity {
                     protected void onHandleSuccess(CommitBean commitBean) {
                         zan = !zan;
                         String ss;
-                        if(zan){
+                        if (zan) {
                             ss = "点赞成功";
-                        }else{
+                        } else {
                             ss = "取消点赞成功";
                         }
                         ToastUtils.showToast(ss);
-                        initZan();
+                        getNetData();
                     }
                 });
     }
 
     /**
-     *处理点赞相关状态
+     * 处理点赞相关状态
      */
-    private void initZan(){
-        if(zan){
+    private void initZan() {
+        if (zan) {
             tvDianzan.setText("取消点赞");
-        }else{
+        } else {
             tvDianzan.setText("点赞");
         }
     }
 
-    @OnClick({R.id.tv_liuyan, R.id.tv_dianzan, R.id.tv_baoming})
+    @OnClick({R.id.tv_liuyan, R.id.tv_dianzan, R.id.tv_baoming,R.id.tv_cancel_post})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_liuyan:
-                if(!addCommenDialog.isShowing()){
+                if (!addCommenDialog.isShowing()) {
                     addCommenDialog.show();
                 }
                 break;
@@ -308,15 +336,19 @@ public class AcDetailActivity extends BaseActivity {
                 dianzan();
                 break;
             case R.id.tv_baoming:
-                if(joinStatus == 1){
-                    joinAc();
-                }else if(joinStatus == 2){
+                if (joinStatus == 0) {
                     showToastMsg("报名审核中");
-                }else if(joinStatus == 3){
+                } else if (joinStatus == -1) {
                     joinAc();
-                }else if(joinStatus == 4){
+                } else if (joinStatus == 1) {
                     showToastMsg("您已报名成功，请勿重复申请");
+                }else{
+                    joinAc();
                 }
+                break;
+
+            case R.id.tv_cancel_post:
+                cancel();
                 break;
         }
     }
@@ -324,33 +356,33 @@ public class AcDetailActivity extends BaseActivity {
     /**
      * 获取留言列表
      */
-    private void getLiuYan(){
-        RetrofitClient.getInstance().createApi().liuyanList(String.valueOf(id))
-                .compose(RxUtils.<HttpResult<List<LiuYanBean>>>io_main())
-                .subscribe(new BaseObjObserver<List<LiuYanBean>>(this,"留言列表") {
-                    @Override
-                    protected void onHandleSuccess(List<LiuYanBean> liuYanlist) {
-                        if (liuYanlist.size()>0) {
-                            mList.clear();
-                            mList.addAll(liuYanlist);
-                            recyclerView.setVisibility(View.VISIBLE);
-                            tvNoPing.setVisibility(View.GONE);
-                            tvAcCommentNum.setText("共"+mList.size()+"条留言");
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            recyclerView.setVisibility(View.GONE);
-                            tvNoPing.setVisibility(View.VISIBLE);
-                            tvAcCommentNum.setText("暂无留言");
-                        }
-                    }
-                });
-    }
+//    private void getLiuYan(){
+//        RetrofitClient.getInstance().createApi().liuyanList(String.valueOf(id))
+//                .compose(RxUtils.<HttpResult<List<LiuYanBean>>>io_main())
+//                .subscribe(new BaseObjObserver<List<LiuYanBean>>(this,"留言列表") {
+//                    @Override
+//                    protected void onHandleSuccess(List<LiuYanBean> liuYanlist) {
+//                        if (liuYanlist.size()>0) {
+//                            mList.clear();
+//                            mList.addAll(liuYanlist);
+//                            recyclerView.setVisibility(View.VISIBLE);
+//                            tvNoPing.setVisibility(View.GONE);
+//                            tvAcCommentNum.setText("共"+mList.size()+"条留言");
+//                            adapter.notifyDataSetChanged();
+//                        } else {
+//                            recyclerView.setVisibility(View.GONE);
+//                            tvNoPing.setVisibility(View.VISIBLE);
+//                            tvAcCommentNum.setText("暂无留言");
+//                        }
+//                    }
+//                });
+//    }
 
     /**
      * 初始化留言的dialog
      */
-    private void initDialog(){
-        addComment = LayoutInflater.from(this).inflate(R.layout.dialog_add_comment,null);
+    private void initDialog() {
+        addComment = LayoutInflater.from(this).inflate(R.layout.dialog_add_comment, null);
         tvCancel = addComment.findViewById(R.id.tv_cancel);
         tvSend = addComment.findViewById(R.id.tv_send);
         etContent = addComment.findViewById(R.id.et_content);
@@ -358,9 +390,9 @@ public class AcDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String ss = etContent.getText().toString();
-                if(TextUtils.isEmpty(ss)){
+                if (TextUtils.isEmpty(ss)) {
                     showToastMsg("请您先输入您的留言内容");
-                }else{
+                } else {
                     liuyan(ss);
                 }
             }
@@ -371,8 +403,24 @@ public class AcDetailActivity extends BaseActivity {
                 addCommenDialog.dismiss();
             }
         });
-        addCommenDialog = new Dialog(this,R.style.wx_dialog);
+        addCommenDialog = new Dialog(this, R.style.wx_dialog);
         addCommenDialog.setContentView(addComment);
         addCommenDialog.setCanceledOnTouchOutside(false);
+    }
+
+    /**
+     * 取消报名
+     */
+    private void cancel(){
+        RetrofitClient.getInstance().createApi().cancelProject(BaseApp.token,String.valueOf(id))
+                .compose(RxUtils.<HttpResult<CommitBean>>io_main())
+                .subscribe(new BaseObjObserver<CommitBean>(this,"取消报名") {
+                    @Override
+                    protected void onHandleSuccess(CommitBean commitBean) {
+                        showToastMsg("取消报名成功");
+                        finish();
+                    }
+                });
+
     }
 }

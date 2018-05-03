@@ -57,6 +57,11 @@ public class ListViewAdapter extends BaseAdapter {
 
         MySelfModel model = list.get(position);
         vh.tvContent.setText(model.getName());
+        if(model.getSelected()){
+            vh.tvContent.setTextColor(ctx.getResources().getColor(R.color.green));
+        }else{
+            vh.tvContent.setTextColor(ctx.getResources().getColor(R.color.text_black));
+        }
         return convertView;
     }
 

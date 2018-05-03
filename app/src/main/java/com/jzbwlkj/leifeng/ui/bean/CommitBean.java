@@ -7,27 +7,36 @@ package com.jzbwlkj.leifeng.ui.bean;
 
 public class CommitBean {
 
-    /**
-     * code : 200
-     * message : 操作成功
-     */
-
-    private int code;
-    private String message;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+//    /**
+//     * code : 200
+//     * message : 操作成功
+//     */
+//
+//    private int code;
+//    private String message;
+//
+//    public String getData() {
+//        return data;
+//    }
+//
+//    public void setData(String data) {
+//        this.data = data;
+//    }
+//
+//    private String data;
+//    public int getCode() {
+//        return code;
+//    }
+//
+//    public void setCode(int code) {
+//        this.code = code;
+//    }
+//
+//    public String getMessage() {
+//        return message;
+//    }
+//
+//    public void setMessage(String message) {
+//        this.message = message;
+//    }
 }

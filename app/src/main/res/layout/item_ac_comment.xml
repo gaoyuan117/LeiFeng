@@ -51,8 +51,8 @@
         android:layout_below="@id/tv_describe"
         android:paddingLeft="14dp"
         android:paddingRight="@dimen/sp_14"
-        android:layout_marginTop="4dp"
-        android:src="@mipmap/login_account"
+        android:paddingTop="4dp"
+        android:src="@mipmap/xieliuyan"
         android:layout_alignParentRight="true" />
 
 

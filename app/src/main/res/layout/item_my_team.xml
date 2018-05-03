@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="10dp">
 
         <ImageView
@@ -15,7 +15,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginRight="12dp"
-            android:src="@mipmap/avatar_default" />
+            android:src="@mipmap/xiaotouxiang" />
 
 
         <TextView
@@ -27,16 +27,14 @@
             android:text="志愿者协会" />
 
 
-        <TextView
+        <WebView
             android:id="@+id/tv_my_team_address"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_alignBottom="@+id/img_my_team_avatar"
             android:layout_marginBottom="2dp"
             android:layout_toRightOf="@+id/img_my_team_avatar"
-            android:text="17615866248"
-            android:textColor="#bfbfbf"
-            android:textSize="12sp" />
+            />
 
         <TextView
             android:id="@+id/tv_my_team_time"

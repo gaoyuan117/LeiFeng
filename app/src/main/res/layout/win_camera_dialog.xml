@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="13dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+        <Button
+            android:id="@+id/camera_look"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="45sp"
+            android:visibility="gone"
+            android:text="查看"
+            android:textSize="16sp"
+            android:textColor="@color/text_black"
+            android:background="@drawable/circle_white_little_shape" />
+        <Button
+            android:id="@+id/camera_open"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="45sp"
+            android:text="拍照"
+            android:textSize="16sp"
+            android:textColor="@color/text_black"
+            android:background="@drawable/circle_white_little_shape"  />
+
+        <Button
+            android:id="@+id/camera_pic"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="45sp"
+            android:text="相册"
+            android:textSize="16sp"
+            android:textColor="@color/text_black"
+            android:background="@drawable/circle_white_little_shape"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="11dp"
+            android:background="#00000000"/>
+        <Button
+            android:id="@+id/camera_cancel"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="2dp"
+            android:layout_height="45sp"
+            android:text="取消"
+            android:textSize="16sp"
+            android:textColor="@color/text_black"
+            android:background="@drawable/circle_white_little_shape"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

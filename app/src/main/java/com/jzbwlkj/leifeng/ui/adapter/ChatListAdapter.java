@@ -2,6 +2,7 @@ package com.jzbwlkj.leifeng.ui.adapter;
 
 import android.app.Activity;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -30,12 +31,12 @@ public class ChatListAdapter extends BaseQuickAdapter<ChatListBean.AllListBean, 
     protected void convert(BaseViewHolder holder, ChatListBean.AllListBean item) {
         holder.setText(R.id.tv_title, item.getTitle());
         holder.setText(R.id.tv_chat_time, FormatUtils.formatTime(item.getAdd_time()));
-        holder.setText(R.id.tv_chat_des, item.getContent());
+        String ss = item.getContent().replace("<p>","").replace("</p>","");
+        holder.setText(R.id.tv_chat_des, ss);
         //接口没有返回相关数据
-//        String path = item.get;
-//        if (!TextUtils.isEmpty(path)) {
-//            Glide.with(act).load(path).error(R.mipmap.logo).into((ImageView) holder.getView(R.id.img_logo));
-//        }
-
+        String path = item.getPic();
+        if (!TextUtils.isEmpty(path)&&!TextUtils.equals("null",path)) {
+            Glide.with(act).load(path).error(R.mipmap.logo).into((ImageView) holder.getView(R.id.img_logo));
+        }
     }
 }

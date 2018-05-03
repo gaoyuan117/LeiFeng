@@ -1,16 +1,21 @@
 package com.jzbwlkj.leifeng.ui.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.ArrayMap;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -24,10 +29,13 @@ import com.jzbwlkj.leifeng.retrofit.CommonBean;
 import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
+import com.jzbwlkj.leifeng.ui.adapter.ListViewAdapter;
 import com.jzbwlkj.leifeng.ui.bean.ConfigBean;
+import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
 import com.jzbwlkj.leifeng.ui.bean.TeamListBean;
 import com.jzbwlkj.leifeng.ui.bean.UploadBean;
 import com.jzbwlkj.leifeng.utils.LogUtils;
+import com.jzbwlkj.leifeng.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -38,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
@@ -47,26 +56,43 @@ import static com.jzbwlkj.leifeng.utils.ToastUtils.showToast;
 
 public class RegisterPersonalActivity extends BaseActivity {
 
+
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.exit_layout)
+    LinearLayout exitLayout;
+    @BindView(R.id.tv_left_title)
+    TextView tvLeftTitle;
+    @BindView(R.id.center_title_tv)
+    TextView centerTitleTv;
+    @BindView(R.id.tv_right_text)
+    TextView tvRightText;
+    @BindView(R.id.iv_right2)
+    ImageView ivRight2;
+    @BindView(R.id.img_right)
+    ImageView imgRight;
+    @BindView(R.id.title_linLayout)
+    LinearLayout titleLinLayout;
     @BindView(R.id.et_personal_name)
     EditText etPersonalName;
     @BindView(R.id.rb_personal_man)
     RadioButton rbPersonalMan;
     @BindView(R.id.rb_personal_women)
     RadioButton rbPersonalWomen;
-    @BindView(R.id.sp_personal_national)
-    Spinner spPersonalNational;
-    @BindView(R.id.sp_personal_card)
-    Spinner spPersonalCard;
+    @BindView(R.id.tv_national)
+    TextView tvNational;
+    @BindView(R.id.tv_card_type)
+    TextView tvCardType;
     @BindView(R.id.et_personal_no)
     EditText etPersonalNo;
     @BindView(R.id.et_personal_phone)
     EditText etPersonalPhone;
-    @BindView(R.id.sp_personal_political)
-    Spinner spPersonalPolitical;
+    @BindView(R.id.tv_shenfen)
+    TextView tvShenfen;
     @BindView(R.id.et_personal_job)
     EditText etPersonalJob;
-    @BindView(R.id.sp_personal_professional)
-    Spinner spPersonalProfessional;
+    @BindView(R.id.tv_job)
+    TextView tvJob;
     @BindView(R.id.et_personal_address)
     EditText etPersonalAddress;
     @BindView(R.id.et_personal_email)
@@ -75,10 +101,10 @@ public class RegisterPersonalActivity extends BaseActivity {
     EditText etPersonalQq;
     @BindView(R.id.et_personal_wx)
     EditText etPersonalWx;
-    @BindView(R.id.sp_personal_area)
-    Spinner spPersonalArea;
-    @BindView(R.id.sp_personal_institutions)
-    Spinner spPersonalInstitutions;
+    @BindView(R.id.tv_city)
+    TextView tvCity;
+    @BindView(R.id.tv_unit)
+    TextView tvUnit;
     @BindView(R.id.et_personal_nengli)
     EditText etPersonalNengli;
     @BindView(R.id.ll_nengli)
@@ -102,6 +128,25 @@ public class RegisterPersonalActivity extends BaseActivity {
     private int is_personnel;
     private String picUrl;
 
+    private View viewType;
+    private ListView lvContent;
+    private PopupWindow popType;
+    private int flag = 0;//1  民族  2  证件  3 政治面貌  4  职业  5城市  6  机构
+    private String unitid;//单位Id
+    private String nationalId;//民族id
+    private String cardtype;//证件类型
+    private String shenfen;//政治面貌
+    private String jobid;//职业Id
+    private String cityId;//城市id
+    private ListViewAdapter lvAdapter;
+    private List<MySelfModel> showList = new ArrayList<>();
+    private List<MySelfModel> mingzuList = new ArrayList<>();
+    private List<MySelfModel> cardList = new ArrayList<>();
+    private List<MySelfModel> shenfenList = new ArrayList<>();
+    private List<MySelfModel> jobList = new ArrayList<>();
+    private List<MySelfModel> cityList = new ArrayList<>();
+    private List<MySelfModel> unitList = new ArrayList<>();
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_register_personal;
@@ -109,6 +154,7 @@ public class RegisterPersonalActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        initPop();
         type = getIntent().getStringExtra("type");
         setData();
     }
@@ -123,7 +169,8 @@ public class RegisterPersonalActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.rb_personal_man, R.id.rb_personal_women, R.id.img_personal, R.id.cb_personal, R.id.tv_personal_register})
+    @OnClick({R.id.rb_personal_man, R.id.rb_personal_women, R.id.img_personal, R.id.cb_personal, R.id.tv_personal_register,
+            R.id.tv_national, R.id.tv_job, R.id.tv_shenfen, R.id.tv_unit, R.id.tv_city, R.id.tv_card_type})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rb_personal_man:
@@ -140,7 +187,46 @@ public class RegisterPersonalActivity extends BaseActivity {
             case R.id.tv_personal_register:
                 register();
                 break;
+            case R.id.tv_card_type:
+                flag = 2;
+                refrushData(cardList,tvCardType);
+                break;
+            case R.id.tv_unit:
+                flag = 6;
+                refrushData(unitList,tvUnit);
+                break;
+            case R.id.tv_national:
+                flag = 1;
+                refrushData(mingzuList,tvNational);
+                break;
+            case R.id.tv_shenfen:
+                flag = 3;
+                refrushData(shenfenList,tvShenfen);
+                break;
+            case R.id.tv_job:
+                flag = 4;
+                refrushData(jobList,tvJob);
+                break;
+            case R.id.tv_city:
+                flag = 5;
+                refrushData(cityList,tvCity);
+                break;
+
         }
+    }
+
+    private void refrushData(List<MySelfModel> list,TextView view) {
+        showList.clear();
+        showList.addAll(list);
+        lvAdapter.notifyDataSetChanged();
+
+        popType.setWidth(view.getMeasuredWidth() + 30);
+        if (showList.size() > 6) {
+            popType.setHeight(500);
+        } else {
+            popType.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        popType.showAsDropDown(view, -12, 20);
     }
 
     @Override
@@ -166,11 +252,14 @@ public class RegisterPersonalActivity extends BaseActivity {
                         if (isEmpty(list)) return;
                         teamList = list;
                         //所属机构
-                        List<String> team = new ArrayList<>();
                         for (int i = 0; i < teamList.size(); i++) {
-                            team.add(teamList.get(i).getTeam_name());
+                            TeamListBean teamListBean = teamList.get(i);
+                            MySelfModel model = new MySelfModel();
+                            model.setSelected(false);
+                            model.setName(teamListBean.getTeam_name());
+                            model.setId(teamListBean.getId() + "");
+                            unitList.add(model);
                         }
-                        spPersonalInstitutions.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, team));
                     }
                 });
     }
@@ -187,31 +276,52 @@ public class RegisterPersonalActivity extends BaseActivity {
         }
 
         //民族
-        List<String> nationalList = new ArrayList<>();
         for (int i = 0; i < BaseApp.config.getNatinal_list().size(); i++) {
-            nationalList.add(BaseApp.config.getNatinal_list().get(i).getName());
+            ConfigBean.NatinalListBean natinalListBean = BaseApp.config.getNatinal_list().get(i);
+            MySelfModel model = new MySelfModel();
+            model.setSelected(false);
+            model.setName(natinalListBean.getName());
+            model.setId(natinalListBean.getId() + "");
+            mingzuList.add(model);
         }
-        spPersonalNational.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nationalList));
 
         //证件类型
-        spPersonalCard.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, BaseApp.config.getId_type()));
+        for (int i = 0; i < BaseApp.config.getId_type().size(); i++) {
+            String natinalListBean = BaseApp.config.getId_type().get(i);
+            MySelfModel model = new MySelfModel();
+            model.setSelected(false);
+            model.setName(natinalListBean);
+            cardList.add(model);
+        }
 
-        //政治面貌
-        spPersonalPolitical.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, BaseApp.config.getPolital_status()));
+//政治面貌
+        for (int i = 0; i < BaseApp.config.getPolital_status().size(); i++) {
+            String natinalListBean = BaseApp.config.getPolital_status().get(i);
+            MySelfModel model = new MySelfModel();
+            model.setSelected(false);
+            model.setName(natinalListBean);
+            shenfenList.add(model);
+        }
 
         //职业
-        List<String> jobList = new ArrayList<>();
         for (int i = 0; i < BaseApp.config.getJob_list().size(); i++) {
-            jobList.add(BaseApp.config.getJob_list().get(i).getName());
+            ConfigBean.JobListBean natinalListBean = BaseApp.config.getJob_list().get(i);
+            MySelfModel model = new MySelfModel();
+            model.setSelected(false);
+            model.setName(natinalListBean.getName());
+            model.setId(natinalListBean.getId() + "");
+            jobList.add(model);
         }
-        spPersonalProfessional.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, jobList));
 
         //所在区域
-        List<String> arealList = new ArrayList<>();
         for (int i = 0; i < BaseApp.config.getCity_list().size(); i++) {
-            arealList.add(BaseApp.config.getCity_list().get(i).getName());
+            ConfigBean.CityListBean natinalListBean = BaseApp.config.getCity_list().get(i);
+            MySelfModel model = new MySelfModel();
+            model.setSelected(false);
+            model.setName(natinalListBean.getName());
+            model.setId(natinalListBean.getId() + "");
+            cityList.add(model);
         }
-        spPersonalArea.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arealList));
     }
 
     /**
@@ -266,6 +376,11 @@ public class RegisterPersonalActivity extends BaseActivity {
             return;
         }
 
+        if (pwd.length() < 6) {
+            ToastUtils.showToast("密码长度不得少于6位");
+            return;
+        }
+
         //确认登录密码
         String repwd = etPersonalPwd.getText().toString();
         if (isEmpty(repwd)) {
@@ -290,42 +405,20 @@ public class RegisterPersonalActivity extends BaseActivity {
         map.put("id_no", no);
         map.put("user_pass", pwd);
         map.put("mobile", phone);
-        map.put("id_type", (String) spPersonalCard.getSelectedItem());
+        map.put("id_type", cardtype);
         map.put("is_personnel", is_personnel);
         map.put("sex", sex);
-        map.put("natinal", spPersonalNational.getSelectedItem());
-        map.put("polital_status", spPersonalPolitical.getSelectedItem());
+        map.put("natinal", nationalId);
+        map.put("polital_status", shenfen);
         map.put("worker_address", job);
         map.put("address", address);
         map.put("email", email);
         map.put("qq", qq);
         map.put("wechat", wx);
         map.put("special_skill", power);
-
-        String area = (String) spPersonalArea.getSelectedItem();
-        LogUtils.e("地区：" + area);
-        for (int i = 0; i < BaseApp.config.getCity_list().size(); i++) {
-            if (area.equals(BaseApp.config.getCity_list().get(i).getName())) {
-                map.put("city_id", BaseApp.config.getCity_list().get(i).getId());
-            }
-        }
-
-        String j = (String) spPersonalProfessional.getSelectedItem();
-        LogUtils.e("职业：" + j);
-        for (int i = 0; i < BaseApp.config.getJob_list().size(); i++) {
-            if (j.equals(BaseApp.config.getJob_list().get(i).getName())) {
-                map.put("job", BaseApp.config.getJob_list().get(i).getId());
-            }
-        }
-
-        String team = (String) spPersonalInstitutions.getSelectedItem();
-        LogUtils.e("机构：" + team);
-        for (int i = 0; i < teamList.size(); i++) {
-            if (team.equals(teamList.get(i).getTeam_name())) {
-                map.put("team_id", teamList.get(i).getId());
-            }
-        }
-
+        map.put("city_id", cityId);
+        map.put("job", jobid);
+        map.put("team_id", unitid);
         if (is_personnel == 1) {
             if (isEmpty(picUrl)) {
                 showToastMsg("请上传专业证书");
@@ -378,4 +471,56 @@ public class RegisterPersonalActivity extends BaseActivity {
                     }
                 });
     }
+
+
+    /**
+     * 初始化popupwindow
+     */
+    private void initPop() {
+        viewType = LayoutInflater.from(this).inflate(R.layout.pop_list, null);
+        lvContent = viewType.findViewById(R.id.lv_content);
+        lvAdapter = new ListViewAdapter(showList, this);
+        lvContent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MySelfModel model = showList.get(position);
+                for (MySelfModel model1 : showList) {
+                    if (TextUtils.equals(model.getName(), model1.getName())) {
+                        model1.setSelected(true);
+                    } else {
+                        model1.setSelected(false);
+                    }
+                }
+                lvAdapter.notifyDataSetChanged();
+                popType.dismiss();
+                if (flag == 1) {
+                    tvNational.setText(model.getName());
+                    nationalId = model.getName();
+                } else if (flag == 2) {
+                    tvCardType.setText(model.getName());
+                    cardtype = model.getName();
+                } else if (flag == 3) {
+                    tvShenfen.setText(model.getName());
+                    shenfen = model.getName();
+                } else if (flag == 4) {
+                    tvJob.setText(model.getName());
+                    jobid = model.getId();
+                } else if (flag == 5) {
+                    tvCity.setText(model.getName());
+                    cityId = model.getId();
+                } else if (flag == 6) {
+                    tvUnit.setText(model.getName());
+                    unitid = model.getId();
+                }
+
+            }
+        });
+        lvContent.setAdapter(lvAdapter);
+        popType = new PopupWindow(this);
+        popType.setFocusable(true);
+        popType.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景防止出现黑色边框
+        popType.setFocusable(true);
+        popType.setContentView(viewType);
+    }
+
 }

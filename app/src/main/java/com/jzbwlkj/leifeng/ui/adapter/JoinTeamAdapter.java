@@ -28,8 +28,9 @@ public class JoinTeamAdapter extends BaseQuickAdapter<TeamListBean, BaseViewHold
     protected void convert(BaseViewHolder baseViewHolder, TeamListBean s) {
         ImageView imageView = baseViewHolder.getView(R.id.img_join_team_avatar);
         Glide.with(mContext).load(s.getPic()).error(R.mipmap.logo).into(imageView);
-
+        String kk = Html.fromHtml(s.getDesc()).toString();
+        String ss = kk.replace("<p>","").replace("</p>","");
         baseViewHolder.setText(R.id.tv_join_team_name, s.getTeam_name())
-                .setText(R.id.tv_join_team_address, Html.fromHtml(s.getDesc()));
+                .setText(R.id.tv_join_team_address, ss);
     }
 }
