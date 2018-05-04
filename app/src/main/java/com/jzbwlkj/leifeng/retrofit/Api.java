@@ -16,6 +16,7 @@ import com.jzbwlkj.leifeng.ui.bean.MallBean;
 import com.jzbwlkj.leifeng.ui.bean.NewsBean;
 import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
 import com.jzbwlkj.leifeng.ui.bean.ProjectDetialBean;
+import com.jzbwlkj.leifeng.ui.bean.RankBean;
 import com.jzbwlkj.leifeng.ui.bean.StudyBean;
 import com.jzbwlkj.leifeng.ui.bean.TeamInfoBean;
 import com.jzbwlkj.leifeng.ui.bean.TeamListBean;
@@ -211,5 +212,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("/api/user/updateMobile")
     Observable<HttpResult<CommonBean>> modifyPhone(@Field("token") String token, @Field("mobile") String mobile, @Field("code") String code);
+
+    //排行榜单
+    @FormUrlEncoded
+    @POST("/api/rank/index")
+    Observable<HttpResult<RankBean>> rankList(@Field("token") String token);
 
 }

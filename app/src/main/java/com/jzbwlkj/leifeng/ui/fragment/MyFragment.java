@@ -25,6 +25,7 @@ import com.jzbwlkj.leifeng.ui.activity.MyTeamActivity;
 import com.jzbwlkj.leifeng.ui.activity.ProjectManagementActivity;
 import com.jzbwlkj.leifeng.ui.activity.PublishProjectActivity;
 import com.jzbwlkj.leifeng.ui.activity.SettingActivity;
+import com.jzbwlkj.leifeng.ui.activity.VoluntaryCardActivity;
 import com.jzbwlkj.leifeng.ui.bean.UserInfoBean;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
 
@@ -75,7 +76,7 @@ public class MyFragment extends BaseFragment {
                 startActivityForResult(intent,100);
                 break;
             case R.id.tv_my_card://名片
-
+                toActivity(VoluntaryCardActivity.class);
                 break;
             case R.id.tv_my_launch_event://发布活动
                 toActivity(LaunchEventActivity.class);

@@ -42,7 +42,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="ybGZPSP5NDVntAY2zOiSjGczE4phICfA" />
+            android:value="nbO0tGUrk13BBlQleoe269yI8vluhRcb" />
 
         <service
             android:name="com.baidu.location.f"
@@ -194,7 +194,8 @@
         <activity android:name=".ui.activity.ForgetPwdActivity" />
         <activity android:name=".ui.activity.ChatDeticalActivity" />
         <activity android:name=".ui.activity.SearchKeyWordsActivity" />
-        <activity android:name=".ui.activity.ModifyPhoneActivity"></activity>
+        <activity android:name=".ui.activity.ModifyPhoneActivity" />
+        <activity android:name=".ui.activity.VoluntaryCardActivity"></activity>
     </application>
 
 </manifest>

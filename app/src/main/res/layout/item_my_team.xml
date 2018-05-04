@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/white_gray_background_selector"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -15,6 +15,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginRight="12dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/xiaotouxiang" />
 
 
@@ -24,17 +25,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_toRightOf="@+id/img_my_team_avatar"
-            android:text="志愿者协会" />
+            android:text="志愿者协会"
+            android:textSize="@dimen/sp_14"
+            android:textColor="@color/text_black"/>
 
 
-        <WebView
+        <TextView
             android:id="@+id/tv_my_team_address"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/img_my_team_avatar"
             android:layout_marginBottom="2dp"
             android:layout_toRightOf="@+id/img_my_team_avatar"
-            />
+            android:maxLines="2"
+            android:lineSpacingExtra="3dp"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/text_gray"/>
 
         <TextView
             android:id="@+id/tv_my_team_time"

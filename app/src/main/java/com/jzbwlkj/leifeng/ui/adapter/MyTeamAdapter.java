@@ -18,6 +18,7 @@ import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.ui.bean.JoinTeamListBean;
 import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
 import com.jzbwlkj.leifeng.utils.FormatUtils;
+import com.jzbwlkj.leifeng.utils.RemoveLableUtil;
 import com.jzbwlkj.leifeng.utils.RoundCornesTransFormation;
 
 import java.util.List;
@@ -52,49 +53,9 @@ public class MyTeamAdapter extends BaseQuickAdapter<JoinTeamListBean.ListBean, B
         }
         holder.setText(R.id.tv_my_team_name,item.getTeam_name());
         String ss = Html.fromHtml(item.getDesc()).toString();
-        setWebData(ss,(WebView) holder.getView(R.id.tv_my_team_address));
+        ss = RemoveLableUtil.delHTMLTag(ss);
+        holder.setText(R.id.tv_my_team_address,ss);
         holder.setText(R.id.tv_my_team_time, FormatUtils.formatTime(item.getAdd_time()));
     }
 
-    private void setWebData(String goodsDesc,WebView bWebView) {
-        if (bWebView==null){
-            return;
-        }
-        WebSettings webSettings = bWebView.getSettings();
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        webSettings.setUseWideViewPort(true);//关键点
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        webSettings.setDisplayZoomControls(false);
-        webSettings.setJavaScriptEnabled(true); // 设置支持javascript脚本
-        webSettings.setAllowFileAccess(true); // 允许访问文件
-        webSettings.setBuiltInZoomControls(true); // 设置显示缩放按钮
-        webSettings.setSupportZoom(false); // 支持缩放
-        webSettings.setLoadWithOverviewMode(true);
-//        bWebView.loadDataWithBaseURL("", data, "text/html", "UTF-8","");
-//        bWebView.setWebViewClient(new SimpleWebViewClient(title));
-        bWebView.getSettings().setDefaultTextEncodingName("utf-8");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            bWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-        } else {
-            bWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
-        }
-        //支持获取手势焦点，输入用户名、密码或其他
-//        webview.requestFocusFromTouch();
-        if (TextUtils.isEmpty(goodsDesc)) {
-            bWebView.loadUrl("file:///android_asset/html5/webview404.html");
-        }else if (goodsDesc.startsWith("http")){
-            bWebView.loadUrl(goodsDesc);
-        }else {
-            bWebView.loadData(getHtmlData(goodsDesc), "text/html; charset=utf-8", "utf-8");
-        }
-    }
-
-    // 绘制HTML
-    private String getHtmlData(String bodyHTML) {
-        String head = "<head>" +
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
-                "<style>img{max-width: 100%; width:auto; height:auto;}</style>" +
-                "</head>";
-        return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
-    }
 }

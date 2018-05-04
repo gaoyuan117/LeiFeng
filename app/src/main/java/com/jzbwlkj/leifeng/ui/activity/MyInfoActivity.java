@@ -2,9 +2,12 @@ package com.jzbwlkj.leifeng.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,6 +42,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +107,22 @@ public class MyInfoActivity extends BaseActivity {
     private WinCameraDialog cameraDialog;
     private PhoneCameraUtil cameraUtil;
 
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 66:
+                    upData(picUrl, bean2.getCity_id() + "");
+                    break;
+
+                case 88:
+                    setResult(100);
+                    getUserInfo();
+                    break;
+            }
+        }
+    };
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_my_info;
@@ -114,8 +135,9 @@ public class MyInfoActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        getUserInfo();
     }
+
 
     @Override
     public void configViews() {
@@ -137,11 +159,6 @@ public class MyInfoActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getUserInfo();
-    }
 
     //获取用户信息
     private void getUserInfo() {
@@ -151,6 +168,7 @@ public class MyInfoActivity extends BaseActivity {
                 .subscribe(new BaseObjObserver<UserInfoBean>(activity) {
                     @Override
                     protected void onHandleSuccess(UserInfoBean bean) {
+                        handler.removeCallbacksAndMessages(null);
                         bean2 = bean;
                         setUserData(bean);
                     }
@@ -220,6 +238,11 @@ public class MyInfoActivity extends BaseActivity {
                         picUrl2 = PhoneCameraUtil.imageCaptureUri.getPath();
                     }
                     Log.i("sun", "结果==" + picUrl2);
+                    File file = new File(picUrl2);
+                    Log.i("sun","长度=="+file.length());
+                    if(file.length()>1024*1024){
+                        picUrl2 = saveBitmapToFile(file,picUrl2);
+                    }
                     Glide.with(this).load(picUrl2).error(R.mipmap.avatar_default).into(imgMyInfoAvatar);
                     postHead(picUrl2);
                 } else {
@@ -235,6 +258,11 @@ public class MyInfoActivity extends BaseActivity {
                 if (data != null) {
                     PhoneCameraUtil.imageCaptureUri = data.getData();
                     String imgFileUrl = cameraUtil.getPath(PhoneCameraUtil.imageCaptureUri);
+                    File file = new File(imgFileUrl);
+                    Log.i("sun","长度=="+file.length());
+                    if(file.length()>(1024*1024)){
+                        imgFileUrl = saveBitmapToFile(file,imgFileUrl);
+                    }
                     if (!TextUtils.isEmpty(imgFileUrl)) {
                         PhoneCameraUtil.imageCaptureUri = null;
                         Log.i("sun", "路经==" + imgFileUrl);
@@ -269,8 +297,7 @@ public class MyInfoActivity extends BaseActivity {
                     @Override
                     protected void onHandleSuccess(CommitBean commitBean) {
                         showToastMsg("个人信息更新成功");
-                        setResult(100);
-                        getUserInfo();
+                        handler.sendEmptyMessage(88);
                     }
                 });
     }
@@ -310,7 +337,7 @@ public class MyInfoActivity extends BaseActivity {
                 try {
                     if (uploadBean.getCode() == 200) {
                         picUrl = uploadBean.getData().getFile().getUrl();
-                        upData(picUrl, bean2.getCity_id() + "");
+                        handler.sendEmptyMessage(66);
                     }
                 }catch (Exception e){
                     Log.i("sun","异常 == "+e);
@@ -318,6 +345,67 @@ public class MyInfoActivity extends BaseActivity {
 
             }
         });
+    }
+
+    /**
+     * 压缩图片
+     * @param file  要压缩的文件
+     * @param newpath    压缩后的保存路径
+     * @return    返回压缩文件路径
+     */
+    public static String saveBitmapToFile(File file, String newpath) {
+        try {
+            // BitmapFactory options to downsize the image
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            o.inSampleSize = 6;
+            // factor of downsizing the image
+
+            FileInputStream inputStream = new FileInputStream(file);
+            //Bitmap selectedBitmap = null;
+            BitmapFactory.decodeStream(inputStream, null, o);
+            inputStream.close();
+
+            // The new size we want to scale to
+            final int REQUIRED_SIZE = 75;
+
+            // Find the correct scale value. It should be the power of 2.
+            int scale = 1;
+            while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
+                    o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                scale *= 2;
+            }
+
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            inputStream = new FileInputStream(file);
+
+            Bitmap selectedBitmap = BitmapFactory.decodeStream(inputStream, null, o2);
+            inputStream.close();
+
+            // here i override the original image file
+//            file.createNewFile();
+//
+//
+//            FileOutputStream outputStream = new FileOutputStream(file);
+//
+//            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100 , outputStream);
+
+            File aa = new File(newpath);
+            FileOutputStream outputStream = new FileOutputStream(aa);
+
+            //choose another format if PNG doesn't suit you
+
+            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+
+            String filepath = aa.getAbsolutePath();
+            Log.e("getAbsolutePath", aa.getAbsolutePath());
+
+            return filepath;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

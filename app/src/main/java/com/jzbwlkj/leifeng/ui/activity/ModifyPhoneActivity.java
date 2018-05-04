@@ -61,10 +61,11 @@ public class ModifyPhoneActivity extends BaseActivity {
                     if(i>0){
                         i--;
                         tvGetCode.setText(i+"s");
+                        handler.sendEmptyMessageDelayed(88,1000);
                     }else {
                         handler.removeCallbacksAndMessages(null);
                         i = 60;
-                        phoneCode = "";
+                        phoneCode = "-1";
                         tvGetCode.setText("重新获取");
                     }
                     break;
@@ -110,6 +111,7 @@ public class ModifyPhoneActivity extends BaseActivity {
                     if(i<60&&i>0){
                         showToastMsg("验证码发送中，请勿重复点击");
                     }else{
+                        handler.sendEmptyMessage(88);
                         getCode(phone);
                     }
 
@@ -127,6 +129,9 @@ public class ModifyPhoneActivity extends BaseActivity {
                     return;
                 }else if(TextUtils.isEmpty(code)){
                     showToastMsg("请输入您获取到的验证码");
+                    return;
+                }else if(TextUtils.equals("-1",phoneCode)){
+                    showToastMsg("您的验证码已失效，请重新获取");
                     return;
                 }else if(!TextUtils.equals(code,phoneCode)){
                     showToastMsg("您输入的验证码不正确，请重新输入");

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    tools:context="com.jzbwlkj.leifeng.ui.activity.VoluntaryCardActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+
+
+    <include layout="@layout/layout_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_4"
+        android:orientation="horizontal"
+        android:background="@mipmap/ziyuanmingpian_beijingtu">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/iv_head"
+                android:layout_width="60dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/avatar_default"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/sp_14"
+                android:textColor="@color/text_black"
+                android:text="姓名"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/text_black"
+                android:text="志愿者证编号"/>
+            <TextView
+                android:id="@+id/tv_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/text_black"
+                android:text="201030201839201043"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.4"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/text_red"
+                    android:textSize="@dimen/sp_12"
+                    android:text="身份证"/>
+
+                <TextView
+                    android:id="@+id/tv_person_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_black"
+                    android:paddingLeft="10dp"
+                    android:textSize="@dimen/sp_12"
+                    android:text="291021913290428102"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/text_red"
+                    android:textSize="@dimen/sp_12"
+                    android:text="手机号"/>
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_black"
+                    android:paddingLeft="10dp"
+                    android:textSize="@dimen/sp_12"
+                    android:text="18239232132"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/text_red"
+                    android:textSize="@dimen/sp_12"
+                    android:text="服务时长"/>
+
+                <TextView
+                    android:id="@+id/tv_time_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_black"
+                    android:paddingLeft="10dp"
+                    android:textSize="@dimen/sp_12"
+                    android:text="0小时"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/text_red"
+                    android:textSize="@dimen/sp_12"
+                    android:text="属性"/>
+
+                <TextView
+                    android:id="@+id/tv_shenfen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_black"
+                    android:paddingLeft="10dp"
+                    android:textSize="@dimen/sp_12"
+                    android:text="团员"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/text_red"
+                    android:textSize="@dimen/sp_12"
+                    android:text="志愿者星级"/>
+
+                <TextView
+                    android:id="@+id/tv_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_black"
+                    android:paddingLeft="10dp"
+                    android:textSize="@dimen/sp_12"
+                    android:text=""/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/text_red"
+                    android:textSize="@dimen/sp_12"
+                    android:text="注册时间"/>
+
+                <TextView
+                    android:id="@+id/tv_register_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_black"
+                    android:paddingLeft="10dp"
+                    android:textSize="@dimen/sp_12"
+                    android:text="2017年8月17号 12:23:22"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/text_red"
+                    android:textSize="@dimen/sp_12"
+                    android:text="注册地址"/>
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/text_black"
+                    android:paddingLeft="10dp"
+                    android:textSize="@dimen/sp_12"
+                    android:text="山东省济南市历下区凤凰路海信创智谷"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_creat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_gray_background_selector"
+        android:layout_marginTop="20dp"
+        android:padding="@dimen/sp_14"
+        android:textSize="12dp"
+        android:textColor="@color/text_red"
+        android:text="生成二维码"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_unit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/sp_14"
+        android:layout_gravity="bottom"
+        android:textColor="@color/text_gray"
+        android:textSize="12dp"
+        android:text="高密市志愿者服务中心"/>
+</FrameLayout>

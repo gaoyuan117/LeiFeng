@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
@@ -193,7 +194,13 @@ public class AcDetailActivity extends BaseActivity {
                         setweb(tvAcDemand, projectDetialBean.getRequirement());
 
                         int dian = projectDetialBean.getIs_praise();
-                        joinStatus = 1;
+                        ProjectDetialBean.JoinInfoBean beandd = projectDetialBean.getJoin_info();
+                        if(beandd == null){
+                            joinStatus = 2;
+                        }else{
+                            joinStatus = beandd.getStatus();
+                        }
+
                         if (dian == 0) {
                             zan = false;
                         } else {
@@ -353,30 +360,6 @@ public class AcDetailActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 获取留言列表
-     */
-//    private void getLiuYan(){
-//        RetrofitClient.getInstance().createApi().liuyanList(String.valueOf(id))
-//                .compose(RxUtils.<HttpResult<List<LiuYanBean>>>io_main())
-//                .subscribe(new BaseObjObserver<List<LiuYanBean>>(this,"留言列表") {
-//                    @Override
-//                    protected void onHandleSuccess(List<LiuYanBean> liuYanlist) {
-//                        if (liuYanlist.size()>0) {
-//                            mList.clear();
-//                            mList.addAll(liuYanlist);
-//                            recyclerView.setVisibility(View.VISIBLE);
-//                            tvNoPing.setVisibility(View.GONE);
-//                            tvAcCommentNum.setText("共"+mList.size()+"条留言");
-//                            adapter.notifyDataSetChanged();
-//                        } else {
-//                            recyclerView.setVisibility(View.GONE);
-//                            tvNoPing.setVisibility(View.VISIBLE);
-//                            tvAcCommentNum.setText("暂无留言");
-//                        }
-//                    }
-//                });
-//    }
 
     /**
      * 初始化留言的dialog

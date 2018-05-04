@@ -49,7 +49,7 @@ public class UserInfoBean implements Serializable{
         private String mobile;
         private String user_nickname;
         private int user_status;
-        private int create_time;
+        private long create_time;
         private String avatar;
         private int is_personnel;
         private int sex;
@@ -122,11 +122,11 @@ public class UserInfoBean implements Serializable{
             this.user_status = user_status;
         }
 
-        public int getCreate_time() {
+        public long getCreate_time() {
             return create_time;
         }
 
-        public void setCreate_time(int create_time) {
+        public void setCreate_time(long create_time) {
             this.create_time = create_time;
         }
 

@@ -16,20 +16,23 @@ import com.jzbwlkj.leifeng.ui.bean.RankBean;
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/4/10.
+ * Created by Administrator on 2018/5/4.
  */
 
-public class RankAdapter extends BaseQuickAdapter<RankBean.RankUserBean, BaseViewHolder> {
+public class RankTeamAdapter extends BaseQuickAdapter<RankBean.RankTeamBean, BaseViewHolder> {
     private Activity activity;
-    public RankAdapter(int layoutResId, @Nullable List<RankBean.RankUserBean> data,Activity activity) {
+
+    public RankTeamAdapter(int layoutResId, @Nullable List<RankBean.RankTeamBean> data, Activity activity) {
         super(layoutResId, data);
         this.activity = activity;
     }
 
     @Override
-    protected void convert(BaseViewHolder baseViewHolder, RankBean.RankUserBean item) {
+    protected void convert(BaseViewHolder baseViewHolder, RankBean.RankTeamBean item) {
         TextView tvRankNum = baseViewHolder.getView(R.id.tv_rank_num);
-        ImageView ivShenFen = baseViewHolder.getView(R.id.img_rank_identity);
+        TextView tvRankSex = baseViewHolder.getView(R.id.tv_rank_sex);
+        tvRankSex.setVisibility(View.GONE);
+        baseViewHolder.setVisible(R.id.img_rank_identity,false);
         if (baseViewHolder.getAdapterPosition() == 0) {
             tvRankNum.setText("");
             tvRankNum.setBackgroundResource(R.mipmap.rank_one);
@@ -43,29 +46,16 @@ public class RankAdapter extends BaseQuickAdapter<RankBean.RankUserBean, BaseVie
             tvRankNum.setText(baseViewHolder.getAdapterPosition() + 1 + "");
             tvRankNum.setBackgroundResource(R.color.white);
         }
-        String path = item.getAvatar();
+
+        String path = item.getPic();
         if(!TextUtils.isEmpty(path)&&!TextUtils.equals("null",path)){
             Glide.with(activity).load(path).error(R.mipmap.avatar_default).into((ImageView) baseViewHolder.getView(R.id.img_rank_avatar));
         }
-        int ss = item.getPolital_status();
-        if( ss == 0){
-            ivShenFen.setVisibility(View.GONE);
-        }else if(ss == 1){//党员
-            ivShenFen.setVisibility(View.VISIBLE);
-            ivShenFen.setImageResource(R.mipmap.dangyuan);
-        }else{//团员
-            ivShenFen.setVisibility(View.VISIBLE);
-            ivShenFen.setImageResource(R.mipmap.paihang);
-        }
-        baseViewHolder.setText(R.id.tv_rank_name,item.getUser_nickname());
+//        if(item.get){
+//
+//        }
+        baseViewHolder.setText(R.id.tv_rank_name,item.getTeam_name());
         baseViewHolder.setText(R.id.tv_rank_time,item.getService_hour()+"小时");
-        String sex = "男";
-        if(item.getSex() == 1){
-            sex = "男";
-        }else{
-            sex = "女";
-        }
-        baseViewHolder.setText(R.id.tv_rank_sex,sex);
 
     }
 }
