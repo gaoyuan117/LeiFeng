@@ -55,7 +55,11 @@ public class ChatDeticalActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        getNetData();
+        if(BaseApp.type == 1){
+            getNetData();
+        }else {
+            getNetDataT();
+        }
     }
 
 
@@ -86,6 +90,28 @@ public class ChatDeticalActivity extends BaseActivity {
      */
     private void getNetData() {
         RetrofitClient.getInstance().createApi().chatlistDetical(String.valueOf(id), BaseApp.token)
+                .compose(RxUtils.<HttpResult<ChatListDeticalBean>>io_main())
+                .subscribe(new BaseObjObserver<ChatListDeticalBean>(this, "消息详情") {
+                    @Override
+                    protected void onHandleSuccess(ChatListDeticalBean chatListDeticalBean) {
+                        time = chatListDeticalBean.getAdd_time();
+                        title = chatListDeticalBean.getTitle();
+                        content = chatListDeticalBean.getContent();
+                        if(!TextUtils.isEmpty(content)){
+                            content = Html.fromHtml(content).toString();
+                        }else{
+                            content = "当前消息无内容";
+                        }
+                        setData();
+                    }
+                });
+    }
+
+    /**
+     * 获取网络数据
+     */
+    private void getNetDataT() {
+        RetrofitClient.getInstance().createApi().chatlistDeticalT(String.valueOf(id), BaseApp.token)
                 .compose(RxUtils.<HttpResult<ChatListDeticalBean>>io_main())
                 .subscribe(new BaseObjObserver<ChatListDeticalBean>(this, "消息详情") {
                     @Override

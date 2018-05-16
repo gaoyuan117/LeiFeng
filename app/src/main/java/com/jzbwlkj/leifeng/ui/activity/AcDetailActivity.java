@@ -127,7 +127,7 @@ public class AcDetailActivity extends BaseActivity {
 
     private int already = 0;//以招募人数
     private int all = 0;//共招募人数
-    private long  endtime;//报名截止时间
+    private long endtime;//报名截止时间
 
     @Override
     public int getLayoutId() {
@@ -177,7 +177,7 @@ public class AcDetailActivity extends BaseActivity {
                         String path = projectDetialBean.getPic();
                         if (!TextUtils.isEmpty(path) && !TextUtils.equals("null", path)) {
                             Glide.with(AcDetailActivity.this).load(path).error(R.mipmap.logo).into(imgAcDetail);
-                        }else{
+                        } else {
                             Glide.with(AcDetailActivity.this).load("xxx").error(R.mipmap.logo).into(imgAcDetail);
                         }
                         endtime = (long) projectDetialBean.getJoin_time_e();
@@ -203,9 +203,9 @@ public class AcDetailActivity extends BaseActivity {
                         already = projectDetialBean.getPraise_num();
                         int dian = projectDetialBean.getIs_praise();
                         ProjectDetialBean.JoinInfoBean beandd = projectDetialBean.getJoin_info();
-                        if(beandd == null){
+                        if (beandd == null) {
                             joinStatus = 2;
-                        }else{
+                        } else {
                             joinStatus = beandd.getStatus();
                         }
 
@@ -214,23 +214,40 @@ public class AcDetailActivity extends BaseActivity {
                         } else {
                             zan = true;
                         }
-                        if (joinStatus == 0) {
-                            llBaoming.setVisibility(View.GONE);
-                            llIng.setVisibility(View.VISIBLE);
-                            tvStatus.setText("审核中");
-                        } else if (joinStatus == -1) {
-                            llBaoming.setVisibility(View.VISIBLE);
-                            llIng.setVisibility(View.GONE);
-                            tvBaoming.setText("重新报名");
-                        } else if (joinStatus == 1) {
-                            llBaoming.setVisibility(View.VISIBLE);
-                            llIng.setVisibility(View.GONE);
-                            tvBaoming.setText("已报名");
-                        } else {
-                            llBaoming.setVisibility(View.VISIBLE);
-                            llIng.setVisibility(View.GONE);
-                            tvBaoming.setText("我要报名");
+                        switch (joinStatus) {
+                            case 0:
+                                llBaoming.setVisibility(View.GONE);
+                                llIng.setVisibility(View.VISIBLE);
+                                tvStatus.setText("审核中");
+                                break;
+
+                            case -1:
+                                llBaoming.setVisibility(View.VISIBLE);
+                                llIng.setVisibility(View.GONE);
+                                tvBaoming.setText("重新报名");
+                                break;
+
+                            case 1:
+                                llBaoming.setVisibility(View.VISIBLE);
+                                llIng.setVisibility(View.GONE);
+                                tvBaoming.setText("已报名");
+                                break;
+
+                            default:
+                                llBaoming.setVisibility(View.VISIBLE);
+                                llIng.setVisibility(View.GONE);
+                                tvBaoming.setText("我要报名");
+                                break;
                         }
+//                        if (joinStatus == 0) {
+//
+//                        } else if (joinStatus == -1) {
+//
+//                        } else if (joinStatus == 1) {
+//
+//                        } else {
+//
+//                        }
                         initZan();
 
                         if (projectDetialBean.getMessage_list().size() > 0) {
@@ -339,7 +356,7 @@ public class AcDetailActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.tv_liuyan, R.id.tv_dianzan, R.id.tv_baoming,R.id.tv_cancel_post})
+    @OnClick({R.id.tv_liuyan, R.id.tv_dianzan, R.id.tv_baoming, R.id.tv_cancel_post})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_liuyan:
@@ -351,17 +368,17 @@ public class AcDetailActivity extends BaseActivity {
                 dianzan();
                 break;
             case R.id.tv_baoming:
-                if(already>= all){
+                if (already >= all) {
                     showToastMsg("当前活动已满员，谢谢");
-                }else if(System.currentTimeMillis()/1000> endtime){
+                } else if (System.currentTimeMillis() / 1000 > endtime) {
                     showToastMsg("当前时间报名已截至，谢谢");
-                }else if (joinStatus == 0) {
+                } else if (joinStatus == 0) {
                     showToastMsg("报名审核中");
                 } else if (joinStatus == -1) {
                     joinAc();
                 } else if (joinStatus == 1) {
                     showToastMsg("您已报名成功，请勿重复申请");
-                } else{
+                } else {
                     joinAc();
                 }
                 break;
@@ -406,10 +423,10 @@ public class AcDetailActivity extends BaseActivity {
     /**
      * 取消报名
      */
-    private void cancel(){
-        RetrofitClient.getInstance().createApi().cancelProject(BaseApp.token,String.valueOf(id))
+    private void cancel() {
+        RetrofitClient.getInstance().createApi().cancelProject(BaseApp.token, String.valueOf(id))
                 .compose(RxUtils.<HttpResult<CommitBean>>io_main())
-                .subscribe(new BaseObjObserver<CommitBean>(this,"取消报名") {
+                .subscribe(new BaseObjObserver<CommitBean>(this, "取消报名") {
                     @Override
                     protected void onHandleSuccess(CommitBean commitBean) {
                         showToastMsg("取消报名成功");

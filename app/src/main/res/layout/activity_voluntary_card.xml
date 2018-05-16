@@ -254,6 +254,7 @@
                 android:id="@+id/tv_creat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:background="@drawable/white_gray_background_selector"
                 android:padding="@dimen/sp_14"
                 android:text="生成二维码"

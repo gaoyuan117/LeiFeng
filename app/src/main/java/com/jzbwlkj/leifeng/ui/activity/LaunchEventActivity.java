@@ -7,7 +7,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +68,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -502,6 +506,44 @@ public class LaunchEventActivity extends BaseActivity {
             showToastMsg("位置信息获取失败，请重新填写");
             return false;
         } else {
+            if(etCanNum.getVisibility() == View.GONE){
+                map.put("canbu","-1");
+            }else if(etCanNum.getVisibility() == View.VISIBLE){
+                String ss = etCanNum.getText().toString();
+                if(!TextUtils.isEmpty(ss)&&TextUtils.equals("统一安排",ss)){
+                    map.put("canbu","0");
+                }else if(!TextUtils.isEmpty(ss)&&isNumeric(ss)){
+                    map.put("canbu",ss);
+                }else{
+                    map.put("canbu","-1");
+                }
+            }
+
+            if(etTraNum.getVisibility() == View.GONE){
+                map.put("jiaotongbuzu","-1");
+            }else if(etTraNum.getVisibility() == View.VISIBLE){
+                String ss = etTraNum.getText().toString();
+                if(!TextUtils.isEmpty(ss)&&TextUtils.equals("统一安排",ss)){
+                    map.put("jiaotongbuzu","0");
+                }else if(!TextUtils.isEmpty(ss)&&isNumeric(ss)){
+                    map.put("jiaotongbuzu",ss);
+                }else{
+                    map.put("jiaotongbuzu","-1");
+                }
+            }
+
+            if(etBaoNum.getVisibility() == View.GONE){
+                map.put("baoxianbuzu","-1");
+            }else if(etBaoNum.getVisibility() == View.VISIBLE){
+                String ss = etBaoNum.getText().toString();
+                if(!TextUtils.isEmpty(ss)&&TextUtils.equals("统一安排",ss)){
+                    map.put("baoxianbuzu","0");
+                }else if(!TextUtils.isEmpty(ss)&&isNumeric(ss)){
+                    map.put("baoxianbuzu",ss);
+                }else{
+                    map.put("baoxianbuzu","-1");
+                }
+            }
             map.put("team_token", BaseApp.token);
             map.put("type", "1");
             map.put("title", name);
@@ -520,6 +562,19 @@ public class LaunchEventActivity extends BaseActivity {
             map.put("day_start_time", startt);//      服务当天开始时间   dddd
             map.put("day_end_time", endt);
             return true;
+        }
+    }
+
+    //用正则表达式判断字符串是否为数字（含负数）
+    public static boolean isNumeric(String str) {
+        String regEx = "^-?[0-9]+$";
+        Pattern pat = Pattern.compile(regEx);
+        Matcher mat = pat.matcher(str);
+        if (mat.find()) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -544,7 +599,7 @@ public class LaunchEventActivity extends BaseActivity {
                 } else {
                     etCanNum.setText("");
                     etCanNum.setVisibility(View.INVISIBLE);
-                    map.put("canbu", "-1");
+//                    map.put("canbu", "-1");
                 }
             }
         });
@@ -561,7 +616,7 @@ public class LaunchEventActivity extends BaseActivity {
                 } else {
                     etTraNum.setText("");
                     etTraNum.setVisibility(View.INVISIBLE);
-                    map.put("jiaotongbuzu", "-1");
+//                    map.put("jiaotongbuzu", "-1");
                 }
             }
         });
@@ -578,7 +633,7 @@ public class LaunchEventActivity extends BaseActivity {
                 } else {
                     etBaoNum.setVisibility(View.INVISIBLE);
                     etBaoNum.setText("");
-                    map.put("baoxianbuzu", "-1");
+//                    map.put("baoxianbuzu", "-1");
                 }
             }
         });
@@ -622,6 +677,22 @@ public class LaunchEventActivity extends BaseActivity {
                 }
             }
         });
+        etCanNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     /**
@@ -658,7 +729,6 @@ public class LaunchEventActivity extends BaseActivity {
                     tvTeam.setText(model.getName());
                     map.put("team_id", model.getId());
                 }
-
             }
         });
         lvContent.setAdapter(lvAdapter);
@@ -676,14 +746,14 @@ public class LaunchEventActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (flag == 1) {
-                    map.put("canbu", "0");
                     etCanNum.setText("统一安排");
+                    etCanNum.setFocusable(false);
                 } else if (flag == 2) {
-                    map.put("jiaotongbuzu", "0");
                     etTraNum.setText("统一安排");
+                    etTraNum.setFocusable(false);
                 } else if (flag == 3) {
-                    map.put("baoxianbuzu", "0");
                     etBaoNum.setText("统一安排");
+                    etBaoNum.setFocusable(false);
                 }
 
                 butiePop.dismiss();
@@ -695,10 +765,16 @@ public class LaunchEventActivity extends BaseActivity {
             public void onClick(View v) {
                 butiePop.dismiss();
                 if (flag == 1) {
+                    etCanNum.setText("");
+                    etEdit(etCanNum);
                     showKeyboard(etCanNum);
                 } else if (flag == 2) {
+                    etTraNum.setText("");
+                    etEdit(etTraNum);
                     showKeyboard(etTraNum);
                 } else if (flag == 3) {
+                    etBaoNum.setText("");
+                    etEdit(etBaoNum);
                     showKeyboard(etBaoNum);
                 }
             }
@@ -710,6 +786,13 @@ public class LaunchEventActivity extends BaseActivity {
         butiePop.setFocusable(true);
         butiePop.setContentView(butieView);
 
+    }
+
+    private void etEdit(EditText editText){
+        editText.setFocusable(true);
+        editText.setCursorVisible(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
     }
 
     /**

@@ -19,6 +19,7 @@ import com.jzbwlkj.leifeng.retrofit.CommonBean;
 import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
+import com.jzbwlkj.leifeng.ui.activity.LoginActivity;
 import com.jzbwlkj.leifeng.ui.activity.TeamActivity;
 import com.jzbwlkj.leifeng.ui.activity.VoluntaryCardActivity;
 import com.jzbwlkj.leifeng.ui.adapter.RankAdapter;
@@ -113,6 +114,9 @@ public class RankFragment extends BaseFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if(noLogin()){
+                    toActivity(LoginActivity.class);
+                }
                 RankBean.RankUserBean userBean = list.get(position);
                 Intent intent = new Intent(getActivity(), VoluntaryCardActivity.class);
                 intent.putExtra("id",userBean.getId()+"");

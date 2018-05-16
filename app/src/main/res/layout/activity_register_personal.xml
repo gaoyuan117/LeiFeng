@@ -25,14 +25,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="24dp"
                 android:paddingTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="         姓名："
+                    android:text="\t\t\t姓名："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -64,14 +64,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="32dp"
                 android:paddingTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="         性别："
+                    android:text="\t\t\t性别："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -107,14 +107,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="24dp"
                 android:paddingTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="         民族："
+                    android:text="\t\t\t民族："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -356,14 +356,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="34dp"
                 android:paddingTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="        职业："
+                    android:text="\t\t\t职业："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -450,14 +450,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="35dp"
                 android:paddingRight="34dp"
                 android:paddingTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="       QQ号："
+                    android:text="\t\tQQ号："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 

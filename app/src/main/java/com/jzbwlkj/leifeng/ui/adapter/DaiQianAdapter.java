@@ -29,6 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DaiQianAdapter extends BaseQuickAdapter<JoinProjectUserBean, BaseViewHolder> {
 
     private Activity activity;
+
     public DaiQianAdapter(int layoutResId, @Nullable List<JoinProjectUserBean> data, Activity activity) {
         super(layoutResId, data);
         this.activity = activity;
@@ -37,21 +38,38 @@ public class DaiQianAdapter extends BaseQuickAdapter<JoinProjectUserBean, BaseVi
     @Override
     protected void convert(BaseViewHolder helper, JoinProjectUserBean item) {
         String path = item.getAvatar();
-        if(!TextUtils.isEmpty(path)||!TextUtils.equals("null",path)){
+        if (!TextUtils.isEmpty(path) || !TextUtils.equals("null", path)) {
             Glide.with(activity).load(path).error(R.mipmap.logo).into((ImageView) helper.getView(R.id.iv_pic));
-        }else{
+        } else {
             Glide.with(activity).load("xxx").error(R.mipmap.logo).into((ImageView) helper.getView(R.id.iv_pic));
         }
-        helper.setText(R.id.tv_name,item.getUser_nickname());
-        if(item.getStatus() ==1){
-            helper.setText(R.id.tv_qiandao,"已签到");
-            helper.setText(R.id.tv_qiantui,"签退");
-        }else if(item.getStatus() == 2){
-            helper.setText(R.id.tv_qiandao,"已签到");
-            helper.setText(R.id.tv_qiantui,"已签退");
-        }else{
-            helper.setText(R.id.tv_qiandao,"签到");
-            helper.setText(R.id.tv_qiantui,"签退");
+        helper.setText(R.id.tv_name, item.getUser_nickname());
+        String ss = item.getStartTime();
+        String ee = item.getEndTime();
+        if (!TextUtils.isEmpty(ss) && !TextUtils.isEmpty(ee)) {
+            helper.setVisible(R.id.tv_daiqian,true);
+            helper.setText(R.id.tv_daiqian, "已完成");
+            helper.setText(R.id.tv_qiandao, "签到时间：" + ss);
+            helper.setText(R.id.tv_qiantui, "签退时间：" + ee);
+        } else if (TextUtils.isEmpty(ss) && TextUtils.isEmpty(ee)) {
+            helper.setVisible(R.id.tv_daiqian,true);
+            helper.setText(R.id.tv_daiqian, "代签");
+            helper.setText(R.id.tv_qiandao, "获取签到时间");
+            helper.setText(R.id.tv_qiantui, "获取签退时间");
+            helper.addOnClickListener(R.id.tv_qiandao);
+            helper.addOnClickListener(R.id.tv_qiantui);
+            helper.addOnClickListener(R.id.tv_daiqian);
+        } else if (!TextUtils.isEmpty(ss) && TextUtils.isEmpty(ee)) {
+            helper.setVisible(R.id.tv_daiqian,false);
+            helper.setText(R.id.tv_daiqian, "已完成");
+            helper.setText(R.id.tv_qiandao, "签到时间：" + ss);
+            helper.setText(R.id.tv_qiantui, "尚未签退");
+        }else {
+            helper.setVisible(R.id.tv_daiqian,false);
+            helper.setText(R.id.tv_daiqian, "已完成");
+            helper.setText(R.id.tv_qiandao, "尚未签到");
+            helper.setText(R.id.tv_qiantui, "签退时间：" + ee);
         }
+
     }
 }

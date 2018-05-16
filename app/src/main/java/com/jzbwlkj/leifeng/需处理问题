@@ -1,57 +1,6 @@
 
-
-  我的模块里面已加入的队伍接口报500
-
-
 本地sha1值  SHA1: A6:B8:DD:CD:CF:53:EA:04:ED:06:68:41:07:EB:72:A6:BE:5D:7C:FE
 签名文件  sha1值  6A:21:30:40:C5:3C:5A:70:2F:96:E3:8B:16:09:52:FC:35:7D:08:F7
-
-
-huojian  yongshi   qishi  kaierteren
-
-
-接口问题
-
-新闻列表
-http://leifeng.jzbwlkj.com/api/news/index
-{
-    "code":200,
-    "message":"操作成功",
-    "data":{
-        "ad_info":{
-            "image":"admin/20180410/7874cb041e4f84249237330f1c621ca7.jpg",
-            "url":""
-        },
-        "news_list":[
-            {
-                "id":1,
-                "type":0,
-                "city_id":0,
-                "title":"测试志愿新闻",
-                "pic":"admin/20180331/5b657db4b37d382f71f1f3d16b47556a.jpg",
-                "desc":"时代发生地方",
-                "content":"<p>是的根深蒂固大哥<br/></p>",
-                "is_recommend":1,
-                "add_time":0  //  时间为0
-            }
-        ]
-    }
-}
-
-
-活动，项目里面的排序不起作用
-.获取系统配置等信息(/api/public/getConfig)
-  义仓说明  去掉标签
-
- 只愿名片里的二维码没有做，需求不明确
- 版本更新相关的都没有做
- 签到签退, 留言审核未处理
-
-如果管理员提前或推后开启活动，需后台发推送消息
-看一下极光推送的自定消息的处理方式
-
-下周要将个人中心里面活动管理，项目管理，里面进行处理
-
 
 
 

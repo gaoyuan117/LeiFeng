@@ -481,7 +481,7 @@ public class CustomDatePicker {
 
     public void show(String time) {
         if (canAccess) {
-            if (isValidDate(time, "yyyy-MM-dd")) {
+            if (isValidDate(time, "yyyy-MM-dd HH:mm")) {
                 if (startCalendar.getTime().getTime() < endCalendar.getTime().getTime()) {
                     canAccess = true;
                     initParameter();

@@ -231,6 +231,7 @@ public class MyInfoActivity extends BaseActivity {
 
         tvMyInfoNo.setText(bean.getId_no());
         tvMyInfoPhone.setText(bean.getMobile());
+        // 0 :'党员', 1: '团员',2:'其他'
         tvMyInfoZzmm.setText(bean.getPolital_status_text());//政治面貌
         tvMyInfoZgxl.setText(bean.getEducation_text());//学历
         tvMyInfoJob.setText(bean.getJob_text());//职业

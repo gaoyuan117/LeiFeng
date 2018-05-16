@@ -32,7 +32,6 @@ import butterknife.ButterKnife;
 
 public class LoveShopActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
-
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
     @BindView(R.id.viewpager)
@@ -164,10 +163,9 @@ public class LoveShopActivity extends BaseActivity implements TabLayout.OnTabSel
         setWebData(BaseApp.config.getAboutgoods(),webDui);
         infoDialog = new Dialog(this, R.style.wx_dialog);
         infoDialog.setContentView(infoView);
-        infoDialog.setCanceledOnTouchOutside(false);
 
         ViewGroup.LayoutParams layoutParams = infoView.getLayoutParams();
-        layoutParams.height = getResources().getDisplayMetrics().widthPixels+100;
+        layoutParams.height = getResources().getDisplayMetrics().widthPixels+200;
         infoView.setLayoutParams(layoutParams);
     }
 

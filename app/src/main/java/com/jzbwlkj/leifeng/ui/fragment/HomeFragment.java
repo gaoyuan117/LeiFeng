@@ -110,7 +110,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     SwipeRefreshLayout refresh;
     Unbinder unbinder;
     private List<HomeBean.NewsRecommendListBean> mList = new ArrayList<>();
-    private List<String> bannerList = new ArrayList<>();
+
 
     private HomeAdapter adapter;
 
@@ -318,7 +318,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                         tvHomeDangyuanNum.setText("党员:" + homeBean.getUser_polital_count() + "个");
 
                         if (homeBean.getIndex_ad1() != null) {
-                            bannerList.clear();
+                            List<String> bannerList = new ArrayList<>();
                             for (HomeBean.IndexAd1Bean bean : homeBean.getIndex_ad1()) {
                                 bannerList.add(bean.getImage());
                             }
@@ -378,10 +378,9 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         });
         infoDialog = new Dialog(getActivity(), R.style.wx_dialog);
         infoDialog.setContentView(infoView);
-        infoDialog.setCanceledOnTouchOutside(false);
 
         ViewGroup.LayoutParams layoutParams = infoView.getLayoutParams();
-        layoutParams.height = getResources().getDisplayMetrics().widthPixels+100;
+        layoutParams.height = getResources().getDisplayMetrics().widthPixels+200;
         infoView.setLayoutParams(layoutParams);
     }
 

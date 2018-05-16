@@ -178,9 +178,9 @@ public class CommitHelpActivity extends BaseActivity {
         content = etCommitHelpComment.getText().toString();
 
         if(cbCommitHelp.isChecked()){
-            niming = "0";
-        }else{
             niming = "1";
+        }else{
+            niming = "0";
         }
 
         if(TextUtils.isEmpty(name)){

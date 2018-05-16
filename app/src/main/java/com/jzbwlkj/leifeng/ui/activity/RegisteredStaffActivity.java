@@ -186,10 +186,10 @@ public class RegisteredStaffActivity extends BaseActivity implements BaseQuickAd
      */
     private void postData(String ss) {
         RetrofitClient.getInstance().createApi().postAudit(BaseApp.token, ss)
-                .compose(RxUtils.<HttpResult<CommitBean>>io_main())
-                .subscribe(new BaseObjObserver<CommitBean>(this, "提交数据") {
+                .compose(RxUtils.<HttpResult<String>>io_main())
+                .subscribe(new BaseObjObserver<String>(this, "提交数据") {
                     @Override
-                    protected void onHandleSuccess(CommitBean commitBean) {
+                    protected void onHandleSuccess(String commitBean) {
                         showToastMsg("提交成功");
                         finish();
                     }

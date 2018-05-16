@@ -27,36 +27,48 @@
             android:textColor="@color/text_gray"
             android:textSize="@dimen/sp_12" />
 
-        <View
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
+
+            <TextView
+                android:id="@+id/tv_qiandao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:text="选择签到时间"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/sp_12" />
+
+            <TextView
+                android:id="@+id/tv_qiantui"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:text="选择签退时间"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/sp_12" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_qiandao"
+            android:id="@+id/tv_daiqian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/white_gray_stroke_selector"
-            android:padding="@dimen/dp_10"
-            android:text="签到"
-            android:textColor="@color/text_blue"
-            android:textSize="@dimen/sp_12" />
-
-        <TextView
-            android:id="@+id/tv_qiantui"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/white_gray_stroke_selector"
-            android:padding="@dimen/dp_10"
-            android:text="签退"
-            android:textColor="@color/text_red"
-            android:textSize="@dimen/sp_12" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/sp_12"
+            android:text="代签"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.8dp"
-        android:background="@color/line_color"/>
+        android:background="@color/line_color" />
 </LinearLayout>

@@ -118,14 +118,26 @@ public class VoluntaryCardActivity extends BaseActivity {
     //获取用户信息
     private void getUserInfo() {
         if (TextUtils.isEmpty(BaseApp.token)) return;
-        RetrofitClient.getInstance().createApi().getUserInfo(BaseApp.token, id)
-                .compose(RxUtils.<HttpResult<UserInfoBean>>io_main())
-                .subscribe(new BaseObjObserver<UserInfoBean>(activity) {
-                    @Override
-                    protected void onHandleSuccess(UserInfoBean bean) {
-                        setUserData(bean);
-                    }
-                });
+        if(BaseApp.type == 1){
+            RetrofitClient.getInstance().createApi().getUserInfo(BaseApp.token, id)
+                    .compose(RxUtils.<HttpResult<UserInfoBean>>io_main())
+                    .subscribe(new BaseObjObserver<UserInfoBean>(activity) {
+                        @Override
+                        protected void onHandleSuccess(UserInfoBean bean) {
+                            setUserData(bean);
+                        }
+                    });
+        }else{
+            RetrofitClient.getInstance().createApi().getUserInfoT(BaseApp.token, id)
+                    .compose(RxUtils.<HttpResult<UserInfoBean>>io_main())
+                    .subscribe(new BaseObjObserver<UserInfoBean>(activity) {
+                        @Override
+                        protected void onHandleSuccess(UserInfoBean bean) {
+                            setUserData(bean);
+                        }
+                    });
+        }
+
     }
 
     private void setUserData(UserInfoBean bean) {

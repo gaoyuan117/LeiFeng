@@ -505,6 +505,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:elevation="@dimen/dp_10"
         android:background="@color/white">
 
@@ -551,6 +552,7 @@
         android:id="@+id/ll_ing"
         android:layout_width="match_parent"
         android:layout_height="46dp"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:gravity="center_vertical">
         <TextView

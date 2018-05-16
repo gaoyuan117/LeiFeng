@@ -130,6 +130,11 @@ public interface Api {
     @POST("/api/user/getUserInfo")
     Observable<HttpResult<UserInfoBean>> getUserInfo(@Field("token") String token,@Field("uid") String id);
 
+    //志愿名片
+    @FormUrlEncoded
+    @POST("/api/user/getUserInfo")
+    Observable<HttpResult<UserInfoBean>> getUserInfoT(@Field("team_token") String token,@Field("uid") String id);
+
     //信息列表
     @FormUrlEncoded
     @POST("/api/message/getMessageList")
@@ -145,6 +150,11 @@ public interface Api {
     @FormUrlEncoded
     @POST("/api/message/getMessageInfo")
     Observable<HttpResult<ChatListDeticalBean>> chatlistDetical(@Field("id") String id, @Field("token") String token);
+
+    //信息详情
+    @FormUrlEncoded
+    @POST("/api/message/getMessageInfo")
+    Observable<HttpResult<ChatListDeticalBean>> chatlistDeticalT(@Field("id") String id, @Field("team_token") String token);
 
     //发布求助信息
     @FormUrlEncoded
@@ -222,7 +232,7 @@ public interface Api {
     //提交审核结果
     @FormUrlEncoded
     @POST("/api/activity/auditUser")
-    Observable<HttpResult<CommitBean>> postAudit(@Field("team_token") String token, @Field("audit_arr") String audit_arr);
+    Observable<HttpResult<String>> postAudit(@Field("team_token") String token, @Field("audit_arr") String audit_arr);
 
 
     //留言待审核列表

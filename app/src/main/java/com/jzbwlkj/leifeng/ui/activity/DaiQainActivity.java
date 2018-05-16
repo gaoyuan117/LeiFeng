@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,9 +26,13 @@ import com.jzbwlkj.leifeng.ui.adapter.ZhiYuanZheAdapter;
 import com.jzbwlkj.leifeng.ui.bean.JoinProjectUserBean;
 import com.jzbwlkj.leifeng.ui.bean.UserBean;
 import com.jzbwlkj.leifeng.utils.FormatUtils;
+import com.jzbwlkj.leifeng.view.CustomDatePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,6 +64,11 @@ public class DaiQainActivity extends BaseActivity {
     private DaiQianAdapter adapter;
     private int id;
 
+    private String now;
+    private int type = 0;//1  签到时间   2  签退时间
+    private JoinProjectUserBean userBean;//时间选择器返回的时间
+    private CustomDatePicker customDatePicker1;
+
     @Override
     public int getLayoutId() {
         id = getIntent().getIntExtra("id", 0);
@@ -68,6 +78,10 @@ public class DaiQainActivity extends BaseActivity {
     @Override
     public void initView() {
         centerTitleTv.setText("队员代签");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+        long aa = System.currentTimeMillis()-(7*24*60*60*1000);
+        now = sdf.format(new Date(aa));
+        initTimeDialog();
         initAadapter();
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -133,23 +147,31 @@ public class DaiQainActivity extends BaseActivity {
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                JoinProjectUserBean bean = mList.get(position);
-
-                String tt = FormatUtils.formatTime(System.currentTimeMillis());
+                userBean = mList.get(position);
                 switch (view.getId()) {
                     case R.id.tv_qiandao:
-                        if(bean.getStatus() == 1){
-                            showToastMsg("当前队员以完成签到");
+                        if(userBean.getStatus() == 1){
+                            showToastMsg("当前队员已完成签到");
                             return;
                         }
-                        postData(String.valueOf(id), tt, null, String.valueOf(bean.getId()));
+                        type = 1;
+                        customDatePicker1.show(now);
                         break;
                     case R.id.tv_qiantui:
-                        if(bean.getStatus() == 2){
-                            showToastMsg("当前队员以完成签退");
+                        if(userBean.getStatus() == 2){
+                            showToastMsg("当前队员已完成签退");
                             return;
                         }
-                        postData(String.valueOf(id), null, tt, String.valueOf(bean.getId()));
+                        type = 2;
+                        customDatePicker1.show(now);
+                        break;
+
+                    case R.id.tv_daiqian:
+                        String ss = userBean.getStartTime();
+                        String ee = userBean.getEndTime();
+                        if(!TextUtils.isEmpty(ss)&&!TextUtils.isEmpty(ee)){
+                            postData(String.valueOf(id), userBean.getStartTime(), userBean.getEndTime(), String.valueOf(userBean.getId()));
+                        }
                         break;
                 }
 
@@ -175,6 +197,26 @@ public class DaiQainActivity extends BaseActivity {
                         getNetData();
                     }
                 });
+    }
+
+
+    /**
+     * 初始化时间选择器
+     */
+    private void initTimeDialog() {
+
+        customDatePicker1 = new CustomDatePicker(this, new CustomDatePicker.ResultHandler() {
+            @Override
+            public void handle(String time) { // 回调接口，获得选中的时间
+                if(type == 1){
+                    userBean.setStartTime(time);
+                }else if(type == 2){
+                    userBean.setEndTime(time);
+                }
+            }
+        }, now, "3000-12-31 00:00"); // 初始化日期格式请用：yyyy-MM-dd HH:mm，否则不能正常运行
+        customDatePicker1.showSpecificTime(true); // 不显示时和分
+        customDatePicker1.setIsLoop(false); // 不允许循环滚动
     }
 
 }

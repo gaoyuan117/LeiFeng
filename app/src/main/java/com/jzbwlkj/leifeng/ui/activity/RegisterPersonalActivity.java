@@ -135,6 +135,7 @@ public class RegisterPersonalActivity extends BaseActivity {
     private String unitid;//单位Id
     private String nationalId = null;//民族id
     private String cardtype;//证件类型
+    //0  党员  1  团员  2 其他
     private String shenfen;//政治面貌
     private String jobid = null;//职业Id
     private String cityId;//城市id
@@ -532,7 +533,15 @@ public class RegisterPersonalActivity extends BaseActivity {
                     cardtype = model.getName();
                 } else if (flag == 3) {
                     tvShenfen.setText(model.getName());
-                    shenfen = model.getName();
+                    String ss = model.getName();
+                    if(TextUtils.equals("党员",ss)){
+                        shenfen = "0";
+                    }else if(TextUtils.equals("团员",ss)){
+                        shenfen = "1";
+                    }else if(TextUtils.equals("其他",ss)){
+                        shenfen = "2";
+                    }
+
                 } else if (flag == 4) {
                     tvJob.setText(model.getName());
                     jobid = model.getId();
