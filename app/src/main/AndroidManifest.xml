@@ -224,6 +224,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.RegisterTeamActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activity.ProtocolActivity"
@@ -236,6 +237,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.RegisterPersonalActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activity.TrainingActivity"
@@ -269,9 +271,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LaunchEventActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activity.PublishProjectActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activity.AcManagementActivity"
@@ -309,15 +313,24 @@
         <activity
             android:name=".ui.activity.VoluntaryCardActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.MyProActivity" />
-        <activity android:name=".ui.activity.TeamInfoActivity" />
-        <activity android:name=".ui.activity.ModifyTeamPhoneActivity" />
-        <activity android:name=".ui.activity.MessageActivity" />
-        <activity android:name=".ui.activity.AllLoginActivity" />
-        <activity android:name=".ui.activity.ManagerUserActivity" />
-        <activity android:name=".ui.activity.MainNewsActivity" />
-        <activity android:name=".ui.activity.ModifyTeamPwdActivity" />
-        <activity android:name=".ui.activity.DaiQainActivity"></activity>
+        <activity android:name=".ui.activity.MyProActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.TeamInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.ModifyTeamPhoneActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.MessageActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.AllLoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.ManagerUserActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.MainNewsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.ModifyTeamPwdActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.DaiQainActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

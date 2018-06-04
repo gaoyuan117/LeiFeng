@@ -47,7 +47,7 @@ public class MainNewsActivity extends BaseActivity {
         setRightTitle("分享").setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonApi.share(activity, title, null);
+                CommonApi.share(activity, null, null);
             }
         });
         setCenterTitle("新闻详情");

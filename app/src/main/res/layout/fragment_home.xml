@@ -28,6 +28,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -41,9 +42,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:layout_marginLeft="4dp"
-                android:text="志愿服务平台"
+                android:text=" - 志愿服务平台"
                 android:textColor="@color/white" />
 
         </LinearLayout>

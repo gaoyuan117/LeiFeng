@@ -80,7 +80,12 @@ public class TeamActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        getNetData();
+        if(BaseApp.type == 1){
+            getNetData();
+        }else{
+            getTeamData();
+        }
+
         getProJectList();
     }
 
@@ -108,6 +113,50 @@ public class TeamActivity extends BaseActivity {
      */
     private void getNetData() {
         RetrofitClient.getInstance().createApi().getTeamInfop(String.valueOf(id),BaseApp.token)
+                .compose(RxUtils.<HttpResult<TeamInfoBean>>io_main())
+                .subscribe(new BaseObjObserver<TeamInfoBean>(activity, "队伍信息") {
+                    @Override
+                    protected void onHandleSuccess(TeamInfoBean teamInfoBeans) {
+                        String teamName = teamInfoBeans.getTeam_name();
+                        if(TextUtils.equals("null",teamName)||TextUtils.isEmpty(teamName)){
+                            teamName = "----";
+                        }
+                        if(TextUtils.isEmpty(BaseApp.token)){
+                            tvTeamStatus.setVisibility(View.GONE);
+                        }else{
+                            tvTeamStatus.setVisibility(View.VISIBLE);
+                            if(teamInfoBeans.getJoin_info() != null){
+                                status = teamInfoBeans.getJoin_info().getStatus()+"";
+                            }
+                            if(TextUtils.equals("0",status)){
+                                tvTeamStatus.setText("审核中");
+                            }else if(TextUtils.equals("-1",status)){
+                                tvTeamStatus.setText("重新加入");
+                            }else if(TextUtils.equals("1",status)){
+                                tvTeamStatus.setText("已加入");
+                            }else {
+                                tvTeamStatus.setText("我要加入");
+                            }
+                        }
+
+                        tvTeamName.setText(teamName);
+                        tvTeamNam.setText(teamName);
+                        tvTeamUnit.setText(teamName);
+                        String path = teamInfoBeans.getPic();
+                        if(!TextUtils.isEmpty(path)&&!TextUtils.equals("null",path)){
+                            Glide.with(TeamActivity.this).load(path).error(R.mipmap.avatar_default).into(imgTeamAvatar);
+                        }
+                        tvTeamLinkman.setText(teamInfoBeans.getContact());
+                        tvTeamPhone.setText(teamInfoBeans.getContact_mobile());
+                        tvTeamHead.setText(teamInfoBeans.getManager());
+                        tvTeamLinkphone.setText(teamInfoBeans.getManager_mobile());
+                        setWeb(teamInfoBeans.getDesc());
+                    }
+                });
+    }
+
+    private void getTeamData(){
+        RetrofitClient.getInstance().createApi().getTeamInfo(String.valueOf(id),BaseApp.token)
                 .compose(RxUtils.<HttpResult<TeamInfoBean>>io_main())
                 .subscribe(new BaseObjObserver<TeamInfoBean>(activity, "队伍信息") {
                     @Override

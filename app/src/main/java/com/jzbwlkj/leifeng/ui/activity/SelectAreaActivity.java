@@ -1,6 +1,7 @@
 package com.jzbwlkj.leifeng.ui.activity;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,6 +44,17 @@ public class SelectAreaActivity extends BaseActivity {
     @Override
     public void initView() {
         setCenterTitle("地区选择");
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refresh.setRefreshing(false);
+                    }
+                },1000);
+            }
+        });
         initAdapter();
     }
 

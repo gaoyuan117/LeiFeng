@@ -132,12 +132,14 @@ public class MyProFragment extends BaseFragment implements BaseQuickAdapter.OnIt
      */
     private List<JoinProjectBean.ListBean> recycleList(List<JoinProjectBean> projectBeans,String type){
         List<JoinProjectBean.ListBean> listBeans = new ArrayList<>();
-        for (JoinProjectBean projectBean:projectBeans){
-            if(TextUtils.equals(type,projectBean.getStatus_text())){
-                listBeans.addAll(projectBean.getList());
-            };
+        if(projectBeans  != null&&projectBeans.size()>0) {
+            for (JoinProjectBean projectBean : projectBeans) {
+                if (TextUtils.equals(type, projectBean.getStatus_text())) {
+                    listBeans.addAll(projectBean.getList());
+                }
+                ;
+            }
         }
-
         return listBeans;
     }
 

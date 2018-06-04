@@ -333,6 +333,11 @@ public class RegisterPersonalActivity extends BaseActivity {
             showToastMsg("请输入姓名");
             return;
         }
+        String mingzu = tvNational.getText().toString();
+        if(TextUtils.isEmpty(mingzu)){
+            showToastMsg("请选择您的民族");
+            return;
+        }
 
         //证件号码
         String no = etPersonalNo.getText().toString();
@@ -348,6 +353,12 @@ public class RegisterPersonalActivity extends BaseActivity {
             return;
         }
 
+        String shen = tvShenfen.getText().toString();
+
+        if(TextUtils.isEmpty(shen)){
+            showToastMsg("请选择政治面貌");
+            return;
+        }
         //工作单位
         String job = etPersonalJob.getText().toString();
 
@@ -368,6 +379,18 @@ public class RegisterPersonalActivity extends BaseActivity {
 
         //专业能力
         String power = etPersonalNengli.getText().toString();
+
+        String cc = tvCity.getText().toString();
+        if(TextUtils.isEmpty(cc)){
+            showToastMsg("请选择所在区域");
+            return;
+        }
+
+        String jigou = tvUnit.getText().toString();
+        if(TextUtils.isEmpty(jigou)){
+            showToastMsg("请选择所属机构");
+            return;
+        }
 
         //登录密码
         String pwd = etPersonalPwd.getText().toString();

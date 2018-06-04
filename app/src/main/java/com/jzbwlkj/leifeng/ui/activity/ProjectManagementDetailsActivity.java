@@ -147,6 +147,7 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
     public void initView() {
         tvRightText.setVisibility(View.VISIBLE);
         tvRightText.setText("代签");
+        tvPublishProjectPublish.setVisibility(View.GONE);
         initPop();
         setCenterTitle("项目管理");
         llNumber.setVisibility(View.VISIBLE);
@@ -307,7 +308,10 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
                         }
                         String path = projectDetialBean.getPic();
                         if (!TextUtils.isEmpty(path) && !TextUtils.equals("null", path)) {
-                            Glide.with(ProjectManagementDetailsActivity.this).load(path).error(R.color.green).into(imgPublishProject);
+                            Glide.with(ProjectManagementDetailsActivity.this).load(path).error(R.mipmap.logo).into(imgPublishProject);
+                        }else{
+                            Glide.with(ProjectManagementDetailsActivity.this).load("xxx").error(R.mipmap.logo).into(imgPublishProject);
+
                         }
                         tvZhouqi.setText(projectDetialBean.getService_time());
                         etPublishProjectName.setText(projectDetialBean.getTitle());
@@ -384,7 +388,7 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
      * 获取已加入人数
      */
     private void getPeople() {
-        RetrofitClient.getInstance().createApi().userList(BaseApp.token, String.valueOf(id))
+        RetrofitClient.getInstance().createApi().userListT(BaseApp.token, String.valueOf(id))
                 .compose(RxUtils.<HttpResult<List<JoinProjectUserBean>>>io_main())
                 .subscribe(new BaseObjObserver<List<JoinProjectUserBean>>(this, "已加入") {
                     @Override

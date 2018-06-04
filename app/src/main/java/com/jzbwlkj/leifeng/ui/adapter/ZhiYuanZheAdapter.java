@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -32,6 +33,14 @@ public class ZhiYuanZheAdapter extends BaseQuickAdapter<UserBean,BaseViewHolder>
 
     @Override
     protected void convert(BaseViewHolder helper, UserBean item) {
+        helper.setText(R.id.img_leave_word_name,item.getUser_nickname());
+        helper.setText(R.id.tv_leave_word_time,"服务时长："+item.getService_hour()+"时");
+        String path = item.getAvatar();
+        if (!TextUtils.isEmpty(path)&&path != "null") {
+            Glide.with(activity).load(path).error(R.mipmap.logo).into((ImageView) helper.getView(R.id.img_leave_word_avatar));
+        }
 
+        helper.addOnClickListener(R.id.tv_refuse);
+        helper.addOnClickListener(R.id.tv_agree);
     }
 }

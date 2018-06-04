@@ -31,8 +31,7 @@ public class ChatListAdapter extends BaseQuickAdapter<ChatListBean.AllListBean, 
     protected void convert(BaseViewHolder holder, ChatListBean.AllListBean item) {
         holder.setText(R.id.tv_title, item.getTitle());
         holder.setText(R.id.tv_chat_time, FormatUtils.formatTime(item.getAdd_time()));
-        String ss = item.getContent().replace("<p>","").replace("</p>","");
-        holder.setText(R.id.tv_chat_des, ss);
+        holder.setText(R.id.tv_chat_des, item.getDesc());
         //接口没有返回相关数据
         String path = item.getPic();
         if (!TextUtils.isEmpty(path)&&!TextUtils.equals("null",path)) {

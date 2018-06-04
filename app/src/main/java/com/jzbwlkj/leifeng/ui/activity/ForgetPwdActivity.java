@@ -152,10 +152,10 @@ public class ForgetPwdActivity extends BaseActivity implements CountDownUtils.Co
 
 
         RetrofitClient.getInstance().createApi().forgetpwd(phone, password, yzm,flag)
-                .compose(RxUtils.<HttpResult<CommitBean>>io_main())
-                .subscribe(new BaseObjObserver<CommitBean>(this, "修改中") {
+                .compose(RxUtils.<HttpResult<String>>io_main())
+                .subscribe(new BaseObjObserver<String>(this, "修改中") {
                     @Override
-                    protected void onHandleSuccess(CommitBean commonBean) {
+                    protected void onHandleSuccess(String commonBean) {
                         ToastUtils.showToast("修改成功");
                         finish();
                     }

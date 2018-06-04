@@ -43,7 +43,9 @@ public class JoinProjectAdapter extends BaseQuickAdapter<JoinProjectBean.ListBea
 
         String path = item.getPic();
         if(!TextUtils.isEmpty(path)&&!TextUtils.equals("null",path)){
-            Glide.with(activity).load(path).error(R.color.green).into((ImageView) holder.getView(R.id.img_my_ac));
+            Glide.with(activity).load(path).error(R.mipmap.logo).into((ImageView) holder.getView(R.id.img_my_ac));
+        }else{
+            Glide.with(activity).load("xxx").error(R.mipmap.logo).into((ImageView) holder.getView(R.id.img_my_ac));
         }
 
         holder.setText(R.id.tv_my_ac_time,item.getService_hour()+"小时");

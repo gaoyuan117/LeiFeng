@@ -176,7 +176,9 @@ public class AcDetailActivity extends BaseActivity {
                         }
                         String path = projectDetialBean.getPic();
                         if (!TextUtils.isEmpty(path) && !TextUtils.equals("null", path)) {
-                            Glide.with(AcDetailActivity.this).load(path).error(R.color.green).into(imgAcDetail);
+                            Glide.with(AcDetailActivity.this).load(path).error(R.mipmap.logo).into(imgAcDetail);
+                        }else{
+                            Glide.with(AcDetailActivity.this).load("xxx").error(R.mipmap.logo).into(imgAcDetail);
                         }
                         endtime = (long) projectDetialBean.getJoin_time_e();
                         tvAcTime.setText(projectDetialBean.getPraise_num() + "");
@@ -351,7 +353,7 @@ public class AcDetailActivity extends BaseActivity {
             case R.id.tv_baoming:
                 if(already>= all){
                     showToastMsg("当前活动已满员，谢谢");
-                }else if(System.currentTimeMillis()> endtime){
+                }else if(System.currentTimeMillis()/1000> endtime){
                     showToastMsg("当前时间报名已截至，谢谢");
                 }else if (joinStatus == 0) {
                     showToastMsg("报名审核中");

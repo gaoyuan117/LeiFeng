@@ -47,7 +47,9 @@ import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.saomiao.CaptureActivity;
 import com.jzbwlkj.leifeng.ui.adapter.ListViewAdapter;
 import com.jzbwlkj.leifeng.ui.adapter.QiandaoAdapter;
+import com.jzbwlkj.leifeng.ui.bean.ConfigBean;
 import com.jzbwlkj.leifeng.ui.bean.JoinProjectBean;
+import com.jzbwlkj.leifeng.ui.bean.MainUserBean;
 import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
 import com.jzbwlkj.leifeng.ui.bean.QianDaoModel;
 import com.jzbwlkj.leifeng.ui.fragment.HomeFragment;
@@ -110,7 +112,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private String size;//新版本大小
     private String isQinag = "0";
     public static final String TAG_EXIT = "exit";
-
+    private List<MainUserBean> projectList = new ArrayList<>();
     private int r = 1;
     private int i = 0;
     private Handler handler = new Handler() {
@@ -181,6 +183,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 getList();
             }
         }
+        getConfig();
     }
 
     @Override
@@ -261,6 +264,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.tv_main_sign:
                 if (noLogin()) {
                     toActivity(LoginActivity.class);
+                    return;
+                }
+                if(BaseApp.type == 2){
+                    showToastMsg("您当前登录的为队伍账号");
+                    return;
+                }
+                if(projectList == null||projectList.size()<=0){
+                    showToastMsg("您当前尚未参加任何活动与项目");
                     return;
                 }
                 popType.show();
@@ -557,13 +568,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     private void getList() {
         RetrofitClient.getInstance().createApi().userProListp(BaseApp.token)
-                .compose(RxUtils.<HttpResult<List<JoinProjectBean>>>io_main())
-                .subscribe(new BaseObjObserver<List<JoinProjectBean>>(getActivity()) {
+                .compose(RxUtils.<HttpResult<List<MainUserBean>>>io_main())
+                .subscribe(new BaseObjObserver<List<MainUserBean>>(getActivity()) {
                     @Override
-                    protected void onHandleSuccess(List<JoinProjectBean> projectBeans) {
-                        if (projectBeans == null || projectBeans.size() > 0) return;
-                        for (JoinProjectBean bean : projectBeans) {
-                            for (JoinProjectBean.ListBean listBean : bean.getList()) {
+                    protected void onHandleSuccess(List<MainUserBean> projectBeans) {
+                        projectList.addAll(projectBeans);
+                        if (projectBeans == null || projectBeans.size() <= 0){
+                            return;
+                        }
+                        for (MainUserBean bean : projectBeans) {
+                            for (MainUserBean.ListBean listBean : bean.getList()) {
                                 QianDaoModel model = new QianDaoModel();
                                 model.setId(listBean.getActivity_id() + "");
                                 model.setName(listBean.getActivity_info().getTitle());
@@ -590,5 +604,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }
 
+    }
+
+
+    /**
+     * 获取配置信息
+     */
+    private void getConfig() {
+        RetrofitClient.getInstance().createApi().getConfig("")
+                .compose(RxUtils.<HttpResult<ConfigBean>>io_main())
+                .subscribe(new BaseObjObserver<ConfigBean>(activity) {
+                    @Override
+                    protected void onHandleSuccess(ConfigBean configBean) {
+                        BaseApp.config = configBean;
+                    }
+                });
     }
 }

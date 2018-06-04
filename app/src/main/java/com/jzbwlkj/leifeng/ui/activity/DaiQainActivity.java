@@ -104,7 +104,7 @@ public class DaiQainActivity extends BaseActivity {
      * 获取网络数据
      */
     private void getNetData() {
-        RetrofitClient.getInstance().createApi().userList(null, String.valueOf(id))
+        RetrofitClient.getInstance().createApi().userListT(BaseApp.token, String.valueOf(id))
                 .compose(RxUtils.<HttpResult<List<JoinProjectUserBean>>>io_main())
                 .subscribe(new BaseObjObserver<List<JoinProjectUserBean>>(this, "已加入") {
                     @Override

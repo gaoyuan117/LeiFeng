@@ -135,7 +135,7 @@ public class SignActivity extends BaseActivity {
                     showToastMsg("您当前还不在签到范围");
                     return;
                 }
-                if(System.currentTimeMillis()>signEndTime){
+                if(System.currentTimeMillis()/1000>signEndTime){
                     showToastMsg("您已过了签到时间");
                     return;
                 }

@@ -132,10 +132,12 @@ public class MyAcFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     private List<JoinProjectBean.ListBean> recycleList(List<JoinProjectBean> projectBeans, String type) {
 
         List<JoinProjectBean.ListBean> listBeans = new ArrayList<>();
-        if (projectBeans.size() > 0) {
-            for (JoinProjectBean projectBean : projectBeans) {
-                if (TextUtils.equals(type, projectBean.getStatus_text())) {
-                    listBeans.addAll(projectBean.getList());
+        if(projectBeans  != null&&projectBeans.size()>0){
+            if (projectBeans.size() > 0) {
+                for (JoinProjectBean projectBean : projectBeans) {
+                    if (TextUtils.equals(type, projectBean.getStatus_text())) {
+                        listBeans.addAll(projectBean.getList());
+                    }
                 }
             }
         }

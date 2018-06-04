@@ -9,7 +9,8 @@ import org.greenrobot.greendao.annotation.Id;
  */
 @Entity
 public class MySelfModel {
-    @Id(autoincrement = true) private Long doctor_id;
+    @Id(autoincrement = true)
+    private Long doctor_id;
     private String name;
     private String id;
 

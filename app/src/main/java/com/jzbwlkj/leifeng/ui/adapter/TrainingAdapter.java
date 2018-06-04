@@ -30,9 +30,13 @@ public class TrainingAdapter extends BaseQuickAdapter<ChatListBean.AllListBean,B
     protected void convert(BaseViewHolder baseViewHolder, ChatListBean.AllListBean bean) {
         String path = bean.getPic();
         if(TextUtils.isEmpty(path)||TextUtils.equals("null",path)){
-            path = "ss";
+            Glide.with(activity).load("xxx").bitmapTransform(new RoundCornesTransFormation(activity,10,10))
+                    .error(R.mipmap.logo).into((ImageView) baseViewHolder.getView(R.id.img_home));
+        }else{
+            Glide.with(activity).load(path).bitmapTransform(new RoundCornesTransFormation(activity,10,10))
+                    .error(R.mipmap.logo).into((ImageView) baseViewHolder.getView(R.id.img_home));
         }
-        Glide.with(activity).load(path).bitmapTransform(new RoundCornesTransFormation(activity,10,10))
-                .error(R.color.green).into((ImageView) baseViewHolder.getView(R.id.img_home));
+
+        baseViewHolder.setText(R.id.tv_title,bean.getTitle());
     }
 }

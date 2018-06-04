@@ -116,7 +116,7 @@ public class TrainingDetailsActivity extends BaseActivity {
                         if(TextUtils.isEmpty(path)||TextUtils.equals("null",path)){
                             path = "ss";
                         }
-                        Glide.with(activity).load(path).error(R.color.green).into(ivBanner);
+                        Glide.with(activity).load(path).error(R.mipmap.logo).into(ivBanner);
                         content = chatListDeticalBean.getContent();
                         String ss  = Html.fromHtml(content).toString();
                         setWebData(ss,web);

@@ -263,7 +263,8 @@
                         android:inputType="textPassword"
                         android:maxLength="11"
                         android:singleLine="true"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" />
 
                 </RelativeLayout>
 

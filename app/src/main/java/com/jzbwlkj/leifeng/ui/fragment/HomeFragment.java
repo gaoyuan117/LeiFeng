@@ -179,6 +179,11 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     toActivity(LoginActivity.class);
                     return;
                 }
+
+                if(BaseApp.type == 2){
+                    ToastUtils.showToast("您当前已注册队伍账号");
+                    return;
+                }
                 flag = 0;
                 web.setText(BaseApp.config.getZhuceshouze());
                 infoDialog.show();
@@ -187,12 +192,21 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                 if (noLogin()) {
                     personalRegisterDialog();
                 } else {
-                    ToastUtils.showToast("您当前已注册账号");
+                    if (BaseApp.type == 1) {
+                        ToastUtils.showToast("您当前已注册账号");
+                    } else {
+                        ToastUtils.showToast("队伍不可以进行个人注册");
+                    }
+
                 }
                 break;
             case R.id.tv_home_join_team://加入队伍
                 if (noLogin()) {
                     toActivity(LoginActivity.class);
+                    return;
+                }
+                if(BaseApp.type == 2){
+                    ToastUtils.showToast("您当前为队伍账号");
                     return;
                 }
                 toActivity(JoinTeamActivity.class);
@@ -202,6 +216,11 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     toActivity(LoginActivity.class);
                     return;
                 }
+
+                if(BaseApp.type == 2){
+                    ToastUtils.showToast("队伍不可以参加志愿培训");
+                    return;
+                }
                 toActivity(TrainingActivity.class);
                 break;
             case R.id.tv_home_zhaomu://活动招募
@@ -209,11 +228,20 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     toActivity(LoginActivity.class);
                     return;
                 }
+
+                if(BaseApp.type == 2){
+                    ToastUtils.showToast("队伍不可以参加活动招募");
+                    return;
+                }
                 toActivity(ActivitiesRecruitActivity.class);
                 break;
             case R.id.tv_home_xiangmu_zhaomu://项目招募
                 if (noLogin()) {
                     toActivity(LoginActivity.class);
+                    return;
+                }
+                if(BaseApp.type == 2){
+                    ToastUtils.showToast("队伍不可以参加项目招募");
                     return;
                 }
                 toActivity(ProjectRecruitActivity.class);

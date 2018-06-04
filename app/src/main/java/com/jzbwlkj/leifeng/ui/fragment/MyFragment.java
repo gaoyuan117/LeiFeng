@@ -197,6 +197,7 @@ public class MyFragment extends BaseFragment {
         } else {
             getTeamInfo();
         }
+
     }
 
     //获取用户信息

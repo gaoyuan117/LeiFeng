@@ -66,6 +66,8 @@ public class ManagerUserActivity extends BaseActivity {
     private EditText etContent;
     private Dialog addCommenDialog;
 
+    private String uid;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_manager_user;
@@ -106,11 +108,14 @@ public class ManagerUserActivity extends BaseActivity {
      */
     private void getNetData() {
         RetrofitClient.getInstance().createApi().getMember(BaseApp.token, "0")
-                .compose(RxUtils.<HttpResult<UserBean>>io_main())
-                .subscribe(new BaseObjObserver<UserBean>(getActivity(), "队员列表") {
+                .compose(RxUtils.<HttpResult<List<UserBean>>>io_main())
+                .subscribe(new BaseObjObserver<List<UserBean>>(getActivity(), "队员列表") {
                     @Override
-                    protected void onHandleSuccess(UserBean rankBean) {
-
+                    protected void onHandleSuccess(List<UserBean> rankBeans) {
+                        if(rankBeans!= null&&rankBeans.size()>0){
+                            list.addAll(rankBeans);
+                        }
+                        adapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -131,13 +136,15 @@ public class ManagerUserActivity extends BaseActivity {
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                UserBean bean = list.get(position);
+                uid = bean.getId()+"";
                 switch (view.getId()) {
                     case R.id.tv_refuse:
                         addCommenDialog.show();
                         break;
 
                     case R.id.tv_agree:
-                        postData(1, "同意");
+                        postData(1, "同意",uid);
                         break;
                 }
             }
@@ -151,13 +158,13 @@ public class ManagerUserActivity extends BaseActivity {
     /**
      * 提交审核结果1 已审核 -1 已拒绝
      */
-    private void postData(int status, String note) {
-        RetrofitClient.getInstance().createApi().volunteersaudit(BaseApp.token, String.valueOf(status), note)
-                .compose(RxUtils.<HttpResult<CommonBean>>io_main())
-                .subscribe(new BaseObjObserver<CommonBean>(getActivity(), "审核队员") {
+    private void postData(int status, String note,String id) {
+        RetrofitClient.getInstance().createApi().volunteersaudit(BaseApp.token, String.valueOf(status), note,id)
+                .compose(RxUtils.<HttpResult<String>>io_main())
+                .subscribe(new BaseObjObserver<String >(getActivity(), "审核队员") {
                     @Override
-                    protected void onHandleSuccess(CommonBean commonBean) {
-                        showToastMsg("当前队员审核结果已提叫");
+                    protected void onHandleSuccess(String commonBean) {
+                        showToastMsg(commonBean);
                         list.clear();
                         getNetData();
                     }
@@ -181,7 +188,7 @@ public class ManagerUserActivity extends BaseActivity {
                 } else {
                     etContent.setText("");
                     addCommenDialog.dismiss();
-                    postData(-1, ss);
+                    postData(-1, ss,uid);
                 }
             }
         });

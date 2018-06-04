@@ -146,6 +146,7 @@ public class LeaveWordActivity extends BaseActivity implements BaseQuickAdapter.
         switch (view.getId()) {
             case R.id.img_leave_word_agree:
                 bean.setStatus(1);
+                bean.setJujue("同意");
                 resultList.add(bean);
                 adapter.notifyDataSetChanged();
                 break;
@@ -175,9 +176,13 @@ public class LeaveWordActivity extends BaseActivity implements BaseQuickAdapter.
                 .subscribe(new BaseObjObserver<List<AuditListBean>>(this, "留言列表") {
                     @Override
                     protected void onHandleSuccess(List<AuditListBean> liuYanBeans) {
+                        if(liuYanBeans == null){
+                            return;
+                        }
                         if (liuYanBeans.size() > 0) {
                             mList.addAll(liuYanBeans);
                         } else {
+                            footView.setVisibility(View.INVISIBLE);
                             showToastMsg("暂无相关数据");
                         }
                         adapter.notifyDataSetChanged();
@@ -193,9 +198,9 @@ public class LeaveWordActivity extends BaseActivity implements BaseQuickAdapter.
         for (int i = 0; i < list.size(); i++) {
             AuditListBean bean = list.get(i);
             if (i == 0) {
-                ss = ss + bean.getId() + "|" + bean.getStatus();
+                ss = ss + bean.getId() + "|" + bean.getStatus()+"|"+bean.getJujue();
             } else {
-                ss = ss + "," + bean.getId() + "|" + bean.getStatus();
+                ss = ss + "," + bean.getId() + "|" + bean.getStatus()+"|"+bean.getJujue();
             }
         }
 
@@ -254,6 +259,9 @@ public class LeaveWordActivity extends BaseActivity implements BaseQuickAdapter.
                     bean.setStatus(-1);
                     resultList.add(bean);
                     adapter.notifyDataSetChanged();
+                    etContent.setText("");
+                    addCommenDialog.dismiss();
+                    postResult(resultList);
                 }
             }
         });

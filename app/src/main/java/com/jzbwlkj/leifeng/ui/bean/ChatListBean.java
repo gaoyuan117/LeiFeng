@@ -167,6 +167,16 @@ public class ChatListBean {
         private long add_time;
         private int is_read;
 
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        private String desc;
+
         public int getId() {
             return id;
         }

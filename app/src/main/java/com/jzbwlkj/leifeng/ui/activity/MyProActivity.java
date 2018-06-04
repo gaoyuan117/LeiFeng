@@ -37,7 +37,7 @@ public class MyProActivity extends BaseActivity implements TabLayout.OnTabSelect
 
     @Override
     public void initView() {
-        setCenterTitle("已报名活动");
+        setCenterTitle("已报名项目");
     }
 
     @Override

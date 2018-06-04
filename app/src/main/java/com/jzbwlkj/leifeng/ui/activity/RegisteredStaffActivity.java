@@ -165,7 +165,7 @@ public class RegisteredStaffActivity extends BaseActivity implements BaseQuickAd
      * 获取已加入人数
      */
     private void getPeople() {
-        RetrofitClient.getInstance().createApi().userList(BaseApp.token, String.valueOf(id))
+        RetrofitClient.getInstance().createApi().userListT(BaseApp.token, String.valueOf(id))
                 .compose(RxUtils.<HttpResult<List<JoinProjectUserBean>>>io_main())
                 .subscribe(new BaseObjObserver<List<JoinProjectUserBean>>(this, "已加入") {
                     @Override
@@ -174,6 +174,7 @@ public class RegisteredStaffActivity extends BaseActivity implements BaseQuickAd
                             mList.addAll(joinProjectBeans);
                             adapter.notifyDataSetChanged();
                         } else {
+                            footView.setVisibility(View.INVISIBLE);
                             showToastMsg("暂无相关数据");
                         }
                     }

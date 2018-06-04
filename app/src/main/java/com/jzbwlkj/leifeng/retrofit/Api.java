@@ -14,6 +14,7 @@ import com.jzbwlkj.leifeng.ui.bean.JoinTeamListBean;
 import com.jzbwlkj.leifeng.ui.bean.LiuYanBean;
 import com.jzbwlkj.leifeng.ui.bean.LoginBean;
 import com.jzbwlkj.leifeng.ui.bean.MainNewsBean;
+import com.jzbwlkj.leifeng.ui.bean.MainUserBean;
 import com.jzbwlkj.leifeng.ui.bean.MallBean;
 import com.jzbwlkj.leifeng.ui.bean.NewsBean;
 import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
@@ -110,7 +111,7 @@ public interface Api {
     //忘记密码   0 为志愿者，1为队伍
     @FormUrlEncoded
     @POST("/api/public/forgetpwd")
-    Observable<HttpResult<CommitBean>> forgetpwd(@Field("mobile") String mobile, @Field("password") String password,
+    Observable<HttpResult<String>> forgetpwd(@Field("mobile") String mobile, @Field("password") String password,
                                                  @Field("code") String code,@Field("user_type") String user_type);
 
     //登录
@@ -133,6 +134,12 @@ public interface Api {
     @FormUrlEncoded
     @POST("/api/message/getMessageList")
     Observable<HttpResult<ChatListBean>> chatlist(@Field("token") String token, @Field("page") int page, @Field("type") int type);
+
+
+    //信息列表
+    @FormUrlEncoded
+    @POST("/api/message/getMessageList")
+    Observable<HttpResult<ChatListBean>> chatlist2(@Field("team_token") String token, @Field("page") int page, @Field("type") int type);
 
     //信息详情
     @FormUrlEncoded
@@ -160,6 +167,11 @@ public interface Api {
     @FormUrlEncoded
     @POST("/api/activity/getInfo")
     Observable<HttpResult<ProjectDetialBean>> projectDetial(@Field("token") String token, @Field("id") String id);
+
+    //活动详情
+    @FormUrlEncoded
+    @POST("/api/activity/getInfo")
+    Observable<HttpResult<ProjectDetialBean>> projectDetialT(@Field("team_token") String token, @Field("id") String id);
 
     //申请加入活动
     @FormUrlEncoded
@@ -194,17 +206,23 @@ public interface Api {
     //获得用户参加的活动列表
     @FormUrlEncoded
     @POST("/api/activity/getUserJoinList")
-    Observable<HttpResult<List<JoinProjectBean>>> userProListp(@Field("token") String token);
+    Observable<HttpResult<List<MainUserBean>>> userProListp(@Field("token") String token);
 
     //获得参加活动的人员列表
     @FormUrlEncoded
     @POST("/api/activity/getJoinMemberList")
     Observable<HttpResult<List<JoinProjectUserBean>>> userList(@Field("token") String token, @Field("activity_id") String activity_id);
 
+
+    //获得参加活动的人员列表
+    @FormUrlEncoded
+    @POST("/api/activity/getJoinMemberList")
+    Observable<HttpResult<List<JoinProjectUserBean>>> userListT(@Field("team_token") String token, @Field("activity_id") String activity_id);
+
     //提交审核结果
     @FormUrlEncoded
     @POST("/api/activity/auditUser")
-    Observable<HttpResult<CommitBean>> postAudit(@Field("token") String token, @Field("audit_arr") String audit_arr);
+    Observable<HttpResult<CommitBean>> postAudit(@Field("team_token") String token, @Field("audit_arr") String audit_arr);
 
 
     //留言待审核列表
@@ -215,7 +233,7 @@ public interface Api {
     //审核留言待审核列表
     @FormUrlEncoded
     @POST("/api/activity/auditAcitivtyMessage")
-    Observable<HttpResult<CommonBean>> postAuditList(@Field("token") String token, @Field("audit_arr") String audit_arr);
+    Observable<HttpResult<CommonBean>> postAuditList(@Field("team_token") String token, @Field("audit_arr") String audit_arr);
 
 
     //报名培训   参数2表示培训项目的id
@@ -263,7 +281,7 @@ public interface Api {
     //获取队伍的会员列表
     @FormUrlEncoded
     @POST("/api/team/getMemberList")
-    Observable<HttpResult<UserBean>> getMember(@Field("team_token") String token,@Field("status") String status);
+    Observable<HttpResult<List<UserBean>>> getMember(@Field("team_token") String token,@Field("status") String status);
 
 
     //获得主管地址列表
@@ -289,17 +307,17 @@ public interface Api {
 
     //提交志愿者审核结果
     @FormUrlEncoded
-    @POST("/api/team/updateMobile")
-    Observable<HttpResult<CommonBean>> volunteersaudit(@Field("team_token") String token,@Field("status") String status,@Field("note") String note);
+    @POST("/api/team/auditUser")
+    Observable<HttpResult<String>> volunteersaudit(@Field("team_token") String token,@Field("status") String status,@Field("note") String note,@Field("id") String id);
 
     //修改队伍登录密码
     @FormUrlEncoded
-    @POST("/api/team/updateMobile")
+    @POST("/api/team/editPassword")
     Observable<HttpResult<CommonBean>> changeTeamPwd(@Field("team_token") String token,@Field("oldpwd") String oldpwd,@Field("newpwd") String newpwd);
 
     //代签
     @FormUrlEncoded
-    @POST("/api/team/updateMobile")
+    @POST("/api/team/signForUser")
     Observable<HttpResult<CommonBean>> daiqian(@Field("team_token") String token,@Field("activity_id") String activity_id,
                                                @Field("uid") String uid,@Field("time_s") String time_s,@Field("time_e") String time_e);
 

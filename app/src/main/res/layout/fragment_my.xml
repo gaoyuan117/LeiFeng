@@ -43,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@mipmap/wode"
                         android:drawablePadding="10dp"
-                        android:text="昵称"
+                        android:text=""
                         android:textSize="13sp" />
 
                 </LinearLayout>
@@ -57,7 +57,7 @@
                     android:layout_toRightOf="@id/img_my_avatar"
                     android:drawableLeft="@mipmap/phone"
                     android:drawablePadding="10dp"
-                    android:text="17615866248" />
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/tv_my_time"
@@ -68,7 +68,7 @@
                     android:layout_toRightOf="@id/img_my_avatar"
                     android:drawableLeft="@mipmap/xin"
                     android:drawablePadding="10dp"
-                    android:text="10小时"
+                    android:text="0小时"
                     android:textColor="@color/global" />
 
             </RelativeLayout>

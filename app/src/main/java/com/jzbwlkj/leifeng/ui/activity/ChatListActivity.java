@@ -76,6 +76,8 @@ public class ChatListActivity extends BaseActivity {
         if(isloadMore){
             pageCount++;
         }
+
+        if(BaseApp.type == 1){
         RetrofitClient.getInstance().createApi().chatlist(BaseApp.token,pageCount,0)
                 .compose(RxUtils.<HttpResult<ChatListBean>>io_main())
                 .subscribe(new BaseObjObserver<ChatListBean>(this, refresh) {
@@ -103,6 +105,36 @@ public class ChatListActivity extends BaseActivity {
                         }
                     }
                 });
+
+        }else{
+            RetrofitClient.getInstance().createApi().chatlist2(BaseApp.token,pageCount,0)
+                    .compose(RxUtils.<HttpResult<ChatListBean>>io_main())
+                    .subscribe(new BaseObjObserver<ChatListBean>(this, refresh) {
+                        @Override
+                        protected void onHandleSuccess(ChatListBean chatListBean) {
+                            if (chatListBean == null) {
+                                return;
+                            }
+                            List<ChatListBean.AllListBean> listBeans = chatListBean.getAll_list();
+                            if (listBeans.size() > 0) {
+                                mList.addAll(listBeans);
+                                adapter.notifyDataSetChanged();
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            super.onError(e);
+                            if(isfirst||isrefresh){
+                                //展示空数据view
+                            }
+                            if(isloadMore){
+                                adapter.setEnableLoadMore(false);
+                            }
+                        }
+                    });
+        }
     }
 
     /**

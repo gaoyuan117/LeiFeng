@@ -128,6 +128,7 @@ public class AcManagementDetailsActivity extends BaseActivity {
     public void initView() {
         tvRightText.setText("代签");
         tvRightText.setVisibility(View.VISIBLE);
+        tvLaunchEventPublish.setVisibility(View.GONE);
         initPop();
         setCenterTitle("活动管理");
         llNumber.setVisibility(View.VISIBLE);
@@ -236,7 +237,7 @@ public class AcManagementDetailsActivity extends BaseActivity {
      * 获取网络数据
      */
     private void getNetData() {
-        RetrofitClient.getInstance().createApi().projectDetial(BaseApp.token, String.valueOf(id))
+        RetrofitClient.getInstance().createApi().projectDetialT(BaseApp.token, String.valueOf(id))
                 .compose(RxUtils.<HttpResult<ProjectDetialBean>>io_main())
                 .subscribe(new BaseObjObserver<ProjectDetialBean>(this, "活动详情") {
                     @Override
@@ -246,7 +247,9 @@ public class AcManagementDetailsActivity extends BaseActivity {
                         }
                         String path = projectDetialBean.getPic();
                         if (!TextUtils.isEmpty(path) && !TextUtils.equals("null", path)) {
-                            Glide.with(AcManagementDetailsActivity.this).load(path).bitmapTransform(new RoundCornesTransFormation(getActivity(), 16, 16)).error(R.color.green).into(imgLaunchEvent);
+                            Glide.with(AcManagementDetailsActivity.this).load(path).bitmapTransform(new RoundCornesTransFormation(getActivity(), 16, 16)).error(R.mipmap.logo).into(imgLaunchEvent);
+                        }else{
+                            Glide.with(AcManagementDetailsActivity.this).load("xxx").bitmapTransform(new RoundCornesTransFormation(getActivity(), 16, 16)).error(R.mipmap.logo).into(imgLaunchEvent);
                         }
                         //        .setText(projectDetialBean.getService_hour() + "小时");
                         etLaunchEventName.setText(projectDetialBean.getTitle());
@@ -291,7 +294,7 @@ public class AcManagementDetailsActivity extends BaseActivity {
      * 获取已加入人数
      */
     private void getPeople() {
-        RetrofitClient.getInstance().createApi().userList(BaseApp.token, String.valueOf(id))
+        RetrofitClient.getInstance().createApi().userListT(BaseApp.token, String.valueOf(id))
                 .compose(RxUtils.<HttpResult<List<JoinProjectUserBean>>>io_main())
                 .subscribe(new BaseObjObserver<List<JoinProjectUserBean>>(this, "已加入") {
                     @Override
