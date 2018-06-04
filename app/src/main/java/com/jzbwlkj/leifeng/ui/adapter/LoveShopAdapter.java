@@ -43,7 +43,7 @@ public class LoveShopAdapter extends BaseQuickAdapter<MallBean.ListBean, BaseVie
         }
         holder.setText(R.id.tv_learning_garden_title,"物品名称："+item.getGoods_name());
         holder.setText(R.id.tv_learning_garden_price,item.getPrice()+"");
-        holder.setText(R.id.tv_learning_garden_unit,item.getUnit());
+        holder.setText(R.id.tv_learning_garden_unit,"豆/"+item.getUnit());
     }
 
 }

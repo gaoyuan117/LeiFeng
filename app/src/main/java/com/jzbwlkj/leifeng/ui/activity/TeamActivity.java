@@ -64,7 +64,7 @@ public class TeamActivity extends BaseActivity {
 
     private int page = 1;
     private int all = 1;
-    private String status = "0";//加入队伍的状态   1 没有加入  2  审核中  3 审核通过  4  审核拒绝
+    private String status = "8";//加入队伍的状态   1 没有加入  2  审核中  3 审核通过  4  审核拒绝
     @Override
     public int getLayoutId() {
         return R.layout.activity_team;
@@ -107,7 +107,7 @@ public class TeamActivity extends BaseActivity {
      * 获取网络数据
      */
     private void getNetData() {
-        RetrofitClient.getInstance().createApi().getTeamInfo(String.valueOf(id),BaseApp.token)
+        RetrofitClient.getInstance().createApi().getTeamInfop(String.valueOf(id),BaseApp.token)
                 .compose(RxUtils.<HttpResult<TeamInfoBean>>io_main())
                 .subscribe(new BaseObjObserver<TeamInfoBean>(activity, "队伍信息") {
                     @Override
@@ -116,16 +116,24 @@ public class TeamActivity extends BaseActivity {
                         if(TextUtils.equals("null",teamName)||TextUtils.isEmpty(teamName)){
                             teamName = "----";
                         }
-                        status = teamInfoBeans.getJoin_info().getStatus()+"";
-                        if(TextUtils.equals("0",status)){
-                            tvTeamStatus.setText("审核中");
-                        }else if(TextUtils.equals("-1",status)){
-                            tvTeamStatus.setText("重新加入");
-                        }else if(TextUtils.equals("1",status)){
-                            showToastMsg("已加入");
-                        }else {
-                            tvTeamStatus.setText("我要加入");
+                        if(TextUtils.isEmpty(BaseApp.token)){
+                            tvTeamStatus.setVisibility(View.GONE);
+                        }else{
+                            tvTeamStatus.setVisibility(View.VISIBLE);
+                            if(teamInfoBeans.getJoin_info() != null){
+                                status = teamInfoBeans.getJoin_info().getStatus()+"";
+                            }
+                            if(TextUtils.equals("0",status)){
+                                tvTeamStatus.setText("审核中");
+                            }else if(TextUtils.equals("-1",status)){
+                                tvTeamStatus.setText("重新加入");
+                            }else if(TextUtils.equals("1",status)){
+                                tvTeamStatus.setText("已加入");
+                            }else {
+                                tvTeamStatus.setText("我要加入");
+                            }
                         }
+
                         tvTeamName.setText(teamName);
                         tvTeamNam.setText(teamName);
                         tvTeamUnit.setText(teamName);

@@ -6,6 +6,7 @@
     android:background="@drawable/circle_gray_little_shape">
 
     <TextView
+        android:id="@+id/tv_dia_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/text_red"

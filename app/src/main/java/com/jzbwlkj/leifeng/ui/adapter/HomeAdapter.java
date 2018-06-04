@@ -1,6 +1,8 @@
 package com.jzbwlkj.leifeng.ui.adapter;
 
+import android.app.Activity;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -17,14 +19,15 @@ import java.util.List;
  */
 
 public class HomeAdapter extends BaseQuickAdapter<HomeBean.NewsRecommendListBean, BaseViewHolder> {
-
-    public HomeAdapter(int layoutResId, @Nullable List<HomeBean.NewsRecommendListBean> data) {
+    private Activity activity;
+    public HomeAdapter(Activity activity,int layoutResId, @Nullable List<HomeBean.NewsRecommendListBean> data) {
         super(layoutResId, data);
+        this.activity = activity;
     }
 
     @Override
     protected void convert(BaseViewHolder baseViewHolder, HomeBean.NewsRecommendListBean s) {
-        ImageView imageView = baseViewHolder.getView(R.id.img_home);
-        Glide.with(mContext).load(s.getPic()).error(R.mipmap.cover_default).into(imageView);
+        baseViewHolder.setText(R.id.tv_title,s.getTitle());
+        Glide.with(activity).load(s.getPic()).error(R.mipmap.cover_default).into((ImageView) baseViewHolder.getView(R.id.img_home));
     }
 }

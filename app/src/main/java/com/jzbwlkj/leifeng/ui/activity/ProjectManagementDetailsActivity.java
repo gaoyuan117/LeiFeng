@@ -29,6 +29,7 @@ import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.adapter.AcManagementDetailsAdapter;
 import com.jzbwlkj.leifeng.ui.adapter.ListViewAdapter;
+import com.jzbwlkj.leifeng.ui.bean.ConfigBean;
 import com.jzbwlkj.leifeng.ui.bean.JoinProjectUserBean;
 import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
 import com.jzbwlkj.leifeng.ui.bean.ProjectDetialBean;
@@ -144,17 +145,20 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        tvRightText.setVisibility(View.VISIBLE);
+        tvRightText.setText("代签");
         initPop();
         setCenterTitle("项目管理");
         llNumber.setVisibility(View.VISIBLE);
-
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < BaseApp.config.getService_type().size(); i++){
             MySelfModel model = new MySelfModel();
-            model.setName("条件" + (i + 1));
+            model.setName(BaseApp.config.getService_type().get(i));
             model.setId((i + 1) + "");
             model.setSelected(false);
             typeList.add(model);
+        }
 
+        for (int i = 0; i < 6; i++) {
             MySelfModel model2 = new MySelfModel();
             model2.setName((i + 1) + "00" + "米");
             model2.setId((i + 1) + "");
@@ -207,7 +211,7 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
     }
 
     @OnClick({R.id.img_publish_project, R.id.tv_publish_project_publish, R.id.tv_number, R.id.tv_range,
-            R.id.tv_project_type, R.id.tv_unit, R.id.tv_zhouqi})
+            R.id.tv_project_type, R.id.tv_unit, R.id.tv_zhouqi,R.id.tv_right_text})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_publish_project:
@@ -272,6 +276,12 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
                 popType.showAsDropDown(tvZhouqi, -12, 20);
                 break;
 
+            case R.id.tv_right_text:
+                Intent intent1 = new Intent(getActivity(),DaiQainActivity.class);
+                intent1.putExtra("id",id);
+                startActivity(intent1);
+                break;
+
         }
     }
 
@@ -287,7 +297,7 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
      * 获取网络数据
      */
     private void getNetData() {
-        RetrofitClient.getInstance().createApi().projectDetial(BaseApp.token, String.valueOf(id))
+        RetrofitClient.getInstance().createApi().projectDetial(null, String.valueOf(id))
                 .compose(RxUtils.<HttpResult<ProjectDetialBean>>io_main())
                 .subscribe(new BaseObjObserver<ProjectDetialBean>(this, "活动详情") {
                     @Override
@@ -314,7 +324,38 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
                         etPublishProjectSignUpAddress.setText(projectDetialBean.getAddress());
                         etPublishProjectLinkman.setText(projectDetialBean.getContact());
                         etPublishProjectLinkphone.setText(projectDetialBean.getContact_mobile());
-                        etPublishProjectEmail.setText("缺少字段");
+                        int canbu = projectDetialBean.getCanbu();
+                        if(canbu < 0){
+                            cbPublishProjectCantie.setChecked(false);
+                        }else if(canbu == 0){
+                            cbPublishProjectCantie.setChecked(true);
+                            etPublishProjectFee.setText("统一安排");
+                        }else{
+                            cbPublishProjectCantie.setChecked(true);
+                            etPublishProjectFee.setText(canbu + "元/人");
+                        }
+
+                        int tra = projectDetialBean.getJiaotongbuzu();
+                        if(tra < 0){
+                            cbPublishProjectTraffic.setChecked(false);
+                        }else if(tra >= 0){
+                            cbPublishProjectTraffic.setChecked(true);
+                        }
+
+                        int baoxian = projectDetialBean.getBaoxianbuzu();
+                        if(baoxian < 0){
+                            cbPublishProjectInsurance.setChecked(false);
+                        }else if(baoxian >= 0){
+                            cbPublishProjectInsurance.setChecked(true);
+                        }
+
+                        int xun = projectDetialBean.getPeixun();
+                        if(xun == 0){
+                            cbPublishProjectTraining.setChecked(false);
+                        }else if(xun == 1){
+                            cbPublishProjectTraining.setChecked(true);
+                        }
+                        etPublishProjectEmail.setText(projectDetialBean.getEmail());
                         setweb(etPublishProjectDetails, projectDetialBean.getContent());
                         setweb(etPublishProjectDemand, projectDetialBean.getRequirement());
                     }

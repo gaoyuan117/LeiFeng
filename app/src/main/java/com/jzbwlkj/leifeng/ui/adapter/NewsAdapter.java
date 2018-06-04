@@ -32,8 +32,10 @@ public class NewsAdapter extends BaseQuickAdapter<NewsBean.NewsListBean, BaseVie
         ImageView imageView = baseViewHolder.getView(R.id.img_news);
         String path = s.getPic();
         if(!TextUtils.equals("null",path)&&!TextUtils.isEmpty(path)){
-            if (!path.contains("upload")) {
-                path = AppConfig.BASE_URL + "/upload/" + path;
+            if(!path.contains("http")){
+                if (!path.contains("upload")) {
+                    path = AppConfig.BASE_URL + "/upload/" + path;
+                }
             }
             Glide.with(activity).load(path).bitmapTransform(new RoundCornesTransFormation(activity,10,10))
                     .error(R.mipmap.cover_default).into(imageView);

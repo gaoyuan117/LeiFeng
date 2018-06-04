@@ -1,6 +1,8 @@
 package com.jzbwlkj.leifeng.ui.activity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,6 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
@@ -17,6 +23,7 @@ import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.bean.UserInfoBean;
 import com.jzbwlkj.leifeng.utils.FormatUtils;
+import com.jzbwlkj.leifeng.utils.ScreenUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,9 +71,13 @@ public class VoluntaryCardActivity extends BaseActivity {
     TextView tvCreat;
     @BindView(R.id.tv_unit)
     TextView tvUnit;
+    @BindView(R.id.iv_qrcode)
+    ImageView ivQrcode;
+    private String id;//这个是从首页中的个人排行中传过来的
 
     @Override
     public int getLayoutId() {
+        id = getIntent().getStringExtra("id");
         return R.layout.activity_voluntary_card;
     }
 
@@ -92,6 +103,14 @@ public class VoluntaryCardActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_creat:
+                int  ss = (int) ScreenUtils.dpToPx(80f);
+                final Bitmap qq = creatCode(ss,ss,BaseApp.config.getApp_url_android());
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ivQrcode.setImageBitmap(qq);
+                    }
+                },300);
                 break;
         }
     }
@@ -99,7 +118,7 @@ public class VoluntaryCardActivity extends BaseActivity {
     //获取用户信息
     private void getUserInfo() {
         if (TextUtils.isEmpty(BaseApp.token)) return;
-        RetrofitClient.getInstance().createApi().getUserInfo(BaseApp.token)
+        RetrofitClient.getInstance().createApi().getUserInfo(BaseApp.token, id)
                 .compose(RxUtils.<HttpResult<UserInfoBean>>io_main())
                 .subscribe(new BaseObjObserver<UserInfoBean>(activity) {
                     @Override
@@ -109,16 +128,45 @@ public class VoluntaryCardActivity extends BaseActivity {
                 });
     }
 
-    private void setUserData(UserInfoBean bean){
+    private void setUserData(UserInfoBean bean) {
         Glide.with(this).load(bean.getAvatar()).error(R.mipmap.avatar_default).into(ivHead);
         tvName.setText(bean.getUser_nickname());
         tvNumber.setText(bean.getUser_login());
         tvPersonId.setText(bean.getId_no());
         tvPhone.setText(bean.getMobile());
         tvShenfen.setText(bean.getPolital_status_text());
-        tvGrade.setText(bean.getLevel()+"级");
-        tvTimeHour.setText(bean.getService_hour()+"小时");
+        tvGrade.setText(bean.getLevel() + "级");
+        tvTimeHour.setText(bean.getService_hour() + "小时");
         tvRegisterTime.setText(FormatUtils.formatTime(bean.getCreate_time()));
         tvAddress.setText(bean.getCity_text());
     }
+
+    /**
+     * 生成二维码
+     */
+    private Bitmap creatCode(int width, int height, String str) {
+        Bitmap bitmap = null;
+        BitMatrix result = null;
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            result = multiFormatWriter.encode(str, BarcodeFormat.QR_CODE, width, height);
+            int[] pixels = new int[width * height];
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (result.get(j, i)) {
+                        pixels[i * width + j] = 0x00000000;
+                    } else {
+                        pixels[i * width + j] = 0xffffffff;
+                    }
+                }
+            }
+            bitmap = Bitmap.createBitmap(pixels, 0, width, width, height, Bitmap.Config.RGB_565);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException iae) { // ?
+            return null;
+        }
+        return bitmap;
+    }
+
 }

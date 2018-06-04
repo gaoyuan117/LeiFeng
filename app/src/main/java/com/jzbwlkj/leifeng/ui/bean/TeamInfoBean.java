@@ -1,36 +1,45 @@
 package com.jzbwlkj.leifeng.ui.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2018/4/19.
  */
 
-public class TeamInfoBean {
+public class TeamInfoBean implements Serializable{
 
     /**
-     * id : 2
-     * uid : 7
-     * team_name : 测试队伍
-     * pic : http://leifeng.jzbwlkj.com/upload/default/20180425/cac1fd9c7ff9750dc0563ee75f16826a.jpg
-     * parent_id : 1
-     * contact : 李四
-     * contact_mobile : 15688860126
-     * manager : 王五
-     * manager_mobile : 15866706637
-     * desc : <p>这是测试队伍注册</p>
+     * id : 1
+     * uid : 1
+     * username :
+     * password :
+     * team_name : 高密市志愿者协会
+     * pic : http://leifeng.test.com/upload/admin/20180331/5b657db4b37d382f71f1f3d16b47556a.jpg
+     * parent_id : 0
+     * area_id : 0
+     * contact : 张三
+     * contact_mobile : 12521542
+     * manager : 张三
+     * manager_mobile : 152121
+     * desc : <p>时代发生地方的风格的风格的</p>
      * service_hour : 0.00
-     * add_time : 1524639470
-     * audit_time : 1524734510
+     * add_time : 1522461417
+     * audit_time : 1522461417
      * status : 1
      * sign_auth : 0
      * note :
-     * join_info : {"status":0,"note":"","add_time":1524823927}
+     * join_info : {"status":0,"note":"","add_time":1524103521}
      */
+
 
     private int id;
     private int uid;
+    private String username;
+    private String password;
     private String team_name;
     private String pic;
     private int parent_id;
+    private int area_id;
     private String contact;
     private String contact_mobile;
     private String manager;
@@ -60,6 +69,22 @@ public class TeamInfoBean {
         this.uid = uid;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getTeam_name() {
         return team_name;
     }
@@ -82,6 +107,14 @@ public class TeamInfoBean {
 
     public void setParent_id(int parent_id) {
         this.parent_id = parent_id;
+    }
+
+    public int getArea_id() {
+        return area_id;
+    }
+
+    public void setArea_id(int area_id) {
+        this.area_id = area_id;
     }
 
     public String getContact() {
@@ -184,7 +217,7 @@ public class TeamInfoBean {
         /**
          * status : 0
          * note :
-         * add_time : 1524823927
+         * add_time : 1524103521
          */
 
         private int status;

@@ -121,11 +121,13 @@ public class AcManagementDetailsActivity extends BaseActivity {
     @Override
     public int getLayoutId() {
         id = getIntent().getIntExtra("id", 0);
-        return R.layout.activity_launch_event;
+        return R.layout.activity_ac_management_details;
     }
 
     @Override
     public void initView() {
+        tvRightText.setText("代签");
+        tvRightText.setVisibility(View.VISIBLE);
         initPop();
         setCenterTitle("活动管理");
         llNumber.setVisibility(View.VISIBLE);
@@ -173,7 +175,8 @@ public class AcManagementDetailsActivity extends BaseActivity {
         setData();
     }
 
-    @OnClick({R.id.img_launch_event, R.id.tv_number, R.id.tv_launch_event_publish, R.id.tv_project_type, R.id.tv_range})
+    @OnClick({R.id.img_launch_event, R.id.tv_number, R.id.tv_launch_event_publish, R.id.tv_project_type,
+            R.id.tv_range,R.id.tv_right_text})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_launch_event:
@@ -213,6 +216,11 @@ public class AcManagementDetailsActivity extends BaseActivity {
                     popType.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
                 }
                 popType.showAsDropDown(tvRange, -12, 20);
+                break;
+            case R.id.tv_right_text:
+                Intent intent1 = new Intent(getActivity(),DaiQainActivity.class);
+                intent1.putExtra("id",id);
+                startActivity(intent1);
                 break;
         }
     }
@@ -254,7 +262,7 @@ public class AcManagementDetailsActivity extends BaseActivity {
                         etLaunchEventUnit.setText(projectDetialBean.getTeam_name());
                         etLaunchEventLinkman.setText(projectDetialBean.getContact());
                         etLaunchEventLinkphone.setText(projectDetialBean.getContact_mobile());
-                        etLaunchEventEmail.setText("缺少字段");
+                        etLaunchEventEmail.setText(projectDetialBean.getEmail());
                         setweb(etLaunchEventDetails, projectDetialBean.getContent());
                         setweb(etLaunchEventDemand, projectDetialBean.getRequirement());
                     }

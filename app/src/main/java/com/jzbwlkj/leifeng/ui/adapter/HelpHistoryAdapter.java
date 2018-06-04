@@ -3,6 +3,7 @@ package com.jzbwlkj.leifeng.ui.adapter;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -29,8 +30,14 @@ public class HelpHistoryAdapter extends BaseQuickAdapter<HelpListBean, BaseViewH
        long pubTime = item.getAdd_time();
        helper.setText(R.id.tv_time, FormatUtils.formatTime(pubTime));
        helper.setText(R.id.tv_describe,item.getContent());
-       helper.setText(R.id.tv_help_review_name,"平台：");
-       helper.setText(R.id.tv_help_review,item.getReply_content());
+       if(TextUtils.isEmpty(item.getReply_content())){
+           helper.setText(R.id.tv_help_review_name,"");
+           helper.setText(R.id.tv_help_review,"平台暂未回复");
+       }else{
+           helper.setText(R.id.tv_help_review_name,"平台：");
+           helper.setText(R.id.tv_help_review,item.getReply_content());
+       }
+
        if(item.getIs_anonymous() == 0){
            helper.setText(R.id.tv_name,item.getFullname());
        }else{

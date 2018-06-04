@@ -6,7 +6,7 @@ import java.util.Stack;
 
 public class AppManager {
 
-    private static Stack<Activity> activityStack;
+    public static Stack<Activity> activityStack;
     //private static AppManager instance = null; // 懒汉式 有缺陷
     private static AppManager instance = new AppManager();// 饿汉式 安全 简单
 

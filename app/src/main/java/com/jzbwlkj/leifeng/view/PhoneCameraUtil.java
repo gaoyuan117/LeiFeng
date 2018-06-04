@@ -518,7 +518,7 @@ public class PhoneCameraUtil {
         if (Build.VERSION.SDK_INT >= 24) {
             Log.i("sun","hhh");
             //参数1 上下文, 参数2 Provider主机地址 和配置文件中保持一致 参数3 共享的文件
-            pp = FileProvider.getUriForFile(mContext, "com.diyunapp.suoluomen.fileprovider",file );
+            pp = FileProvider.getUriForFile(mContext, "com.jzbwlkj.leifeng.fileprovider",file );
         } else {
             pp = Uri.fromFile(file);
         }

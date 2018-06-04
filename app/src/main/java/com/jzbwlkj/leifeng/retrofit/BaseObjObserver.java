@@ -5,13 +5,8 @@ import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jzbwlkj.leifeng.BaseApp;
-import com.jzbwlkj.leifeng.utils.CommonApi;
-import com.jzbwlkj.leifeng.utils.SharedPreferencesUtil;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 

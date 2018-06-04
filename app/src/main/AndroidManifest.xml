@@ -32,6 +32,33 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
+    <!-- Required -->
+    <permission
+        android:name="com.jzbwlkj.leifeng.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <!-- Required -->
+    <uses-permission android:name="com.jzbwlkj.leifeng.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <!-- Optional. Required for location feature -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <application
         android:name=".BaseApp"
         android:allowBackup="true"
@@ -52,6 +79,7 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".base.SplashActivity"
@@ -76,16 +104,21 @@
 
         <receiver
             android:name=".MyReceiver"
-            android:enabled="true"
-            android:exported="false">
+            android:enabled="true">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!-- Required  用户注册SDK的intent -->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!-- Required  用户接收SDK消息的intent -->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!-- Required  用户接收SDK通知栏信息的intent -->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
-                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" /> <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
-                <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <category android:name="com.jzbwlkj.navigation" />
+
+                <!-- Required 用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <!-- Required 用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <!-- Required 用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <!-- Required 用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+
+                <category android:name="com.jzbwlkj.leifeng" />
             </intent-filter>
         </receiver>
 
@@ -146,56 +179,145 @@
             android:name="Mob-AppSecret"
             android:value="您的AppSecret" />
 
-        <activity android:name=".ui.activity.LoginActivity" />
-        <activity android:name=".saomiao.Sao1SaoResultActivity" />
-        <activity android:name=".saomiao.CaptureActivity" />
-        <activity android:name=".ui.activity.NewsDetalActivity" />
-        <activity android:name=".ui.activity.CommitHelpActivity" />
-        <activity android:name=".ui.activity.HelpHistoryActivity" />
-        <activity android:name=".ui.activity.MyInfoActivity" />
-        <activity android:name=".ui.activity.MyTeamActivity" />
-        <activity android:name=".ui.activity.MyAcActivity" />
-        <activity android:name=".ui.activity.ChangePwdActivity" />
-        <activity android:name=".ui.activity.AboutActivity" />
-        <activity android:name=".ui.activity.SettingActivity" />
-        <activity android:name=".ui.activity.TeamActivity" />
-        <activity android:name=".ui.activity.AcDetailActivity" />
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen" />
+        <activity
+            android:name=".saomiao.Sao1SaoResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".saomiao.CaptureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.NewsDetalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CommitHelpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.HelpHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MyInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MyTeamActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MyAcActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ChangePwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TeamActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AcDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.RegisterTeamActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ui.activity.ProtocolActivity" />
-        <activity android:name=".ui.activity.SelectAreaActivity" />
-        <activity android:name=".ui.activity.ChatListActivity" />
+        <activity
+            android:name=".ui.activity.ProtocolActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SelectAreaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ChatListActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.RegisterPersonalActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ui.activity.TrainingActivity" />
-        <activity android:name=".ui.activity.TrainingDetailsActivity" />
-        <activity android:name=".ui.activity.LearningGardenActivity" />
-        <activity android:name=".ui.activity.UsingHelpActivity" />
-        <activity android:name=".ui.activity.LoveShopActivity" />
-        <activity android:name=".ui.activity.LoveShopInstructionsActivity" />
-        <activity android:name=".ui.activity.JoinTeamActivity" />
-        <activity android:name=".ui.activity.ActivitiesRecruitActivity" />
-        <activity android:name=".ui.activity.ProjectRecruitActivity" />
-        <activity android:name=".ui.activity.RankActivity" />
+        <activity
+            android:name=".ui.activity.TrainingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TrainingDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.LearningGardenActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.UsingHelpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.LoveShopActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.LoveShopInstructionsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.JoinTeamActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ActivitiesRecruitActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ProjectRecruitActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.RankActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LaunchEventActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activity.PublishProjectActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ui.activity.AcManagementActivity" />
-        <activity android:name=".ui.activity.ProjectManagementActivity" />
-        <activity android:name=".ui.activity.AcManagementDetailsActivity" />
-        <activity android:name=".ui.activity.RegisteredStaffActivity" />
-        <activity android:name=".ui.activity.ProjectManagementDetailsActivity" />
-        <activity android:name=".ui.activity.LeaveWordActivity" />
-        <activity android:name=".ui.activity.ForgetPwdActivity" />
-        <activity android:name=".ui.activity.ChatDeticalActivity" />
-        <activity android:name=".ui.activity.SearchKeyWordsActivity" />
-        <activity android:name=".ui.activity.ModifyPhoneActivity" />
-        <activity android:name=".ui.activity.VoluntaryCardActivity"></activity>
+        <activity
+            android:name=".ui.activity.AcManagementActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ProjectManagementActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AcManagementDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.RegisteredStaffActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ProjectManagementDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.LeaveWordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ForgetPwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ChatDeticalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SearchKeyWordsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ModifyPhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SignActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.VoluntaryCardActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.MyProActivity" />
+        <activity android:name=".ui.activity.TeamInfoActivity" />
+        <activity android:name=".ui.activity.ModifyTeamPhoneActivity" />
+        <activity android:name=".ui.activity.MessageActivity" />
+        <activity android:name=".ui.activity.AllLoginActivity" />
+        <activity android:name=".ui.activity.ManagerUserActivity" />
+        <activity android:name=".ui.activity.MainNewsActivity" />
+        <activity android:name=".ui.activity.ModifyTeamPwdActivity" />
+        <activity android:name=".ui.activity.DaiQainActivity"></activity>
     </application>
 
 </manifest>

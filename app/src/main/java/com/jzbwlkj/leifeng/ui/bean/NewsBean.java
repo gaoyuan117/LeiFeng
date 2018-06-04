@@ -8,19 +8,14 @@ import java.util.List;
 
 public class NewsBean {
 
-    /**
-     * ad_info : {"image":"admin/20180410/7874cb041e4f84249237330f1c621ca7.jpg","url":""}
-     * news_list : [{"id":1,"type":0,"city_id":0,"title":"测试志愿新闻","pic":"admin/20180331/5b657db4b37d382f71f1f3d16b47556a.jpg","desc":"时代发生地方","content":"&lt;p&gt;是的根深蒂固大哥&lt;br/&gt;&lt;/p&gt;","is_recommend":1,"add_time":0}]
-     */
-
-    private AdInfoBean ad_info;
+    private List<AdInfoBean> ad_info;
     private List<NewsListBean> news_list;
 
-    public AdInfoBean getAd_info() {
+    public List<AdInfoBean> getAd_info() {
         return ad_info;
     }
 
-    public void setAd_info(AdInfoBean ad_info) {
+    public void setAd_info(List<AdInfoBean> ad_info) {
         this.ad_info = ad_info;
     }
 
@@ -66,7 +61,7 @@ public class NewsBean {
          * title : 测试志愿新闻
          * pic : admin/20180331/5b657db4b37d382f71f1f3d16b47556a.jpg
          * desc : 时代发生地方
-         * content : &lt;p&gt;是的根深蒂固大哥&lt;br/&gt;&lt;/p&gt;
+         * content : <p>是的根深蒂固大哥<br/></p>
          * is_recommend : 1
          * add_time : 0
          */
@@ -79,7 +74,7 @@ public class NewsBean {
         private String desc;
         private String content;
         private int is_recommend;
-        private long add_time;
+        private int add_time;
 
         public int getId() {
             return id;
@@ -145,11 +140,11 @@ public class NewsBean {
             this.is_recommend = is_recommend;
         }
 
-        public long getAdd_time() {
+        public int getAdd_time() {
             return add_time;
         }
 
-        public void setAdd_time(long add_time) {
+        public void setAdd_time(int add_time) {
             this.add_time = add_time;
         }
     }

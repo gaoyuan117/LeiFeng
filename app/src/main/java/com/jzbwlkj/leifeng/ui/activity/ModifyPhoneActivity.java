@@ -53,16 +53,16 @@ public class ModifyPhoneActivity extends BaseActivity {
     TextView tvButton;
     private String phoneCode;
     private int i = 60;
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 88:
-                    if(i>0){
+                    if (i > 0) {
                         i--;
-                        tvGetCode.setText(i+"s");
-                        handler.sendEmptyMessageDelayed(88,1000);
-                    }else {
+                        tvGetCode.setText(i + "s");
+                        handler.sendEmptyMessageDelayed(88, 1000);
+                    } else {
                         handler.removeCallbacksAndMessages(null);
                         i = 60;
                         phoneCode = "-1";
@@ -101,17 +101,16 @@ public class ModifyPhoneActivity extends BaseActivity {
                 break;
             case R.id.tv_get_code:
                 String phone = etPhone.getText().toString();
-                if(TextUtils.isEmpty(phone)||TextUtils.equals("null",phone)){
+                if (TextUtils.isEmpty(phone) || TextUtils.equals("null", phone)) {
                     showToastMsg("请先输入您要使用的手机号码");
                     return;
-                }else if(!StringCheckUtil.isMobileNO(phone)){
+                } else if (!StringCheckUtil.isMobileNO(phone)) {
                     showToastMsg("请输入正确的手机号码");
                     return;
-                }else{
-                    if(i<60&&i>0){
+                } else {
+                    if (i < 60 && i > 0) {
                         showToastMsg("验证码发送中，请勿重复点击");
-                    }else{
-                        handler.sendEmptyMessage(88);
+                    } else {
                         getCode(phone);
                     }
 
@@ -121,32 +120,32 @@ public class ModifyPhoneActivity extends BaseActivity {
             case R.id.tv_button:
                 String phone2 = etPhone.getText().toString();
                 String code = etCode.getText().toString();
-                if(TextUtils.isEmpty(phone2)||TextUtils.equals("null",phone2)){
+                if (TextUtils.isEmpty(phone2) || TextUtils.equals("null", phone2)) {
                     showToastMsg("请先输入您要使用的手机号码");
                     return;
-                }else if(!StringCheckUtil.isMobileNO(phone2)){
+                } else if (!StringCheckUtil.isMobileNO(phone2)) {
                     showToastMsg("请输入正确的手机号码");
                     return;
-                }else if(TextUtils.isEmpty(code)){
+                } else if (TextUtils.isEmpty(code)) {
                     showToastMsg("请输入您获取到的验证码");
                     return;
-                }else if(TextUtils.equals("-1",phoneCode)){
+                } else if (TextUtils.equals("-1", phoneCode)) {
                     showToastMsg("您的验证码已失效，请重新获取");
                     return;
-                }else if(!TextUtils.equals(code,phoneCode)){
+                } else if (!TextUtils.equals(code, phoneCode)) {
                     showToastMsg("您输入的验证码不正确，请重新输入");
                     return;
-                }else{
-                    postData(phone2,code);
+                } else {
+                    postData(phone2, code);
                 }
                 break;
         }
     }
 
-    private void postData(String phone,String code){
-        RetrofitClient.getInstance().createApi().modifyPhone(BaseApp.token,phone,code)
+    private void postData(String phone, String code) {
+        RetrofitClient.getInstance().createApi().modifyPhone(BaseApp.token, phone, code)
                 .compose(RxUtils.<HttpResult<CommonBean>>io_main())
-                .subscribe(new BaseObjObserver<CommonBean>(this,"修改手机号") {
+                .subscribe(new BaseObjObserver<CommonBean>(this, "修改手机号") {
                     @Override
                     protected void onHandleSuccess(CommonBean commonBean) {
                         showToastMsg("手机号修改成功");
@@ -156,12 +155,13 @@ public class ModifyPhoneActivity extends BaseActivity {
                 });
     }
 
-    private void getCode(String phone){
-        RetrofitClient.getInstance().createApi().sendsms(phone,"modifymobile")
+    private void getCode(String phone) {
+        RetrofitClient.getInstance().createApi().sendsms(phone, "modifymobile")
                 .compose(RxUtils.<HttpResult<CodeBean>>io_main())
-                .subscribe(new BaseObjObserver<CodeBean>(this,"获取验证码") {
+                .subscribe(new BaseObjObserver<CodeBean>(this, "获取验证码") {
                     @Override
                     protected void onHandleSuccess(CodeBean codeBean) {
+                        handler.sendEmptyMessage(88);
                         phoneCode = codeBean.getCode();
                         showToastMsg("验证码已发送，请注意查收");
                     }

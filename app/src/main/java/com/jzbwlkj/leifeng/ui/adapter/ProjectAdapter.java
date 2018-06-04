@@ -33,7 +33,7 @@ public class ProjectAdapter extends BaseQuickAdapter<ProjectBean.DataBean, BaseV
     protected void convert(BaseViewHolder holder, ProjectBean.DataBean item) {
         LinearLayout layout = holder.getView(R.id.ll_my_team_refuse);
         if (type.equals("2")) {
-            layout.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
         } else {
             layout.setVisibility(View.GONE);
         }

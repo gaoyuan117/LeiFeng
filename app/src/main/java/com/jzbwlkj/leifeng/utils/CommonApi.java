@@ -238,7 +238,7 @@ public class CommonApi {
         }
     }
 
-    public static void glideUtils(Context context,ImageView imageView, String url) {
+    public static void glideUtils(Context context, ImageView imageView, String url) {
         if (TextUtils.isEmpty(url)) return;
 
         if (!url.contains("upload")) {
@@ -247,7 +247,7 @@ public class CommonApi {
         Glide.with(context).load(url).error(R.mipmap.logo).into(imageView);
     }
 
-    public static void glideUtils(Context context,ImageView imageView, String url, int errorImg) {
+    public static void glideUtils(Context context, ImageView imageView, String url, int errorImg) {
         if (TextUtils.isEmpty(url)) return;
 
         if (!url.contains("upload")) {
@@ -399,18 +399,34 @@ public class CommonApi {
     /**
      * 设置轮播图
      *
-     * @param list
+     * @param ltPath
      */
-    public static void setBanner(Banner banner, List<String> list) {
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-        banner.setImageLoader(new MyImageLoader());
-        banner.setImages(list);
-        banner.setBannerAnimation(Transformer.Default);
-        banner.isAutoPlay(true);
-        banner.setViewPagerIsScroll(true);
-        banner.setDelayTime(3000);
-        banner.setIndicatorGravity(BannerConfig.CENTER);
-        banner.start();
+    public static void setBanner(Banner banner, List<String> ltPath) {
+//        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+//        banner.setImageLoader(new MyImageLoader());
+//        banner.setImages(list);
+//        banner.setBannerAnimation(Transformer.Default);
+//        banner.isAutoPlay(true);
+//        banner.setViewPagerIsScroll(true);
+//        banner.setDelayTime(3000);
+//        banner.setIndicatorGravity(BannerConfig.CENTER);
+//        banner.start();
+
+        if (banner.getTag() == null) {
+            banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)//BannerConfig.CIRCLE_INDICATOR.setIndicatorGravity(BannerConfig.CENTER)
+                    .setImageLoader(new MyImageLoader())//设置图片加载器
+                    .setBannerAnimation(Transformer.DepthPage); //设置banner动画效果
+            banner.setImages(ltPath)
+                    //                .setBannerTitles(titles)//设置标题集合（当banner样式有显示title时）
+                    .isAutoPlay(true)//设置自动轮播，默认为true
+                    .setDelayTime(4000)//设置轮播时间
+                    .start() ;  //banner设置方法全部调用完毕时最后调用
+            banner.setTag(1);
+        } else {
+            if (ltPath.size() > 0) {
+                banner.update(ltPath);
+            }
+        }
     }
 
 }

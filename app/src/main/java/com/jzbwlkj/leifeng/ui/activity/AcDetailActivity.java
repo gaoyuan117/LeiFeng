@@ -125,6 +125,10 @@ public class AcDetailActivity extends BaseActivity {
     private EditText etContent;
     private Dialog addCommenDialog;
 
+    private int already = 0;//以招募人数
+    private int all = 0;//共招募人数
+    private long  endtime;//报名截止时间
+
     @Override
     public int getLayoutId() {
         id = getIntent().getIntExtra("id", 0);
@@ -174,6 +178,7 @@ public class AcDetailActivity extends BaseActivity {
                         if (!TextUtils.isEmpty(path) && !TextUtils.equals("null", path)) {
                             Glide.with(AcDetailActivity.this).load(path).error(R.color.green).into(imgAcDetail);
                         }
+                        endtime = (long) projectDetialBean.getJoin_time_e();
                         tvAcTime.setText(projectDetialBean.getPraise_num() + "");
                         tvAcTitle.setText(projectDetialBean.getTitle());
                         tvAcName.setText(projectDetialBean.getTitle());
@@ -192,7 +197,8 @@ public class AcDetailActivity extends BaseActivity {
                         tvAcEmail.setText(projectDetialBean.getEmail());
                         setweb(tvAcDetail, projectDetialBean.getContent());
                         setweb(tvAcDemand, projectDetialBean.getRequirement());
-
+                        all = projectDetialBean.getService_num();
+                        already = projectDetialBean.getPraise_num();
                         int dian = projectDetialBean.getIs_praise();
                         ProjectDetialBean.JoinInfoBean beandd = projectDetialBean.getJoin_info();
                         if(beandd == null){
@@ -343,13 +349,17 @@ public class AcDetailActivity extends BaseActivity {
                 dianzan();
                 break;
             case R.id.tv_baoming:
-                if (joinStatus == 0) {
+                if(already>= all){
+                    showToastMsg("当前活动已满员，谢谢");
+                }else if(System.currentTimeMillis()> endtime){
+                    showToastMsg("当前时间报名已截至，谢谢");
+                }else if (joinStatus == 0) {
                     showToastMsg("报名审核中");
                 } else if (joinStatus == -1) {
                     joinAc();
                 } else if (joinStatus == 1) {
                     showToastMsg("您已报名成功，请勿重复申请");
-                }else{
+                } else{
                     joinAc();
                 }
                 break;

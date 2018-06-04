@@ -20,6 +20,7 @@ import com.jzbwlkj.leifeng.ui.activity.ProjectRecruitActivity;
 import com.jzbwlkj.leifeng.ui.activity.TeamActivity;
 import com.jzbwlkj.leifeng.ui.adapter.MyTeamAdapter;
 import com.jzbwlkj.leifeng.ui.adapter.ProjectAdapter;
+import com.jzbwlkj.leifeng.ui.bean.CommitBean;
 import com.jzbwlkj.leifeng.ui.bean.JoinProjectBean;
 import com.jzbwlkj.leifeng.ui.bean.JoinTeamListBean;
 import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
@@ -166,8 +167,34 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
                 startActivity(intent);
             }
         });
+
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                //这里只有重新申请的时候会进行调用
+                JoinTeamListBean.ListBean dataBean= mList.get(position);
+                joinTeam(dataBean.getTeam_id()+"");
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(rvDivider(1));
         recyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * 加入队伍
+     */
+    private void joinTeam(String id){
+        RetrofitClient.getInstance().createApi().joinTeam(id, BaseApp.token)
+                .compose(RxUtils.<HttpResult<CommitBean>>io_main())
+                .subscribe(new BaseObjObserver<CommitBean>(getActivity(),"加入队伍") {
+                    @Override
+                    protected void onHandleSuccess(CommitBean commitBean) {
+                        ToastUtils.showToast("报名成功，后台人员将会加快审核，请耐心等待");
+                        page = 1;
+                        mList.clear();
+                        getNetData();
+                    }
+                });
     }
 }

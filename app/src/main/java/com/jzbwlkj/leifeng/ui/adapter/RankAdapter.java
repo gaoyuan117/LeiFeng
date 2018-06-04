@@ -46,6 +46,8 @@ public class RankAdapter extends BaseQuickAdapter<RankBean.RankUserBean, BaseVie
         String path = item.getAvatar();
         if(!TextUtils.isEmpty(path)&&!TextUtils.equals("null",path)){
             Glide.with(activity).load(path).error(R.mipmap.avatar_default).into((ImageView) baseViewHolder.getView(R.id.img_rank_avatar));
+        }else{
+            Glide.with(activity).load("xxx").error(R.mipmap.avatar_default).into((ImageView) baseViewHolder.getView(R.id.img_rank_avatar));
         }
         int ss = item.getPolital_status();
         if( ss == 0){

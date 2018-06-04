@@ -10,8 +10,11 @@ public class ConfigBean {
 
     /**
      * zhuceshouze : 凤城雷锋志愿服务APP注册志愿者服务守则
+     * app_version : 1.0
      * app_url_android :
      * app_url_ios :
+     * service_tel : 154232645
+     * service_address : 中国山东
      * aboutus : <p>关于我们时代发生地方是</p>
      * aboutgoods : <p><span style="color: rgb(44, 62, 80); font-family: &quot;Source Sans Pro&quot;, Calibri, Candara, Arial, sans-serif; font-size: 14px; font-weight: bold; text-align: right; background-color: rgb(255, 255, 255);">义仓说明sdfsdfsd</span></p>
      * sex : ["保密","男","女"]
@@ -29,8 +32,11 @@ public class ConfigBean {
      */
 
     private String zhuceshouze;
+    private String app_version;
     private String app_url_android;
     private String app_url_ios;
+    private String service_tel;
+    private String service_address;
     private String aboutus;
     private String aboutgoods;
     private List<String> sex;
@@ -54,6 +60,14 @@ public class ConfigBean {
         this.zhuceshouze = zhuceshouze;
     }
 
+    public String getApp_version() {
+        return app_version;
+    }
+
+    public void setApp_version(String app_version) {
+        this.app_version = app_version;
+    }
+
     public String getApp_url_android() {
         return app_url_android;
     }
@@ -68,6 +82,22 @@ public class ConfigBean {
 
     public void setApp_url_ios(String app_url_ios) {
         this.app_url_ios = app_url_ios;
+    }
+
+    public String getService_tel() {
+        return service_tel;
+    }
+
+    public void setService_tel(String service_tel) {
+        this.service_tel = service_tel;
+    }
+
+    public String getService_address() {
+        return service_address;
+    }
+
+    public void setService_address(String service_address) {
+        this.service_address = service_address;
     }
 
     public String getAboutus() {

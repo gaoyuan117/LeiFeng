@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@drawable/gray_stroke_white_soild_shape">
+
+    <TextView
+        android:id="@+id/tv_tongyi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:gravity="center"
+        android:padding="@dimen/sp_12"
+        android:background="@drawable/white_gray_background_selector"
+        android:textColor="@color/text_gray"
+        android:textSize="12dp"
+        android:text="统一安排"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:background="@color/gray"/>
+
+    <TextView
+        android:id="@+id/tv_diy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:gravity="center"
+        android:padding="@dimen/sp_12"
+        android:background="@drawable/white_gray_background_selector"
+        android:textColor="@color/text_gray"
+        android:textSize="12dp"
+        android:text="自定义"/>
+    </LinearLayout>
+</LinearLayout>

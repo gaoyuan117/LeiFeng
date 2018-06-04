@@ -48,7 +48,7 @@
             android:drawablePadding="10dp"
             android:textSize="@dimen/sp_12"
             android:lineSpacingExtra="@dimen/dp_4"
-            android:gravity="start"
+            android:gravity="center_horizontal"
             android:text="山东省济南市历下区海信创智谷 12B03" />
 
     </LinearLayout>

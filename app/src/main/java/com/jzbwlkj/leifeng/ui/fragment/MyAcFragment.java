@@ -20,6 +20,7 @@ import com.jzbwlkj.leifeng.ui.activity.ActivitiesRecruitActivity;
 import com.jzbwlkj.leifeng.ui.adapter.JoinProjectAdapter;
 import com.jzbwlkj.leifeng.ui.adapter.MyTeamAdapter;
 import com.jzbwlkj.leifeng.ui.adapter.ProjectAdapter;
+import com.jzbwlkj.leifeng.ui.bean.CommitBean;
 import com.jzbwlkj.leifeng.ui.bean.JoinProjectBean;
 import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
 import com.jzbwlkj.leifeng.utils.CommonApi;
@@ -93,30 +94,30 @@ public class MyAcFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     /**
      * 获取网络数据
      */
-    private void getNetData(){
-        RetrofitClient.getInstance().createApi().userProList(BaseApp.token)
+    private void getNetData() {
+        RetrofitClient.getInstance().createApi().userProList(BaseApp.token,1)
                 .compose(RxUtils.<HttpResult<List<JoinProjectBean>>>io_main())
-                .subscribe(new BaseObjObserver<List<JoinProjectBean>>(getActivity(),refresh) {
+                .subscribe(new BaseObjObserver<List<JoinProjectBean>>(getActivity(), refresh) {
                     @Override
                     protected void onHandleSuccess(List<JoinProjectBean> projectBeans) {
 
-                        if(TextUtils.equals("0",type)){//已通过
+                        if (TextUtils.equals("0", type)) {//已通过
                             mList.clear();
-                            mList.addAll(recycleList(projectBeans,"已通过"));
-                            if(mList.size()<=0){
+                            mList.addAll(recycleList(projectBeans, "已通过"));
+                            if (mList.size() <= 0) {
                                 ToastUtils.showToast("暂无相关数据");
                             }
 
-                        }else if(TextUtils.equals("1",type)){//审核中
+                        } else if (TextUtils.equals("1", type)) {//审核中
                             mList.clear();
-                            mList.addAll(recycleList(projectBeans,"审核中"));
-                            if(mList.size()<=0){
+                            mList.addAll(recycleList(projectBeans, "审核中"));
+                            if (mList.size() <= 0) {
                                 ToastUtils.showToast("暂无相关数据");
                             }
-                        }else if(TextUtils.equals("2",type)){//未通过
+                        } else if (TextUtils.equals("2", type)) {//未通过
                             mList.clear();
-                            mList.addAll(recycleList(projectBeans,"未通过"));
-                            if(mList.size()<=0){
+                            mList.addAll(recycleList(projectBeans, "未通过"));
+                            if (mList.size() <= 0) {
                                 ToastUtils.showToast("暂无相关数据");
                             }
                         }
@@ -128,14 +129,16 @@ public class MyAcFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     /**
      * 遍历相关集合
      */
-    private List<JoinProjectBean.ListBean> recycleList(List<JoinProjectBean> projectBeans,String type){
-        List<JoinProjectBean.ListBean> listBeans = new ArrayList<>();
-        for (JoinProjectBean projectBean:projectBeans){
-            if(TextUtils.equals(type,projectBean.getStatus_text())){
-                listBeans.addAll(projectBean.getList());
-            };
-        }
+    private List<JoinProjectBean.ListBean> recycleList(List<JoinProjectBean> projectBeans, String type) {
 
+        List<JoinProjectBean.ListBean> listBeans = new ArrayList<>();
+        if (projectBeans.size() > 0) {
+            for (JoinProjectBean projectBean : projectBeans) {
+                if (TextUtils.equals(type, projectBean.getStatus_text())) {
+                    listBeans.addAll(projectBean.getList());
+                }
+            }
+        }
         return listBeans;
     }
 
@@ -143,15 +146,15 @@ public class MyAcFragment extends BaseFragment implements BaseQuickAdapter.OnIte
      * 初始化适配器
      */
     private void initAdapter() {
-        adapter = new JoinProjectAdapter(R.layout.item_my_ac, mList, "0",getActivity());
+        adapter = new JoinProjectAdapter(R.layout.item_my_ac, mList, type, getActivity());
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                if(page<all){
+                if (page < all) {
                     page++;
                     getNetData();
-                }else{
+                } else {
                     ToastUtils.showToast("没有更多数据了");
                 }
             }
@@ -160,14 +163,39 @@ public class MyAcFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                JoinProjectBean.ListBean.ActivityInfoBean dataBean= mList.get(position).getActivity_info();
-                Intent intent = new Intent(getActivity(),AcDetailActivity.class);
-                intent.putExtra("id",dataBean.getId());
+                JoinProjectBean.ListBean.ActivityInfoBean dataBean = mList.get(position).getActivity_info();
+                Intent intent = new Intent(getActivity(), AcDetailActivity.class);
+                intent.putExtra("id", dataBean.getId());
                 startActivity(intent);
+            }
+        });
+
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                //这里是报名未通过的活动进行重新申请
+                joinAc(mList.get(position).getId());
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(rvDivider(1));
         recyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * 报名参加活动
+     */
+    private void joinAc(int id) {
+        RetrofitClient.getInstance().createApi().joinProject(BaseApp.token, String.valueOf(id))
+                .compose(RxUtils.<HttpResult<CommitBean>>io_main())
+                .subscribe(new BaseObjObserver<CommitBean>(getActivity(), "报名参加活动") {
+                    @Override
+                    protected void onHandleSuccess(CommitBean commitBean) {
+                        ToastUtils.showToast("您已报名成功，请等待审核");
+                        page = 1;
+                        mList.clear();
+                        getNetData();
+                    }
+                });
     }
 }

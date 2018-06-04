@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.jzbwlkj.leifeng.AppConfig;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseFragment;
 import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
@@ -39,6 +40,7 @@ public class NewsFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     private Banner banner;
     private List<NewsBean.NewsListBean> mList = new ArrayList<>();
     private NewsAdapter adapter;
+    private List<String> listPath = new ArrayList<>();
 
     @Override
     public int getLayoutResId() {
@@ -49,7 +51,6 @@ public class NewsFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void initView() {
         headView = View.inflate(activity, R.layout.head_banner, null);
         banner = headView.findViewById(R.id.banner);
-
         adapter = new NewsAdapter(R.layout.item_news, mList,getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(adapter);
@@ -83,7 +84,17 @@ public class NewsFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     protected void onHandleSuccess(NewsBean newsBean) {
                         if (newsBean.getAd_info() != null) {
                             List<String> list = new ArrayList<>();
-                            list.add(newsBean.getAd_info().getImage());
+                            for (NewsBean.AdInfoBean bean:newsBean.getAd_info()){
+                                String path = bean.getImage();
+                                if(!path.contains("http")){
+                                    if (!path.contains("upload")) {
+                                        path = AppConfig.BASE_URL + "/upload/" + path;
+                                    }
+                                }
+
+                                list.add(path);
+                            }
+
                             CommonApi.setBanner(banner, list);
                         }
 

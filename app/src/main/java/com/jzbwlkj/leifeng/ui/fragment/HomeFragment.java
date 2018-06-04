@@ -4,10 +4,12 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,7 @@ import com.jzbwlkj.leifeng.ui.activity.JoinTeamActivity;
 import com.jzbwlkj.leifeng.ui.activity.LearningGardenActivity;
 import com.jzbwlkj.leifeng.ui.activity.LoginActivity;
 import com.jzbwlkj.leifeng.ui.activity.LoveShopActivity;
+import com.jzbwlkj.leifeng.ui.activity.MainNewsActivity;
 import com.jzbwlkj.leifeng.ui.activity.NewsDetalActivity;
 import com.jzbwlkj.leifeng.ui.activity.ProjectRecruitActivity;
 import com.jzbwlkj.leifeng.ui.activity.RankActivity;
@@ -102,7 +105,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.scrollView)
-    ScrollView scrollView;
+    NestedScrollView scrollView;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
     Unbinder unbinder;
@@ -118,6 +121,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     private Dialog infoDialog;
     private String id;//城市id
     private int flag = -1;//0 队伍注册   1  个人非专业   2  个人专业
+
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_home;
@@ -127,7 +131,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void initView() {
         scrollView.scrollTo(0, 0);
         initDialog();
-        adapter = new HomeAdapter(R.layout.item_home, mList);
+        adapter = new HomeAdapter(getActivity(), R.layout.item_home, mList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
             @Override
             public boolean canScrollVertically() {
@@ -143,6 +147,9 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void initDatas() {
         id = SharedPreferencesUtil.getInstance().getString("city_id");
         String name = SharedPreferencesUtil.getInstance().getString("city_name");
+        if (TextUtils.isEmpty(name)) {
+            name = "高密市";
+        }
         tvHomeLocation.setText(name);
         homeData(id);
     }
@@ -177,9 +184,9 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                 infoDialog.show();
                 break;
             case R.id.tv_home_personal_register://个人注册
-                if(noLogin()){
+                if (noLogin()) {
                     personalRegisterDialog();
-                }else{
+                } else {
                     ToastUtils.showToast("您当前已注册账号");
                 }
                 break;
@@ -261,7 +268,10 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
     @Override
     public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        NewsDetalActivity.toActivity(activity, mList.get(i).getTitle(), "", 0);
+        HomeBean.NewsRecommendListBean bean = mList.get(i);
+        Intent intent = new Intent(getActivity(), MainNewsActivity.class);
+        intent.putExtra("id", bean.getId());
+        startActivity(intent);
     }
 
 
@@ -278,8 +288,16 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
                         if (homeBean.getIndex_ad1() != null) {
                             bannerList.clear();
-                            bannerList.add(homeBean.getIndex_ad1().getImage());
+                            for (HomeBean.IndexAd1Bean bean : homeBean.getIndex_ad1()) {
+                                bannerList.add(bean.getImage());
+                            }
                             CommonApi.setBanner(banner, bannerList);
+                        }
+
+                        if (homeBean.getNew_message_num() > 0) {
+                            ivChatStatus.setVisibility(View.VISIBLE);
+                        } else {
+                            ivChatStatus.setVisibility(View.GONE);
                         }
 
                         if (isEmpty(homeBean.getNews_recommend_list())) {
@@ -287,14 +305,11 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                         }
 
                         mList.clear();
-                        mList.addAll(homeBean.getNews_recommend_list());
+                        for (HomeBean.NewsRecommendListBean bean : homeBean.getNews_recommend_list()) {
+                            mList.add(bean);
+                        }
                         adapter.notifyDataSetChanged();
 
-                        if(homeBean.getNew_message_num()>0){
-                            ivChatStatus.setVisibility(View.VISIBLE);
-                        }else{
-                            ivChatStatus.setVisibility(View.GONE);
-                        }
                     }
                 });
     }
@@ -316,15 +331,15 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         tvButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!cbXieYi.isChecked()){
+                if (!cbXieYi.isChecked()) {
                     ToastUtils.showToast("请您先同意志愿者服务守则，再进行下一步");
                     return;
                 }
-                if(flag == 0){
+                if (flag == 0) {
                     toActivity(RegisterTeamActivity.class);
-                }else if(flag == 1){
+                } else if (flag == 1) {
                     toPersonalRegisterActivity("normal");
-                }else if(flag == 2){
+                } else if (flag == 2) {
                     toPersonalRegisterActivity("professional");
                 }
                 infoDialog.dismiss();
@@ -333,26 +348,23 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         infoDialog = new Dialog(getActivity(), R.style.wx_dialog);
         infoDialog.setContentView(infoView);
         infoDialog.setCanceledOnTouchOutside(false);
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
+        ViewGroup.LayoutParams layoutParams = infoView.getLayoutParams();
+        layoutParams.height = getResources().getDisplayMetrics().widthPixels;
+        infoView.setLayoutParams(layoutParams);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        if (unbinder != null)
+            unbinder.unbind();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100&&resultCode == 100){//选择地址
+        if (requestCode == 100 && resultCode == 100) {//选择地址
             id = data.getStringExtra("id");
             homeData(id);
             tvHomeLocation.setText(data.getStringExtra("name"));

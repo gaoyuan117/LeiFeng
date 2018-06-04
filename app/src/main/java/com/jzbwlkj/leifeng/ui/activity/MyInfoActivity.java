@@ -3,16 +3,22 @@ package com.jzbwlkj.leifeng.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,20 +32,16 @@ import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
 import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
+import com.jzbwlkj.leifeng.ui.adapter.ListViewAdapter;
 import com.jzbwlkj.leifeng.ui.bean.CommitBean;
 import com.jzbwlkj.leifeng.ui.bean.ConfigBean;
+import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
 import com.jzbwlkj.leifeng.ui.bean.UploadBean;
 import com.jzbwlkj.leifeng.ui.bean.UserInfoBean;
-import com.jzbwlkj.leifeng.utils.LogUtils;
-import com.jzbwlkj.leifeng.utils.RoundCornesTransFormation;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
 import com.jzbwlkj.leifeng.view.OnDyClickListener;
 import com.jzbwlkj.leifeng.view.PhoneCameraUtil;
 import com.jzbwlkj.leifeng.view.WinCameraDialog;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,8 +54,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import me.nereo.multi_image_selector.MultiImageSelector;
-import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -99,6 +99,30 @@ public class MyInfoActivity extends BaseActivity {
     TextView tvMyInfoAddressDetail;
     @BindView(R.id.tv_my_info_ssjg)
     TextView tvMyInfoSsjg;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.exit_layout)
+    LinearLayout exitLayout;
+    @BindView(R.id.tv_left_title)
+    TextView tvLeftTitle;
+    @BindView(R.id.center_title_tv)
+    TextView centerTitleTv;
+    @BindView(R.id.tv_right_text)
+    TextView tvRightText;
+    @BindView(R.id.iv_right2)
+    ImageView ivRight2;
+    @BindView(R.id.img_right)
+    ImageView imgRight;
+    @BindView(R.id.title_linLayout)
+    LinearLayout titleLinLayout;
+
+    private View viewType;
+    private ListView lvContent;
+    private PopupWindow popType;
+
+    private String unitid;//单位Id
+    private ListViewAdapter lvAdapter;
+    private List<MySelfModel> showList = new ArrayList<>();
     private UserInfoBean bean2;
 
     private String city_id;
@@ -107,10 +131,10 @@ public class MyInfoActivity extends BaseActivity {
     private WinCameraDialog cameraDialog;
     private PhoneCameraUtil cameraUtil;
 
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 66:
                     upData(picUrl, bean2.getCity_id() + "");
                     break;
@@ -125,16 +149,27 @@ public class MyInfoActivity extends BaseActivity {
 
     @Override
     public int getLayoutId() {
+        initPop();
         return R.layout.activity_my_info;
     }
 
     @Override
     public void initView() {
         setCenterTitle("个人资料");
+        tvRightText.setText("");
     }
 
     @Override
     public void initData() {
+        for (ConfigBean.CityListBean cityListBean : BaseApp.config.getCity_list()) {
+            MySelfModel model = new MySelfModel();
+            model.setPid(cityListBean.getPid()+"");
+            model.setId(cityListBean.getId()+"");
+            model.setName(cityListBean.getName());
+            model.setSelected(false);
+            showList.add(model);
+        }
+        lvAdapter.notifyDataSetChanged();
         getUserInfo();
     }
 
@@ -151,10 +186,17 @@ public class MyInfoActivity extends BaseActivity {
                 winSelectPic();
                 break;
             case R.id.tv_my_info_phone:
-                Intent intent = new Intent(this,ModifyPhoneActivity.class);
-                startActivityForResult(intent,100);
+                Intent intent = new Intent(this, ModifyPhoneActivity.class);
+                startActivityForResult(intent, 100);
                 break;
             case R.id.tv_my_info_area:
+                popType.setWidth(tvMyInfoArea.getMeasuredWidth() + 100);
+                if (showList.size() > 6) {
+                    popType.setHeight(500);
+                } else {
+                    popType.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
+                popType.showAsDropDown(tvMyInfoArea, -12, 40);
                 break;
         }
     }
@@ -163,7 +205,7 @@ public class MyInfoActivity extends BaseActivity {
     //获取用户信息
     private void getUserInfo() {
         if (TextUtils.isEmpty(BaseApp.token)) return;
-        RetrofitClient.getInstance().createApi().getUserInfo(BaseApp.token)
+        RetrofitClient.getInstance().createApi().getUserInfo(BaseApp.token, null)
                 .compose(RxUtils.<HttpResult<UserInfoBean>>io_main())
                 .subscribe(new BaseObjObserver<UserInfoBean>(activity) {
                     @Override
@@ -239,9 +281,9 @@ public class MyInfoActivity extends BaseActivity {
                     }
                     Log.i("sun", "结果==" + picUrl2);
                     File file = new File(picUrl2);
-                    Log.i("sun","长度=="+file.length());
-                    if(file.length()>1024*1024){
-                        picUrl2 = saveBitmapToFile(file,picUrl2);
+                    Log.i("sun", "长度==" + file.length());
+                    if (file.length() > 1024 * 1024) {
+                        picUrl2 = saveBitmapToFile(file, picUrl2);
                     }
                     Glide.with(this).load(picUrl2).error(R.mipmap.avatar_default).into(imgMyInfoAvatar);
                     postHead(picUrl2);
@@ -259,9 +301,9 @@ public class MyInfoActivity extends BaseActivity {
                     PhoneCameraUtil.imageCaptureUri = data.getData();
                     String imgFileUrl = cameraUtil.getPath(PhoneCameraUtil.imageCaptureUri);
                     File file = new File(imgFileUrl);
-                    Log.i("sun","长度=="+file.length());
-                    if(file.length()>(1024*1024)){
-                        imgFileUrl = saveBitmapToFile(file,imgFileUrl);
+                    Log.i("sun", "长度==" + file.length());
+                    if (file.length() > (1024 * 1024)) {
+                        imgFileUrl = saveBitmapToFile(file, imgFileUrl);
                     }
                     if (!TextUtils.isEmpty(imgFileUrl)) {
                         PhoneCameraUtil.imageCaptureUri = null;
@@ -271,17 +313,15 @@ public class MyInfoActivity extends BaseActivity {
                     } else {
                         ToastUtils.showToast("图片路径获取失败");
                     }
-
                 }
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "获取失败", Toast.LENGTH_SHORT).show();
                 Log.i("sun", "相册异常==" + e.toString());
                 e.printStackTrace();
             }
-        }else if(requestCode == 100&&requestCode == 100){
+        } else if (requestCode == 100 && requestCode == 100) {
             getUserInfo();
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -339,8 +379,8 @@ public class MyInfoActivity extends BaseActivity {
                         picUrl = uploadBean.getData().getFile().getUrl();
                         handler.sendEmptyMessage(66);
                     }
-                }catch (Exception e){
-                    Log.i("sun","异常 == "+e);
+                } catch (Exception e) {
+                    Log.i("sun", "异常 == " + e);
                 }
 
             }
@@ -349,9 +389,10 @@ public class MyInfoActivity extends BaseActivity {
 
     /**
      * 压缩图片
-     * @param file  要压缩的文件
-     * @param newpath    压缩后的保存路径
-     * @return    返回压缩文件路径
+     *
+     * @param file    要压缩的文件
+     * @param newpath 压缩后的保存路径
+     * @return 返回压缩文件路径
      */
     public static String saveBitmapToFile(File file, String newpath) {
         try {
@@ -406,6 +447,40 @@ public class MyInfoActivity extends BaseActivity {
         } catch (Exception e) {
             return null;
         }
+    }
+
+
+    /**
+     * 初始化popupwindow
+     */
+    private void initPop() {
+        viewType = LayoutInflater.from(this).inflate(R.layout.pop_list, null);
+        lvContent = viewType.findViewById(R.id.lv_content);
+        lvAdapter = new ListViewAdapter(showList, this);
+        lvContent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MySelfModel model = showList.get(position);
+                for (MySelfModel model1 : showList) {
+                    if (TextUtils.equals(model.getName(), model1.getName())) {
+                        model1.setSelected(true);
+                    } else {
+                        model1.setSelected(false);
+                    }
+                }
+                lvAdapter.notifyDataSetChanged();
+                popType.dismiss();
+                tvMyInfoArea.setText(model.getName());
+                unitid = model.getId();
+                upData(null,unitid);
+            }
+        });
+        lvContent.setAdapter(lvAdapter);
+        popType = new PopupWindow(this);
+        popType.setFocusable(true);
+        popType.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景防止出现黑色边框
+        popType.setFocusable(true);
+        popType.setContentView(viewType);
     }
 
 }

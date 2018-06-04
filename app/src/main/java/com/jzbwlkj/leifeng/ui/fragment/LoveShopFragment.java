@@ -15,10 +15,7 @@ import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
 import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
-import com.jzbwlkj.leifeng.ui.activity.AcDetailActivity;
-import com.jzbwlkj.leifeng.ui.adapter.JoinProjectAdapter;
 import com.jzbwlkj.leifeng.ui.adapter.LoveShopAdapter;
-import com.jzbwlkj.leifeng.ui.bean.JoinProjectBean;
 import com.jzbwlkj.leifeng.ui.bean.MallBean;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
 

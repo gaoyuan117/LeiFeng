@@ -50,6 +50,9 @@ public class RankTeamAdapter extends BaseQuickAdapter<RankBean.RankTeamBean, Bas
         String path = item.getPic();
         if(!TextUtils.isEmpty(path)&&!TextUtils.equals("null",path)){
             Glide.with(activity).load(path).error(R.mipmap.avatar_default).into((ImageView) baseViewHolder.getView(R.id.img_rank_avatar));
+        }else{
+            Glide.with(activity).load("xxx").error(R.mipmap.avatar_default).into((ImageView) baseViewHolder.getView(R.id.img_rank_avatar));
+
         }
 //        if(item.get){
 //

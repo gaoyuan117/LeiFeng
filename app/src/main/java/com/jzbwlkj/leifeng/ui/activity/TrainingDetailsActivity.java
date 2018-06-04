@@ -41,7 +41,7 @@ public class TrainingDetailsActivity extends BaseActivity {
     private int id;
     private String title;
     private String content;
-    private int sstatus;//报名状态
+    private int sstatus = -1;//报名状态
     @Override
     public int getLayoutId() {
         id = getIntent().getIntExtra("id",0);
@@ -120,7 +120,9 @@ public class TrainingDetailsActivity extends BaseActivity {
                         content = chatListDeticalBean.getContent();
                         String ss  = Html.fromHtml(content).toString();
                         setWebData(ss,web);
-                        sstatus = chatListDeticalBean.getApply_info().getStatus();
+                        if(chatListDeticalBean.getApply_info() != null){
+                            sstatus = chatListDeticalBean.getApply_info().getStatus();
+                        }
                         if( sstatus == -1){
                             tvTrainingDetail.setText("报名培训");
                         }else if(sstatus == 0){

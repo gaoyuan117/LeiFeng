@@ -1,5 +1,6 @@
 package com.jzbwlkj.leifeng.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,6 +19,8 @@ import com.jzbwlkj.leifeng.retrofit.CommonBean;
 import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
+import com.jzbwlkj.leifeng.ui.activity.TeamActivity;
+import com.jzbwlkj.leifeng.ui.activity.VoluntaryCardActivity;
 import com.jzbwlkj.leifeng.ui.adapter.RankAdapter;
 import com.jzbwlkj.leifeng.ui.bean.RankBean;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
@@ -107,6 +110,15 @@ public class RankFragment extends BaseFragment {
             }
         }, recyclerView);
         adapter.disableLoadMoreIfNotFullPage();
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                RankBean.RankUserBean userBean = list.get(position);
+                Intent intent = new Intent(getActivity(), VoluntaryCardActivity.class);
+                intent.putExtra("id",userBean.getId()+"");
+                startActivity(intent);
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(rvDivider(1));
         recyclerView.setAdapter(adapter);

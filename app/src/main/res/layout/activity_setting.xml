@@ -69,4 +69,16 @@
 
     <include layout="@layout/layout_line" />
 
+
+
+    <TextView
+        android:id="@+id/tv_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        style="@style/redButton"
+        android:text="退出当前账户"/>
+
 </LinearLayout>

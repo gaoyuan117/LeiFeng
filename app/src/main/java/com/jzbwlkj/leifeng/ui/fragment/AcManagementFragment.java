@@ -95,6 +95,7 @@ public class AcManagementFragment extends BaseFragment {
                             ToastUtils.showToast("暂无相关数据");
                         }
                         adapter.notifyDataSetChanged();
+
                     }
                 });
     }

@@ -17,6 +17,7 @@ import com.jzbwlkj.leifeng.retrofit.CommonBean;
 import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
+import com.jzbwlkj.leifeng.ui.bean.CommitBean;
 import com.jzbwlkj.leifeng.utils.CommonApi;
 import com.jzbwlkj.leifeng.utils.CountDownUtils;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
@@ -43,6 +44,7 @@ public class ForgetPwdActivity extends BaseActivity implements CountDownUtils.Co
     private String phone;
     private String password;
     private String yzm;
+    private String flag;
 
     @Override
     public int getLayoutId() {
@@ -51,6 +53,7 @@ public class ForgetPwdActivity extends BaseActivity implements CountDownUtils.Co
 
     @Override
     public void initView() {
+        flag = getIntent().getStringExtra("flag");
         setCenterTitle("忘记密码");
         countDown = new CountDownUtils(tvYzm, "%s秒", 60);
         countDown.setCountdownListener(this);
@@ -148,11 +151,11 @@ public class ForgetPwdActivity extends BaseActivity implements CountDownUtils.Co
         }
 
 
-        RetrofitClient.getInstance().createApi().forgetpwd(phone, password, yzm)
-                .compose(RxUtils.<HttpResult<CommonBean>>io_main())
-                .subscribe(new BaseObjObserver<CommonBean>(this, "修改中") {
+        RetrofitClient.getInstance().createApi().forgetpwd(phone, password, yzm,flag)
+                .compose(RxUtils.<HttpResult<CommitBean>>io_main())
+                .subscribe(new BaseObjObserver<CommitBean>(this, "修改中") {
                     @Override
-                    protected void onHandleSuccess(CommonBean commonBean) {
+                    protected void onHandleSuccess(CommitBean commonBean) {
                         ToastUtils.showToast("修改成功");
                         finish();
                     }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -65,8 +66,9 @@ public class ChatDeticalActivity extends BaseActivity {
 
     private void setData() {
         //因为接口返回原因title一直为空，现在先不使用当前判断，数据正常后可放开
-        //       if (TextUtils.isEmpty(title)) return;
-        tvNewsDetailTitle.setText(title);
+        if (!TextUtils.isEmpty(title)) {
+            tvNewsDetailTitle.setText(title);
+        };
         tvNewsDetailTime.setText(FormatUtils.formatTime(time));
         String linkCss = "<style type=\"text/css\"> " +
                 "img {" +
@@ -91,7 +93,11 @@ public class ChatDeticalActivity extends BaseActivity {
                         time = chatListDeticalBean.getAdd_time();
                         title = chatListDeticalBean.getTitle();
                         content = chatListDeticalBean.getContent();
-                        content = Html.fromHtml(content).toString();
+                        if(!TextUtils.isEmpty(content)){
+                            content = Html.fromHtml(content).toString();
+                        }else{
+                            content = "当前消息无内容";
+                        }
                         setData();
                     }
                 });

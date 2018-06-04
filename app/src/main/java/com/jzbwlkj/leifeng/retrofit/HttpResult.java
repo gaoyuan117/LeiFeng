@@ -17,4 +17,6 @@ public class HttpResult<T> {
                 ", data=" + data +
                 '}';
     }
+
+
 }

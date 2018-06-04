@@ -87,7 +87,6 @@ public class RankActivity extends BaseActivity {
                 vpRank.setCurrentItem(0);
                 break;
             case R.id.tv_rank_team:
-
                 vpRank.setCurrentItem(1);
                 break;
         }

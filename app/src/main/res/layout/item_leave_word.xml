@@ -54,15 +54,15 @@
             android:id="@+id/img_leave_word_refuse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:src="@mipmap/close_gray" />
+            android:padding="10dp"
+            android:src="@mipmap/chahaohui" />
 
         <ImageView
             android:id="@+id/img_leave_word_agree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:src="@mipmap/dui_gray" />
+            android:padding="10dp"
+            android:src="@mipmap/duihaolan" />
 
     </LinearLayout>
 

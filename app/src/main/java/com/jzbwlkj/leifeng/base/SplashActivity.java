@@ -29,7 +29,8 @@ public class SplashActivity extends BaseActivity {
 
 
     private String token;
-
+    private int type;
+    private int team_id;
     @Override
     public int getLayoutId() {
         return R.layout.activity_splash;
@@ -39,11 +40,17 @@ public class SplashActivity extends BaseActivity {
     public void initView() {
         getConfig();
         token = SharedPreferencesUtil.getInstance().getString("token");
+        type = SharedPreferencesUtil.getInstance().getInt("type");
+        if(type == 2){
+            team_id = SharedPreferencesUtil.getInstance().getInt("team_id");
+        }
         Observable.timer(1, TimeUnit.SECONDS)
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         BaseApp.token = token;
+                        BaseApp.type = type;
+                        BaseApp.team_id = team_id;
                         toActivity(MainActivity.class);
                         finish();
                     }

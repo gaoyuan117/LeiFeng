@@ -167,6 +167,20 @@
         <include layout="@layout/layout_line" />
 
         <TextView
+            android:id="@+id/tv_manager_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/khgl"
+            android:drawablePadding="16dp"
+            android:drawableRight="@mipmap/arrow_right"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="志愿者管理"
+            android:textSize="13sp" />
+
+        <include layout="@layout/layout_line" />
+
+        <TextView
             android:id="@+id/tv_my_project_leave_word"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -208,6 +222,19 @@
 
         <include layout="@layout/layout_line" />
 
+        <TextView
+            android:id="@+id/tv_my_project"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/pro2"
+            android:drawablePadding="16dp"
+            android:drawableRight="@mipmap/arrow_right"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="已报名项目"
+            android:textSize="13sp" />
+
+        <include layout="@layout/layout_line" />
 
         <TextView
             android:id="@+id/tv_my_pwd"

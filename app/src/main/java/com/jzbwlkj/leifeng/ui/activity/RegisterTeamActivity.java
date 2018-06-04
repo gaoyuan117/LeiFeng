@@ -2,18 +2,18 @@ package com.jzbwlkj.leifeng.ui.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,14 +23,15 @@ import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
 import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
-import com.jzbwlkj.leifeng.retrofit.CommonBean;
 import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.adapter.ListViewAdapter;
 import com.jzbwlkj.leifeng.ui.bean.ConfigBean;
 import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
+import com.jzbwlkj.leifeng.ui.bean.TeamListBean;
 import com.jzbwlkj.leifeng.ui.bean.UploadBean;
+import com.jzbwlkj.leifeng.ui.bean.UserBean;
 import com.jzbwlkj.leifeng.utils.LogUtils;
 import com.jzbwlkj.leifeng.utils.RoundCornesTransFormation;
 import com.jzbwlkj.leifeng.utils.StringCheckUtil;
@@ -45,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
@@ -70,6 +72,34 @@ public class RegisterTeamActivity extends BaseActivity {
     ImageView imgTeam;
     @BindView(R.id.cb_team)
     CheckBox cbTeam;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.exit_layout)
+    LinearLayout exitLayout;
+    @BindView(R.id.tv_left_title)
+    TextView tvLeftTitle;
+    @BindView(R.id.center_title_tv)
+    TextView centerTitleTv;
+    @BindView(R.id.tv_right_text)
+    TextView tvRightText;
+    @BindView(R.id.iv_right2)
+    ImageView ivRight2;
+    @BindView(R.id.img_right)
+    ImageView imgRight;
+    @BindView(R.id.title_linLayout)
+    LinearLayout titleLinLayout;
+    @BindView(R.id.tv_two_unit)
+    TextView tvTwoUnit;
+    @BindView(R.id.tv_three_unit)
+    TextView tvThreeUnit;
+    @BindView(R.id.et_team_account)
+    EditText etTeamAccount;
+    @BindView(R.id.et_team_pwd)
+    EditText etTeamPwd;
+    @BindView(R.id.et_team_pwd_2)
+    EditText etTeamPwd2;
+    @BindView(R.id.tv_team_register)
+    TextView tvTeamRegister;
 
     private List<String> list = new ArrayList<>();
     private String picUrl;//文件路径
@@ -95,20 +125,11 @@ public class RegisterTeamActivity extends BaseActivity {
 
         initPop();
         showList.clear();
-        for (ConfigBean.CityListBean cityListBean : BaseApp.config.getCity_list()) {
-            MySelfModel model = new MySelfModel();
-            model.setPid(cityListBean.getPid()+"");
-            model.setId(cityListBean.getId()+"");
-            model.setName(cityListBean.getName());
-            model.setSelected(false);
-            showList.add(model);
-        }
-        lvAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void initData() {
-
+        getTeamList();
     }
 
     @Override
@@ -142,7 +163,7 @@ public class RegisterTeamActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             List<String> list = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-            Glide.with(activity).load(list.get(0)).bitmapTransform(new RoundCornesTransFormation(this,10,10))
+            Glide.with(activity).load(list.get(0)).bitmapTransform(new RoundCornesTransFormation(this, 10, 10))
                     .into(imgTeam);
             updateAvatar(list);
         }
@@ -185,6 +206,9 @@ public class RegisterTeamActivity extends BaseActivity {
         String manager = etTeamHead.getText().toString();
         String managerPhone = etTeamPhone.getText().toString();
         String desc = etTeamJieshao.getText().toString();
+        String acc = etTeamAccount.getText().toString();
+        String pwd = etTeamPwd.getText().toString();
+        String pwd2 = etTeamPwd2.getText().toString();
         if (TextUtils.isEmpty(teamName)) {
             ToastUtils.showToast("请输入队伍名");
             return;
@@ -222,7 +246,32 @@ public class RegisterTeamActivity extends BaseActivity {
             return;
         }
 
-        if(!cbTeam.isChecked()){
+        if(TextUtils.isEmpty(acc)){
+            ToastUtils.showToast("请输入队伍账号");
+            return;
+        }
+
+        if(TextUtils.isEmpty(pwd)){
+            ToastUtils.showToast("请输入登录密码");
+            return;
+        }
+
+        if(pwd.length()<6){
+            ToastUtils.showToast("密码不得少于6位");
+            return;
+        }
+
+        if(TextUtils.isEmpty(pwd2)){
+            ToastUtils.showToast("请输入确认密码");
+            return;
+        }
+
+        if(!TextUtils.equals(pwd2,pwd)){
+            ToastUtils.showToast("确认密码和登录密码不一致，请重新填写");
+            return;
+        }
+
+        if (!cbTeam.isChecked()) {
             ToastUtils.showToast("请您先同意志愿者服务守则，再进行下一步");
             return;
         }
@@ -236,6 +285,12 @@ public class RegisterTeamActivity extends BaseActivity {
         map.put("manager", manager);
         map.put("manager_mobile", managerPhone);
         map.put("desc", desc);
+        map.put("username",acc);
+        map.put("password",pwd);
+    //    map.put("area_id","");
+
+//        map.put("erji"); 二级地址
+//        map.put("sanji");三级地址
 
         RetrofitClient.getInstance().createApi().teamRegister(map)
                 .compose(RxUtils.<HttpResult<String>>io_main())
@@ -278,5 +333,30 @@ public class RegisterTeamActivity extends BaseActivity {
         popType.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景防止出现黑色边框
         popType.setFocusable(true);
         popType.setContentView(viewType);
+    }
+
+
+    /**
+     * 获取队伍
+     */
+    private void getTeamList() {
+        RetrofitClient.getInstance().createApi().getTeamList("")
+                .compose(RxUtils.<HttpResult<List<TeamListBean>>>io_main())
+                .subscribe(new BaseObjObserver<List<TeamListBean>>(activity) {
+                    @Override
+                    protected void onHandleSuccess(List<TeamListBean> list) {
+                        if (isEmpty(list)) return;
+                        //所属机构
+                        for (int i = 0; i < list.size(); i++) {
+                            TeamListBean teamListBean = list.get(i);
+                            MySelfModel model = new MySelfModel();
+                            model.setSelected(false);
+                            model.setName(teamListBean.getTeam_name());
+                            model.setId(teamListBean.getId() + "");
+                            showList.add(model);
+                        }
+                        lvAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 }
