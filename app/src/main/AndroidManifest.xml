@@ -3,31 +3,17 @@
     package="com.jzbwlkj.leifeng">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
@@ -37,17 +23,13 @@
         android:name="com.jzbwlkj.leifeng.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
-    <!-- Required -->
-    <uses-permission android:name="com.jzbwlkj.leifeng.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <!-- Optional. Required for location feature -->
@@ -58,6 +40,11 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".BaseApp"
@@ -253,7 +240,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LoveShopActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="true"/>
         <activity
             android:name=".ui.activity.LoveShopInstructionsActivity"
             android:screenOrientation="portrait" />
@@ -313,23 +301,32 @@
         <activity
             android:name=".ui.activity.VoluntaryCardActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.MyProActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.TeamInfoActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.ModifyTeamPhoneActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.MessageActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.AllLoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.ManagerUserActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.MainNewsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.ModifyTeamPwdActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.DaiQainActivity"
+        <activity
+            android:name=".ui.activity.MyProActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TeamInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ModifyTeamPhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AllLoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ManagerUserActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MainNewsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ModifyTeamPwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.DaiQainActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 

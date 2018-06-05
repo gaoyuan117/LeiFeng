@@ -185,6 +185,9 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     return;
                 }
                 flag = 0;
+                if(TextUtils.isEmpty(BaseApp.config.getZhuceshouze())||TextUtils.equals("null",BaseApp.config.getZhuceshouze())){
+                    BaseApp.config.setZhuceshouze("无");
+                }
                 web.setText(BaseApp.config.getZhuceshouze());
                 infoDialog.show();
                 break;
@@ -378,7 +381,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         infoDialog.setCanceledOnTouchOutside(false);
 
         ViewGroup.LayoutParams layoutParams = infoView.getLayoutParams();
-        layoutParams.height = getResources().getDisplayMetrics().widthPixels;
+        layoutParams.height = getResources().getDisplayMetrics().widthPixels+100;
         infoView.setLayoutParams(layoutParams);
     }
 

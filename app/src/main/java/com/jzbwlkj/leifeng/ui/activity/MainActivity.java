@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -37,6 +38,7 @@ import android.widget.Toast;
 
 import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.model.LatLng;
+import com.google.gson.Gson;
 import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
@@ -50,6 +52,7 @@ import com.jzbwlkj.leifeng.ui.adapter.QiandaoAdapter;
 import com.jzbwlkj.leifeng.ui.bean.ConfigBean;
 import com.jzbwlkj.leifeng.ui.bean.JoinProjectBean;
 import com.jzbwlkj.leifeng.ui.bean.MainUserBean;
+import com.jzbwlkj.leifeng.ui.bean.MyConfigBean;
 import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
 import com.jzbwlkj.leifeng.ui.bean.QianDaoModel;
 import com.jzbwlkj.leifeng.ui.fragment.HomeFragment;
@@ -266,11 +269,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     toActivity(LoginActivity.class);
                     return;
                 }
-                if(BaseApp.type == 2){
+                if (BaseApp.type == 2) {
                     showToastMsg("您当前登录的为队伍账号");
                     return;
                 }
-                if(projectList == null||projectList.size()<=0){
+                if (projectList == null || projectList.size() <= 0) {
                     showToastMsg("您当前尚未参加任何活动与项目");
                     return;
                 }
@@ -533,7 +536,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 安装应用
      */
     public void update(Context ctx, String name) {
-        Log.i("sun", "安装==" + 1);
         File file = DownloadUtil.file;
         Uri apkUri;
         if (Build.VERSION.SDK_INT >= 24) {
@@ -542,19 +544,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } else {
             apkUri = Uri.fromFile(file);
         }
-        Log.i("sun", "安装==" + 2 + "==路径==" + file.getPath());
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        Log.i("sun", "安装==" + 4);
         // 由于没有在Activity环境下启动Activity,设置下面的标签
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Log.i("sun", "安装==" + 5);
+
         //添加这一句表示对目标应用临时授权该Uri所代表的文件
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        Log.i("sun", "安装==" + 6 + "==uri==" + apkUri);
         intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-        Log.i("sun", "安装==" + 7);
         ctx.startActivity(intent);
-        Log.i("sun", "安装==" + 8);
     }
 
     @Override
@@ -572,10 +569,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .subscribe(new BaseObjObserver<List<MainUserBean>>(getActivity()) {
                     @Override
                     protected void onHandleSuccess(List<MainUserBean> projectBeans) {
-                        projectList.addAll(projectBeans);
-                        if (projectBeans == null || projectBeans.size() <= 0){
+                        if (projectBeans == null || projectBeans.size() <= 0) {
                             return;
                         }
+                        projectList.addAll(projectBeans);
                         for (MainUserBean bean : projectBeans) {
                             for (MainUserBean.ListBean listBean : bean.getList()) {
                                 QianDaoModel model = new QianDaoModel();
@@ -611,13 +608,54 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 获取配置信息
      */
     private void getConfig() {
-        RetrofitClient.getInstance().createApi().getConfig("")
-                .compose(RxUtils.<HttpResult<ConfigBean>>io_main())
-                .subscribe(new BaseObjObserver<ConfigBean>(activity) {
-                    @Override
-                    protected void onHandleSuccess(ConfigBean configBean) {
-                        BaseApp.config = configBean;
-                    }
-                });
+        SharedPreferences sp = getSharedPreferences("sun", Context.MODE_PRIVATE);
+        String ss = sp.getString("config", null);
+        Log.i("sun", "缓存==" + ss);
+        if (!TextUtils.isEmpty(ss) && !TextUtils.equals("null", ss)) {
+            Gson gson = new Gson();
+            MyConfigBean bean = gson.fromJson(ss, MyConfigBean.class);
+            BaseApp.config.setAboutgoods(bean.getData().getAboutgoods());
+            BaseApp.config.setAboutus(bean.getData().getAboutus());
+            BaseApp.config.setApp_url_android(bean.getData().getApp_url_android());
+            BaseApp.config.setApp_url_ios(bean.getData().getApp_url_ios());
+            BaseApp.config.setApp_version(bean.getData().getApp_version());
+            BaseApp.config.setEducation(bean.getData().getEducation());
+            BaseApp.config.setGoods_type(bean.getData().getGoods_type());
+            BaseApp.config.setId_type(bean.getData().getId_type());
+            BaseApp.config.setZhuceshouze(bean.getData().getZhuceshouze());
+            BaseApp.config.setMessage_type(bean.getData().getMessage_type());
+            BaseApp.config.setSign_scope(bean.getData().getSign_scope());
+            BaseApp.config.setPolital_status(bean.getData().getPolital_status());
+            BaseApp.config.setService_address(bean.getData().getService_address());
+            BaseApp.config.setService_tel(bean.getData().getService_tel());
+            BaseApp.config.setService_time(bean.getData().getService_time());
+            List<ConfigBean.CityListBean> listBeans = new ArrayList<>();
+            for (MyConfigBean.DataBean.CityListBean model : bean.getData().getCity_list()) {
+                ConfigBean.CityListBean bean1 = new ConfigBean.CityListBean();
+                bean1.setId(model.getId());
+                bean1.setName(model.getName());
+                bean1.setPid(model.getPid());
+                listBeans.add(bean1);
+            }
+            BaseApp.config.setCity_list(listBeans);
+
+            List<ConfigBean.JobListBean> jobListBeans = new ArrayList<>();
+            for (MyConfigBean.DataBean.JobListBean model : bean.getData().getJob_list()) {
+                ConfigBean.JobListBean bean1 = new ConfigBean.JobListBean();
+                bean1.setId(model.getId());
+                bean1.setName(model.getName());
+                jobListBeans.add(bean1);
+            }
+            BaseApp.config.setJob_list(jobListBeans);
+
+            List<ConfigBean.NatinalListBean> natinalListBeans = new ArrayList<>();
+            for (MyConfigBean.DataBean.NatinalListBean model : bean.getData().getNatinal_list()) {
+                ConfigBean.NatinalListBean bean1 = new ConfigBean.NatinalListBean();
+                bean1.setId(model.getId());
+                bean1.setName(model.getName());
+                natinalListBeans.add(bean1);
+            }
+            BaseApp.config.setNatinal_list(natinalListBeans);
+        }
     }
 }

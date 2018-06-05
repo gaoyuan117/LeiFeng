@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.CheckBox;
@@ -164,6 +165,10 @@ public class LoveShopActivity extends BaseActivity implements TabLayout.OnTabSel
         infoDialog = new Dialog(this, R.style.wx_dialog);
         infoDialog.setContentView(infoView);
         infoDialog.setCanceledOnTouchOutside(false);
+
+        ViewGroup.LayoutParams layoutParams = infoView.getLayoutParams();
+        layoutParams.height = getResources().getDisplayMetrics().widthPixels+100;
+        infoView.setLayoutParams(layoutParams);
     }
 
     private void setWebData(String goodsDesc,WebView bWebView) {

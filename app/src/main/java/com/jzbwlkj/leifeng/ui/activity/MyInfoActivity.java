@@ -161,15 +161,17 @@ public class MyInfoActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        for (ConfigBean.CityListBean cityListBean : BaseApp.config.getCity_list()) {
-            MySelfModel model = new MySelfModel();
-            model.setPid(cityListBean.getPid()+"");
-            model.setId(cityListBean.getId()+"");
-            model.setName(cityListBean.getName());
-            model.setSelected(false);
-            showList.add(model);
+        if(BaseApp.config.getCity_list() != null&&BaseApp.config.getCity_list().size()>0){
+            for (ConfigBean.CityListBean cityListBean : BaseApp.config.getCity_list()) {
+                MySelfModel model = new MySelfModel();
+                model.setPid(cityListBean.getPid()+"");
+                model.setId(cityListBean.getId()+"");
+                model.setName(cityListBean.getName());
+                model.setSelected(false);
+                showList.add(model);
+            }
+            lvAdapter.notifyDataSetChanged();
         }
-        lvAdapter.notifyDataSetChanged();
         getUserInfo();
     }
 

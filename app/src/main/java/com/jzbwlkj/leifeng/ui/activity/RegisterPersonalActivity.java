@@ -133,10 +133,10 @@ public class RegisterPersonalActivity extends BaseActivity {
     private PopupWindow popType;
     private int flag = 0;//1  民族  2  证件  3 政治面貌  4  职业  5城市  6  机构
     private String unitid;//单位Id
-    private String nationalId;//民族id
+    private String nationalId = null;//民族id
     private String cardtype;//证件类型
     private String shenfen;//政治面貌
-    private String jobid;//职业Id
+    private String jobid = null;//职业Id
     private String cityId;//城市id
     private ListViewAdapter lvAdapter;
     private List<MySelfModel> showList = new ArrayList<>();
@@ -433,14 +433,22 @@ public class RegisterPersonalActivity extends BaseActivity {
         map.put("sex", sex);
         map.put("natinal", nationalId);
         map.put("polital_status", shenfen);
-        map.put("worker_address", job);
-        map.put("address", address);
+        if(!TextUtils.equals("null",job)&&!TextUtils.isEmpty(job)){
+            map.put("worker_address", job);
+        }
+
+        if(!TextUtils.isEmpty(address)&&!TextUtils.equals("null",address)){
+            map.put("address", address);
+        }
+
         map.put("email", email);
         map.put("qq", qq);
         map.put("wechat", wx);
         map.put("special_skill", power);
         map.put("city_id", cityId);
-        map.put("job", jobid);
+        if(!TextUtils.isEmpty(jobid)&&!TextUtils.equals("null",jobid)){
+            map.put("job", jobid);
+        }
         map.put("team_id", unitid);
         if (is_personnel == 1) {
             if (isEmpty(picUrl)) {

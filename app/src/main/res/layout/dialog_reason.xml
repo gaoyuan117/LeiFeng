@@ -19,7 +19,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="6dp"
+        android:layout_weight="1"
         android:scrollbars="none">
 
         <LinearLayout
@@ -45,36 +47,35 @@
             <WebView
                 android:id="@+id/web_duihuan"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:scrollbars="none"
                 android:visibility="gone">
 
             </WebView>
 
-            <CheckBox
-                android:id="@+id/cb_xieyi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp"
-                android:text="注册表示您同意《志愿者服务守则》"
-                android:textColor="@color/text_red"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:id="@+id/tv_sure"
-                style="@style/redButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="6dp"
-                android:padding="8dp"
-                android:text="确定" />
         </LinearLayout>
     </ScrollView>
+    <CheckBox
+        android:id="@+id/cb_xieyi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp"
+        android:text="注册表示您同意《志愿者服务守则》"
+        android:textColor="@color/text_red"
+        android:textSize="@dimen/sp_12" />
 
+    <TextView
+        android:id="@+id/tv_sure"
+        style="@style/redButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="6dp"
+        android:padding="8dp"
+        android:text="确定" />
 </LinearLayout>
