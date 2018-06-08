@@ -9,7 +9,6 @@ public class QianDaoModel {
     private String pid;
     private double lat;
     private double lng;
-
     public boolean getSelected() {
         return selected;
     }

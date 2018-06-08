@@ -44,14 +44,8 @@ public class DaiQianAdapter extends BaseQuickAdapter<JoinProjectUserBean, BaseVi
             Glide.with(activity).load("xxx").error(R.mipmap.logo).into((ImageView) helper.getView(R.id.iv_pic));
         }
         helper.setText(R.id.tv_name, item.getUser_nickname());
-        String ss = item.getStartTime();
-        String ee = item.getEndTime();
-        if (!TextUtils.isEmpty(ss) && !TextUtils.isEmpty(ee)) {
-            helper.setVisible(R.id.tv_daiqian,true);
-            helper.setText(R.id.tv_daiqian, "已完成");
-            helper.setText(R.id.tv_qiandao, "签到时间：" + ss);
-            helper.setText(R.id.tv_qiantui, "签退时间：" + ee);
-        } else if (TextUtils.isEmpty(ss) && TextUtils.isEmpty(ee)) {
+        JoinProjectUserBean.SignInfoBean bean = item.getSign_info();
+        if(bean == null){
             helper.setVisible(R.id.tv_daiqian,true);
             helper.setText(R.id.tv_daiqian, "代签");
             helper.setText(R.id.tv_qiandao, "获取签到时间");
@@ -59,16 +53,27 @@ public class DaiQianAdapter extends BaseQuickAdapter<JoinProjectUserBean, BaseVi
             helper.addOnClickListener(R.id.tv_qiandao);
             helper.addOnClickListener(R.id.tv_qiantui);
             helper.addOnClickListener(R.id.tv_daiqian);
-        } else if (!TextUtils.isEmpty(ss) && TextUtils.isEmpty(ee)) {
-            helper.setVisible(R.id.tv_daiqian,false);
-            helper.setText(R.id.tv_daiqian, "已完成");
-            helper.setText(R.id.tv_qiandao, "签到时间：" + ss);
-            helper.setText(R.id.tv_qiantui, "尚未签退");
         }else {
-            helper.setVisible(R.id.tv_daiqian,false);
-            helper.setText(R.id.tv_daiqian, "已完成");
-            helper.setText(R.id.tv_qiandao, "尚未签到");
-            helper.setText(R.id.tv_qiantui, "签退时间：" + ee);
+            long start = bean.getTime_s();
+            long end = bean.getTime_e();
+            String ss = FormatUtils.formatTime(start);
+            String ee = FormatUtils.formatTime(end);
+            if (start > 0 && end > 0) {
+                helper.setVisible(R.id.tv_daiqian,true);
+                helper.setText(R.id.tv_daiqian, "已完成");
+                helper.setText(R.id.tv_qiandao, "签到时间：" + ss);
+                helper.setText(R.id.tv_qiantui, "签退时间：" + ee);
+            } else if (start > 0 && end <= 0) {
+                helper.setVisible(R.id.tv_daiqian,false);
+                helper.setText(R.id.tv_daiqian, "已完成");
+                helper.setText(R.id.tv_qiandao, "签到时间：" + ss);
+                helper.setText(R.id.tv_qiantui, "尚未签退");
+            }else {
+                helper.setVisible(R.id.tv_daiqian,false);
+                helper.setText(R.id.tv_daiqian, "已完成");
+                helper.setText(R.id.tv_qiandao, "尚未签到");
+                helper.setText(R.id.tv_qiantui, "签退时间：" + ee);
+            }
         }
 
     }

@@ -2,6 +2,7 @@ package com.jzbwlkj.leifeng.utils;
 
 import android.text.TextUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class FormatUtils {
     private static SimpleDateFormat sdf = new SimpleDateFormat();
     public final static String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
     public final static String FORMAT_DATE_TIME2 = "yyyy-MM-dd HH:mm";
-
+    public final static String FORMAT_DATE_TIME3 = "yyyy-MM-dd";
     /**
      * 获取当前日期的指定格式的字符串
      *
@@ -68,6 +69,32 @@ public class FormatUtils {
         if (time == 0) return "";
         sdf.applyPattern(FORMAT_DATE_TIME2);
         return sdf.format(time * 1000);
+    }
+
+    /**
+     * 格式化时间
+     *
+     * @param time
+     * @return
+     */
+    public static String formatTime2(long time) {
+        if (time == 0) return "";
+        sdf.applyPattern(FORMAT_DATE_TIME3);
+        return sdf.format(time * 1000);
+    }
+
+    /*将字符串转为时间戳*/
+    public static long getStringToStamp(String time)
+    {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = new Date();
+        try{
+            date = sf.parse(time);
+        }
+        catch(ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime();
     }
 
     /**

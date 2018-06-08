@@ -8,48 +8,53 @@ import java.util.List;
 
 public class ProjectDetialBean {
 
+
     /**
-     * id : 4
-     * uid : 4
-     * team_id : 1
-     * team_name : 高密市志愿者协会
+     * id : 27
+     * uid : 0
+     * team_id : 6
+     * team_name : 密水队伍
      * type : 1
-     * title : 活动2
-     * pic : http://leifeng.jzbwlkj.com/upload/default/20180420/5ef6a1a899b0ae144ac605504c429500.jpg
-     * service_type : 3
-     * join_time_s : 1524240000
-     * join_time_e : 1524326400
-     * start_time : 1524672000
-     * end_time : 1524844800
-     * service_time : 2天
+     * title : 改后活动
+     * pic :
+     * service_type : 1
+     * join_time_s : 1528387200
+     * join_time_e : 1528473600
+     * start_time : 1528560000
+     * end_time : 1528992000
+     * day_start_time : 1514768400
+     * day_end_time : 1514779200
      * service_hour : 3
      * service_num : 20
-     * city_id : 1
-     * address : 济南市天桥区
-     * lat : 0.000000
-     * lng : 0.000000
-     * sign_scope : 0
+     * city_id : 3
+     * address : 山东省济南市历下区世纪大道
+     * lat : 36.695912
+     * lng : 117.155837
+     * map_id : 2467545433
+     * sign_scope : 300
      * canbu : 0
-     * jiaotongbuzu : 0
+     * jiaotongbuzu : 20
      * baoxianbuzu : 0
-     * peixun : 0
-     * requirement : <p>活动要求这里带着图片<img src="http://leifeng.jzbwlkj.com/upload/default/20180420/29ce36843dbeb291f8ce6c5de2e85402.jpg" title="Lighthouse.jpg" alt="Lighthouse.jpg"/></p>
-     * content : <p>活动详情这里也带着图片</p>
-     * note : 没有相关岗位备注
+     * peixun : 1
+     * requirement : <p>发货快你师父就看见</p>
+     * content : <p>不能扣过分超级</p>
+     * contact : 哦哦哦
+     * contact_mobile : 18396801272
+     * contact_email : 709083323@qq.com
+     * note : 无
      * status : 1
-     * add_time : 1524271970
-     * service_type_text : 儿童关怀
-     * join_time_s_text : 2018-04-21
-     * join_time_e_text : 2018-04-22
-     * start_time_text : 2018-04-26
-     * end_time_text : 2018-04-28
-     * contact : 张三
-     * contact_mobile : 12521542
-     * log_info : null
-     * praise_num : 2
+     * add_time : 1528449688
+     * service_date : [{"id":138,"activity_id":27,"date":1528560000},{"id":139,"activity_id":27,"date":1528646400},{"id":140,"activity_id":27,"date":1528732800},{"id":141,"activity_id":27,"date":1528819200},{"id":142,"activity_id":27,"date":1528905600},{"id":143,"activity_id":27,"date":1528992000}]
+     * service_type_text : 助老助残
+     * join_time_s_text : 2018-06-08
+     * join_time_e_text : 2018-06-09
+     * start_time_text : 2018-06-10
+     * end_time_text : 2018-06-15
+     * log_info : {"id":5,"uid":0,"activity_id":27,"status":1,"note":"\t\t\t\t\t\t\t\t\t\t\t","add_time":1528450798}
+     * praise_num : 1
      * is_praise : 1
-     * join_info : {"status":1,"add_time":1524282085,"reason":""}
-     * message_list : [{"id":5,"uid":7,"activity_id":4,"team_id":0,"pid":0,"content":"加一条留言","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524298413,"user_nickname":"孙常栋","avatar":"","reply_info":[]},{"id":3,"uid":7,"activity_id":4,"team_id":0,"pid":0,"content":"我在这里对留言做出评价","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524297561,"user_nickname":"孙常栋","avatar":"","reply_info":[{"id":8,"uid":8,"activity_id":4,"team_id":0,"pid":3,"content":"在此留言","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524556286,"user_nickname":"葛汝鑫","avatar":""},{"id":4,"uid":7,"activity_id":4,"team_id":0,"pid":3,"content":"继续对留言做出评价","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524297851,"user_nickname":"孙常栋","avatar":""}]},{"id":2,"uid":7,"activity_id":4,"team_id":0,"pid":0,"content":"我这里实在测试留言","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524297477,"user_nickname":"孙常栋","avatar":"","reply_info":[]},{"id":1,"uid":7,"activity_id":4,"team_id":0,"pid":0,"content":"我的留言","status":0,"is_sys":0,"is_anonymous":0,"add_time":1524282118,"user_nickname":"孙常栋","avatar":"","reply_info":[]}]
+     * join_info : {"status":0,"add_time":1528450893,"reason":null}
+     * message_list : [{"id":79,"uid":7,"activity_id":27,"team_id":6,"pid":0,"content":"吃看看嘛","status":0,"is_sys":0,"is_anonymous":0,"add_time":1528450887,"note":"","user_nickname":"admin","avatar":"http://leifeng.jzbwlkj.com/upload/default/20180508/aaed8f7ab88eb41f3dc5bf08cd19b846.jpg","reply_info":[{"id":80,"uid":7,"activity_id":27,"team_id":6,"pid":79,"content":"大概好纠结快快快","status":0,"is_sys":0,"is_anonymous":0,"add_time":1528451315,"note":"","user_nickname":"admin","avatar":"http://leifeng.jzbwlkj.com/upload/default/20180508/aaed8f7ab88eb41f3dc5bf08cd19b846.jpg"}]}]
      */
 
     private int id;
@@ -64,13 +69,15 @@ public class ProjectDetialBean {
     private int join_time_e;
     private int start_time;
     private int end_time;
-    private String service_time;
+    private int day_start_time;
+    private int day_end_time;
     private int service_hour;
     private int service_num;
     private int city_id;
     private String address;
     private String lat;
     private String lng;
+    private long map_id;
     private int sign_scope;
     private int canbu;
     private int jiaotongbuzu;
@@ -78,6 +85,9 @@ public class ProjectDetialBean {
     private int peixun;
     private String requirement;
     private String content;
+    private String contact;
+    private String contact_mobile;
+    private String contact_email;
     private String note;
     private int status;
     private int add_time;
@@ -86,22 +96,11 @@ public class ProjectDetialBean {
     private String join_time_e_text;
     private String start_time_text;
     private String end_time_text;
-    private String contact;
-    private String contact_mobile;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    private String email;
-    private Object log_info;
+    private LogInfoBean log_info;
     private int praise_num;
     private int is_praise;
     private JoinInfoBean join_info;
+    private List<ServiceDateBean> service_date;
     private List<MessageListBean> message_list;
 
     public int getId() {
@@ -200,12 +199,20 @@ public class ProjectDetialBean {
         this.end_time = end_time;
     }
 
-    public String getService_time() {
-        return service_time;
+    public int getDay_start_time() {
+        return day_start_time;
     }
 
-    public void setService_time(String service_time) {
-        this.service_time = service_time;
+    public void setDay_start_time(int day_start_time) {
+        this.day_start_time = day_start_time;
+    }
+
+    public int getDay_end_time() {
+        return day_end_time;
+    }
+
+    public void setDay_end_time(int day_end_time) {
+        this.day_end_time = day_end_time;
     }
 
     public int getService_hour() {
@@ -254,6 +261,14 @@ public class ProjectDetialBean {
 
     public void setLng(String lng) {
         this.lng = lng;
+    }
+
+    public long getMap_id() {
+        return map_id;
+    }
+
+    public void setMap_id(long map_id) {
+        this.map_id = map_id;
     }
 
     public int getSign_scope() {
@@ -310,6 +325,30 @@ public class ProjectDetialBean {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getContact_mobile() {
+        return contact_mobile;
+    }
+
+    public void setContact_mobile(String contact_mobile) {
+        this.contact_mobile = contact_mobile;
+    }
+
+    public String getContact_email() {
+        return contact_email;
+    }
+
+    public void setContact_email(String contact_email) {
+        this.contact_email = contact_email;
     }
 
     public String getNote() {
@@ -376,27 +415,11 @@ public class ProjectDetialBean {
         this.end_time_text = end_time_text;
     }
 
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getContact_mobile() {
-        return contact_mobile;
-    }
-
-    public void setContact_mobile(String contact_mobile) {
-        this.contact_mobile = contact_mobile;
-    }
-
-    public Object getLog_info() {
+    public LogInfoBean getLog_info() {
         return log_info;
     }
 
-    public void setLog_info(Object log_info) {
+    public void setLog_info(LogInfoBean log_info) {
         this.log_info = log_info;
     }
 
@@ -424,6 +447,14 @@ public class ProjectDetialBean {
         this.join_info = join_info;
     }
 
+    public List<ServiceDateBean> getService_date() {
+        return service_date;
+    }
+
+    public void setService_date(List<ServiceDateBean> service_date) {
+        this.service_date = service_date;
+    }
+
     public List<MessageListBean> getMessage_list() {
         return message_list;
     }
@@ -432,16 +463,82 @@ public class ProjectDetialBean {
         this.message_list = message_list;
     }
 
+    public static class LogInfoBean {
+        /**
+         * id : 5
+         * uid : 0
+         * activity_id : 27
+         * status : 1
+         * note :
+         * add_time : 1528450798
+         */
+
+        private int id;
+        private int uid;
+        private int activity_id;
+        private int status;
+        private String note;
+        private int add_time;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getUid() {
+            return uid;
+        }
+
+        public void setUid(int uid) {
+            this.uid = uid;
+        }
+
+        public int getActivity_id() {
+            return activity_id;
+        }
+
+        public void setActivity_id(int activity_id) {
+            this.activity_id = activity_id;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getNote() {
+            return note;
+        }
+
+        public void setNote(String note) {
+            this.note = note;
+        }
+
+        public int getAdd_time() {
+            return add_time;
+        }
+
+        public void setAdd_time(int add_time) {
+            this.add_time = add_time;
+        }
+    }
+
     public static class JoinInfoBean {
         /**
-         * status : 1
-         * add_time : 1524282085
-         * reason :
+         * status : 0
+         * add_time : 1528450893
+         * reason : null
          */
 
         private int status;
         private int add_time;
-        private String reason;
+        private Object reason;
 
         public int getStatus() {
             return status;
@@ -459,30 +556,67 @@ public class ProjectDetialBean {
             this.add_time = add_time;
         }
 
-        public String getReason() {
+        public Object getReason() {
             return reason;
         }
 
-        public void setReason(String reason) {
+        public void setReason(Object reason) {
             this.reason = reason;
+        }
+    }
+
+    public static class ServiceDateBean {
+        /**
+         * id : 138
+         * activity_id : 27
+         * date : 1528560000
+         */
+
+        private int id;
+        private int activity_id;
+        private long date;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getActivity_id() {
+            return activity_id;
+        }
+
+        public void setActivity_id(int activity_id) {
+            this.activity_id = activity_id;
+        }
+
+        public long getDate() {
+            return date;
+        }
+
+        public void setDate(long date) {
+            this.date = date;
         }
     }
 
     public static class MessageListBean {
         /**
-         * id : 5
+         * id : 79
          * uid : 7
-         * activity_id : 4
-         * team_id : 0
+         * activity_id : 27
+         * team_id : 6
          * pid : 0
-         * content : 加一条留言
+         * content : 吃看看嘛
          * status : 0
          * is_sys : 0
          * is_anonymous : 0
-         * add_time : 1524298413
-         * user_nickname : 孙常栋
-         * avatar :
-         * reply_info : []
+         * add_time : 1528450887
+         * note :
+         * user_nickname : admin
+         * avatar : http://leifeng.jzbwlkj.com/upload/default/20180508/aaed8f7ab88eb41f3dc5bf08cd19b846.jpg
+         * reply_info : [{"id":80,"uid":7,"activity_id":27,"team_id":6,"pid":79,"content":"大概好纠结快快快","status":0,"is_sys":0,"is_anonymous":0,"add_time":1528451315,"note":"","user_nickname":"admin","avatar":"http://leifeng.jzbwlkj.com/upload/default/20180508/aaed8f7ab88eb41f3dc5bf08cd19b846.jpg"}]
          */
 
         private int id;
@@ -495,6 +629,7 @@ public class ProjectDetialBean {
         private int is_sys;
         private int is_anonymous;
         private int add_time;
+        private String note;
         private String user_nickname;
         private String avatar;
         private List<ReplyInfoBean> reply_info;
@@ -579,6 +714,14 @@ public class ProjectDetialBean {
             this.add_time = add_time;
         }
 
+        public String getNote() {
+            return note;
+        }
+
+        public void setNote(String note) {
+            this.note = note;
+        }
+
         public String getUser_nickname() {
             return user_nickname;
         }
@@ -605,28 +748,32 @@ public class ProjectDetialBean {
 
         public static class ReplyInfoBean {
             /**
-             * id : 4
+             * id : 80
              * uid : 7
-             * activity_id : 4
-             * pid : 3
-             * content : 继续对留言做出评价
+             * activity_id : 27
+             * team_id : 6
+             * pid : 79
+             * content : 大概好纠结快快快
              * status : 0
              * is_sys : 0
              * is_anonymous : 0
-             * add_time : 1524297851
-             * user_nickname : 孙常栋
-             * avatar :
+             * add_time : 1528451315
+             * note :
+             * user_nickname : admin
+             * avatar : http://leifeng.jzbwlkj.com/upload/default/20180508/aaed8f7ab88eb41f3dc5bf08cd19b846.jpg
              */
 
             private int id;
             private int uid;
             private int activity_id;
+            private int team_id;
             private int pid;
             private String content;
             private int status;
             private int is_sys;
             private int is_anonymous;
             private int add_time;
+            private String note;
             private String user_nickname;
             private String avatar;
 
@@ -652,6 +799,14 @@ public class ProjectDetialBean {
 
             public void setActivity_id(int activity_id) {
                 this.activity_id = activity_id;
+            }
+
+            public int getTeam_id() {
+                return team_id;
+            }
+
+            public void setTeam_id(int team_id) {
+                this.team_id = team_id;
             }
 
             public int getPid() {
@@ -702,6 +857,14 @@ public class ProjectDetialBean {
                 this.add_time = add_time;
             }
 
+            public String getNote() {
+                return note;
+            }
+
+            public void setNote(String note) {
+                this.note = note;
+            }
+
             public String getUser_nickname() {
                 return user_nickname;
             }
@@ -719,5 +882,4 @@ public class ProjectDetialBean {
             }
         }
     }
-
 }

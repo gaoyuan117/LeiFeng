@@ -228,6 +228,7 @@ public class MyFragment extends BaseFragment {
                         tvMyNamer.setText(bean.getTeam_name());
                         tvMyPhone.setText(bean.getManager_mobile());
                         tvMyTime.setText(bean.getService_hour() + "小时");
+                        BaseApp.quanxian = bean.getSign_auth();
                     }
                 });
     }

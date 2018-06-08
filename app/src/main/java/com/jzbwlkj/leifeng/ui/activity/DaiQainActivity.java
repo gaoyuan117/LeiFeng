@@ -2,6 +2,7 @@ package com.jzbwlkj.leifeng.ui.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,6 +69,25 @@ public class DaiQainActivity extends BaseActivity {
     private int type = 0;//1  签到时间   2  签退时间
     private JoinProjectUserBean userBean;//时间选择器返回的时间
     private CustomDatePicker customDatePicker1;
+    private TextView tvStart;
+    private TextView tvEnd;
+    private TextView tvDaiqain;
+    private String tt;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    tvStart.setText("签到时间："+tt);
+                    break;
+
+                case 2:
+                    tvEnd.setText("签退时间："+tt);
+                    break;
+            }
+        }
+    };
 
     @Override
     public int getLayoutId() {
@@ -79,7 +99,7 @@ public class DaiQainActivity extends BaseActivity {
     public void initView() {
         centerTitleTv.setText("队员代签");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
-        long aa = System.currentTimeMillis()-(7*24*60*60*1000);
+        long aa = System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000);
         now = sdf.format(new Date(aa));
         initTimeDialog();
         initAadapter();
@@ -147,31 +167,29 @@ public class DaiQainActivity extends BaseActivity {
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                tvStart = view.findViewById(R.id.tv_qiandao);
+                tvEnd = view.findViewById(R.id.tv_qiantui);
                 userBean = mList.get(position);
+                JoinProjectUserBean.SignInfoBean bean = userBean.getSign_info();
                 switch (view.getId()) {
                     case R.id.tv_qiandao:
-                        if(userBean.getStatus() == 1){
-                            showToastMsg("当前队员已完成签到");
-                            return;
-                        }
                         type = 1;
                         customDatePicker1.show(now);
                         break;
                     case R.id.tv_qiantui:
-                        if(userBean.getStatus() == 2){
-                            showToastMsg("当前队员已完成签退");
-                            return;
-                        }
                         type = 2;
                         customDatePicker1.show(now);
                         break;
 
                     case R.id.tv_daiqian:
-                        String ss = userBean.getStartTime();
-                        String ee = userBean.getEndTime();
-                        if(!TextUtils.isEmpty(ss)&&!TextUtils.isEmpty(ee)){
-                            postData(String.valueOf(id), userBean.getStartTime(), userBean.getEndTime(), String.valueOf(userBean.getId()));
+                        JoinProjectUserBean.SignInfoBean signInfoBean =userBean.getSign_info();
+                        if(signInfoBean == null){
+                            showToastMsg("您还没有选择签到，签退时间");
+                            return;
                         }
+                        long ss = signInfoBean.getTime_s();
+                        long ee = signInfoBean.getTime_e();
+                        postData(String.valueOf(id), String.valueOf(ss), String.valueOf(ee), String.valueOf(userBean.getId()));
                         break;
                 }
 
@@ -208,15 +226,28 @@ public class DaiQainActivity extends BaseActivity {
         customDatePicker1 = new CustomDatePicker(this, new CustomDatePicker.ResultHandler() {
             @Override
             public void handle(String time) { // 回调接口，获得选中的时间
-                if(type == 1){
-                    userBean.setStartTime(time);
-                }else if(type == 2){
-                    userBean.setEndTime(time);
+                tt = time;
+                JoinProjectUserBean.SignInfoBean bean = userBean.getSign_info();
+                if(bean == null){
+                    bean = new JoinProjectUserBean.SignInfoBean();
                 }
+                if(type == 1){
+                    bean.setTime_s(FormatUtils.getStringToStamp(time));
+                }else if(type == 2){
+                    bean.setTime_e(FormatUtils.getStringToStamp(time));
+                }
+                userBean.setSign_info(bean);
+                handler.sendEmptyMessage(type);
+  //              adapter.notifyDataSetChanged();
             }
         }, now, "3000-12-31 00:00"); // 初始化日期格式请用：yyyy-MM-dd HH:mm，否则不能正常运行
         customDatePicker1.showSpecificTime(true); // 不显示时和分
         customDatePicker1.setIsLoop(false); // 不允许循环滚动
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+    }
 }

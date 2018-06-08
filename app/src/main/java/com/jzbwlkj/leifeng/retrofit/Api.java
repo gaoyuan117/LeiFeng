@@ -243,7 +243,7 @@ public interface Api {
     //审核留言待审核列表
     @FormUrlEncoded
     @POST("/api/activity/auditAcitivtyMessage")
-    Observable<HttpResult<CommonBean>> postAuditList(@Field("team_token") String token, @Field("audit_arr") String audit_arr);
+    Observable<HttpResult<String>> postAuditList(@Field("team_token") String token, @Field("audit_arr") String audit_arr);
 
 
     //报名培训   参数2表示培训项目的id

@@ -299,6 +299,7 @@ public class RegisterPersonalActivity extends BaseActivity {
         for (int i = 0; i < BaseApp.config.getPolital_status().size(); i++) {
             String natinalListBean = BaseApp.config.getPolital_status().get(i);
             MySelfModel model = new MySelfModel();
+            model.setId(i+"");
             model.setSelected(false);
             model.setName(natinalListBean);
             shenfenList.add(model);
@@ -311,6 +312,7 @@ public class RegisterPersonalActivity extends BaseActivity {
             model.setSelected(false);
             model.setName(natinalListBean.getName());
             model.setId(natinalListBean.getId() + "");
+            model.setPid(i+"");
             jobList.add(model);
         }
 
@@ -527,24 +529,16 @@ public class RegisterPersonalActivity extends BaseActivity {
                 popType.dismiss();
                 if (flag == 1) {
                     tvNational.setText(model.getName());
-                    nationalId = model.getName();
+                    nationalId = model.getId();
                 } else if (flag == 2) {
                     tvCardType.setText(model.getName());
                     cardtype = model.getName();
                 } else if (flag == 3) {
                     tvShenfen.setText(model.getName());
-                    String ss = model.getName();
-                    if(TextUtils.equals("党员",ss)){
-                        shenfen = "0";
-                    }else if(TextUtils.equals("团员",ss)){
-                        shenfen = "1";
-                    }else if(TextUtils.equals("其他",ss)){
-                        shenfen = "2";
-                    }
-
+                    shenfen = model.getId();
                 } else if (flag == 4) {
                     tvJob.setText(model.getName());
-                    jobid = model.getId();
+                    jobid = model.getPid();
                 } else if (flag == 5) {
                     tvCity.setText(model.getName());
                     cityId = model.getId();

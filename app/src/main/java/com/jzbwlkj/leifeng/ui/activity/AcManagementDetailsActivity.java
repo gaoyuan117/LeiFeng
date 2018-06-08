@@ -219,6 +219,10 @@ public class AcManagementDetailsActivity extends BaseActivity {
                 popType.showAsDropDown(tvRange, -12, 20);
                 break;
             case R.id.tv_right_text:
+                if(BaseApp.quanxian == 0){
+                    showToastMsg("当前队伍尚未获得当前权限");
+                    return;
+                }
                 Intent intent1 = new Intent(getActivity(),DaiQainActivity.class);
                 intent1.putExtra("id",id);
                 startActivity(intent1);
@@ -265,7 +269,7 @@ public class AcManagementDetailsActivity extends BaseActivity {
                         etLaunchEventUnit.setText(projectDetialBean.getTeam_name());
                         etLaunchEventLinkman.setText(projectDetialBean.getContact());
                         etLaunchEventLinkphone.setText(projectDetialBean.getContact_mobile());
-                        etLaunchEventEmail.setText(projectDetialBean.getEmail());
+                        etLaunchEventEmail.setText(projectDetialBean.getContact_email());
                         setweb(etLaunchEventDetails, projectDetialBean.getContent());
                         setweb(etLaunchEventDemand, projectDetialBean.getRequirement());
                     }

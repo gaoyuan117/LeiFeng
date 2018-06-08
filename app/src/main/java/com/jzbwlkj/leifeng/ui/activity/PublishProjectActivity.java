@@ -559,6 +559,9 @@ public class PublishProjectActivity extends BaseActivity {
             map.put("note", "无");
             map.put("day_start_time", startt);//      服务当天开始时间   dddd
             map.put("day_end_time", endt);
+            map.put("contact",linkMan);
+            map.put("contact_mobile",linkPhone);
+            map.put("contact_email",email);
             return true;
         }
     }

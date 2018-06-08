@@ -196,7 +196,7 @@ public class AcDetailActivity extends BaseActivity {
                         tvAcUnit.setText(projectDetialBean.getTeam_name());
                         tvAcLinkman.setText(projectDetialBean.getContact());
                         tvAcLinkphone.setText(projectDetialBean.getContact_mobile());
-                        tvAcEmail.setText(projectDetialBean.getEmail());
+                        tvAcEmail.setText(projectDetialBean.getContact_email());
                         setweb(tvAcDetail, projectDetialBean.getContent());
                         setweb(tvAcDemand, projectDetialBean.getRequirement());
                         all = projectDetialBean.getService_num();

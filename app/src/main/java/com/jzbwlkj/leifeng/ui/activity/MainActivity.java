@@ -446,6 +446,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 Intent in = new Intent(MainActivity.this, SignActivity.class);
                 in.putExtra("id", acId);
+                Log.i("sun","距离1=="+model.getPid());
                 in.putExtra("dis", model.getPid());
                 in.putExtra("lat", model.getLat());
                 in.putExtra("lng", model.getLng());

@@ -33,6 +33,7 @@ import com.jzbwlkj.leifeng.ui.bean.ConfigBean;
 import com.jzbwlkj.leifeng.ui.bean.JoinProjectUserBean;
 import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
 import com.jzbwlkj.leifeng.ui.bean.ProjectDetialBean;
+import com.jzbwlkj.leifeng.utils.FormatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -278,6 +279,10 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
                 break;
 
             case R.id.tv_right_text:
+                if(BaseApp.quanxian == 0){
+                   showToastMsg("当前队伍尚未获得代签权限");
+                   return;
+                }
                 Intent intent1 = new Intent(getActivity(),DaiQainActivity.class);
                 intent1.putExtra("id",id);
                 startActivity(intent1);
@@ -313,7 +318,18 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
                             Glide.with(ProjectManagementDetailsActivity.this).load("xxx").error(R.mipmap.logo).into(imgPublishProject);
 
                         }
-                        tvZhouqi.setText(projectDetialBean.getService_time());
+                        List<ProjectDetialBean.ServiceDateBean> bean = projectDetialBean.getService_date();
+                        if(bean != null&&bean.size()>0){
+                            String ss = "";
+                            for (ProjectDetialBean.ServiceDateBean model:bean){
+                                if(TextUtils.isEmpty(ss)){
+                                    ss = FormatUtils.formatTime2(model.getDate());
+                                }else{
+                                    ss = ss+","+FormatUtils.formatTime2(model.getDate());
+                                }
+                            }
+                            tvZhouqi.setText(ss);
+                        }
                         etPublishProjectName.setText(projectDetialBean.getTitle());
                         tvProjectType.setText(projectDetialBean.getService_type_text());
                         etPublishProjectBaomingTime.setText(projectDetialBean.getJoin_time_s_text());
@@ -359,7 +375,7 @@ public class ProjectManagementDetailsActivity extends BaseActivity {
                         }else if(xun == 1){
                             cbPublishProjectTraining.setChecked(true);
                         }
-                        etPublishProjectEmail.setText(projectDetialBean.getEmail());
+                        etPublishProjectEmail.setText(projectDetialBean.getContact_email());
                         setweb(etPublishProjectDetails, projectDetialBean.getContent());
                         setweb(etPublishProjectDemand, projectDetialBean.getRequirement());
                     }

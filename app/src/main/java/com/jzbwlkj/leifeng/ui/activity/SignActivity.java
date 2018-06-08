@@ -79,7 +79,7 @@ public class SignActivity extends BaseActivity {
     private int flag ;
     private int distence;//签到范围
     private long signEndTime;//签到截止时间
-    private int id;
+    private String id;
     private double lat;
     private double lng;
     /**
@@ -94,8 +94,9 @@ public class SignActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        id = getIntent().getIntExtra("id",0);
+        id = getIntent().getStringExtra("id");
         String ss = getIntent().getStringExtra("dis");
+        Log.i("sun","距离2=="+ss);
         if(!TextUtils.isEmpty(ss)){
             distence = Integer.parseInt(ss);
         }
@@ -135,10 +136,10 @@ public class SignActivity extends BaseActivity {
                     showToastMsg("您当前还不在签到范围");
                     return;
                 }
-                if(System.currentTimeMillis()/1000>signEndTime){
-                    showToastMsg("您已过了签到时间");
-                    return;
-                }
+//                if(System.currentTimeMillis()/1000>signEndTime){
+//                    showToastMsg("您已过了签到时间");
+//                    return;
+//                }
                 flag = 1;
                 sign(latLng);
                 break;
@@ -280,7 +281,7 @@ public class SignActivity extends BaseActivity {
     }
 
     private void sign(LatLng ll){
-        RetrofitClient.getInstance().createApi().signProject(BaseApp.token,String.valueOf(id),String.valueOf(ll.latitude),String.valueOf(ll.longitude))
+        RetrofitClient.getInstance().createApi().signProject(BaseApp.token,id,String.valueOf(ll.latitude),String.valueOf(ll.longitude))
                 .compose(RxUtils.<HttpResult<CommonBean>>io_main())
                 .subscribe(new BaseObjObserver<CommonBean>(this,"签到") {
                     @Override

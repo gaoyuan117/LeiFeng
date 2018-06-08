@@ -35,6 +35,7 @@ public class BaseApp extends MultiDexApplication {
     public static String token;
     public static int type = 0;//  1 代表个人用户   2代表队伍账号
     public static int team_id;//队伍登录时候，当前队伍的id
+    public static int quanxian = 0;
     public static ConfigBean config;
     public static UserInfoBean userBean;
     public static String address;

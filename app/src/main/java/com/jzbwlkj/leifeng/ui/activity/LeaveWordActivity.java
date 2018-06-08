@@ -205,10 +205,10 @@ public class LeaveWordActivity extends BaseActivity implements BaseQuickAdapter.
         }
 
         RetrofitClient.getInstance().createApi().postAuditList(BaseApp.token, ss)
-                .compose(RxUtils.<HttpResult<CommonBean>>io_main())
-                .subscribe(new BaseObjObserver<CommonBean>(this, "提交评价") {
+                .compose(RxUtils.<HttpResult<String>>io_main())
+                .subscribe(new BaseObjObserver<String>(this, "提交评价") {
                     @Override
-                    protected void onHandleSuccess(CommonBean commonBean) {
+                    protected void onHandleSuccess(String commonBean) {
                         showToastMsg("审核提交成功");
                         finish();//结束当前界面，或者清空提交审核的结果结合resultList，重新获取数据，刷新当前界面，因为这是没有审核的列表，社和通过的不在这里展示
                     }
