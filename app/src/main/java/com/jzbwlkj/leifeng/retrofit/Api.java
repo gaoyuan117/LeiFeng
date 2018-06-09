@@ -27,6 +27,7 @@ import com.jzbwlkj.leifeng.ui.bean.TeamLoginBean;
 import com.jzbwlkj.leifeng.ui.bean.TeamStatusBean;
 import com.jzbwlkj.leifeng.ui.bean.UserBean;
 import com.jzbwlkj.leifeng.ui.bean.UserInfoBean;
+import com.jzbwlkj.leifeng.ui.bean.UserSignBean;
 
 import java.util.List;
 import java.util.Map;
@@ -330,5 +331,10 @@ public interface Api {
     @POST("/api/team/signForUser")
     Observable<HttpResult<CommonBean>> daiqian(@Field("team_token") String token,@Field("activity_id") String activity_id,
                                                @Field("uid") String uid,@Field("time_s") String time_s,@Field("time_e") String time_e);
+
+    //队伍中获取队员参加活动的服务时长
+    @FormUrlEncoded
+    @POST("/api/user/getMemberSignList")
+    Observable<HttpResult<UserSignBean>> getServiceDetical(@Field("uid") String uid,@Field("page") int page);
 
 }

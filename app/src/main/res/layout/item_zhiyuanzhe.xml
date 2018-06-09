@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/white_gray_background_selector"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -41,6 +42,8 @@
             android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:visibility="gone"
             android:layout_alignParentRight="true"
             android:padding="10dp"
@@ -52,6 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -83,6 +88,13 @@
                 android:textSize="@dimen/sp_12" />
 
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/arrow_right"/>
     </RelativeLayout>
 
     <View

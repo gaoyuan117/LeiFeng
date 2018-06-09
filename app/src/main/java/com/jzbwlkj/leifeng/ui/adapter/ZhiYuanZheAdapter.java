@@ -26,9 +26,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ZhiYuanZheAdapter extends BaseQuickAdapter<UserBean,BaseViewHolder> {
     private Activity activity;
-    public ZhiYuanZheAdapter(int layoutResId, @Nullable List<UserBean> data, Activity activity) {
+    private int type;// 1 待审核  2  已审核
+    public ZhiYuanZheAdapter(int layoutResId, @Nullable List<UserBean> data, Activity activity,int type) {
         super(layoutResId, data);
         this.activity = activity;
+        this.type = type;
     }
 
     @Override
@@ -39,8 +41,17 @@ public class ZhiYuanZheAdapter extends BaseQuickAdapter<UserBean,BaseViewHolder>
         if (!TextUtils.isEmpty(path)&&path != "null") {
             Glide.with(activity).load(path).error(R.mipmap.logo).into((ImageView) helper.getView(R.id.img_leave_word_avatar));
         }
-
         helper.addOnClickListener(R.id.tv_refuse);
         helper.addOnClickListener(R.id.tv_agree);
+        if(type == 1){
+            helper.setVisible(R.id.tv_refuse,true);
+            helper.setVisible(R.id.tv_agree,true);
+            helper.setVisible(R.id.tv_status,false);
+        }else{
+            helper.setVisible(R.id.tv_refuse,false);
+            helper.setVisible(R.id.tv_agree,false);
+            helper.setVisible(R.id.tv_status,true);
+        }
+
     }
 }
