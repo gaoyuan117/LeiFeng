@@ -156,7 +156,13 @@ public class ModifyPhoneActivity extends BaseActivity {
     }
 
     private void getCode(String phone) {
-        RetrofitClient.getInstance().createApi().sendsms(phone, "modifymobile")
+        String tt = "";
+        if(BaseApp.type == 1){
+            tt = "0";
+        }else if(BaseApp.type == 2){
+            tt = "1";
+        }
+        RetrofitClient.getInstance().createApi().sendsms(phone, "modifymobile",tt)
                 .compose(RxUtils.<HttpResult<CodeBean>>io_main())
                 .subscribe(new BaseObjObserver<CodeBean>(this, "获取验证码") {
                     @Override

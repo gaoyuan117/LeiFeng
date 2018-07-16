@@ -1,65 +1,70 @@
 package com.jzbwlkj.leifeng.ui.activity;
 
-import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
-import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
-import com.jzbwlkj.leifeng.retrofit.HttpResult;
-import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
-import com.jzbwlkj.leifeng.retrofit.RxUtils;
-import com.jzbwlkj.leifeng.ui.adapter.LearningGardenAdapter;
-import com.jzbwlkj.leifeng.ui.adapter.TrainingAdapter;
-import com.jzbwlkj.leifeng.ui.bean.ChatListBean;
-import com.jzbwlkj.leifeng.ui.bean.NewsBean;
-import com.jzbwlkj.leifeng.ui.bean.StudyBean;
+import com.jzbwlkj.leifeng.ui.adapter.TabFragmentAdapter;
+import com.jzbwlkj.leifeng.ui.fragment.XinWenFragment;
+import com.jzbwlkj.leifeng.ui.fragment.ZhengCeFragment;
+import com.jzbwlkj.leifeng.ui.fragment.ZhiDuFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LearningGardenActivity extends BaseActivity {
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.exit_layout)
+    LinearLayout exitLayout;
+    @BindView(R.id.tv_left_title)
+    TextView tvLeftTitle;
+    @BindView(R.id.center_title_tv)
+    TextView centerTitleTv;
+    @BindView(R.id.tv_right_text)
+    TextView tvRightText;
+    @BindView(R.id.iv_right2)
+    ImageView ivRight2;
+    @BindView(R.id.img_right)
+    ImageView imgRight;
+    @BindView(R.id.title_linLayout)
+    LinearLayout titleLinLayout;
+    @BindView(R.id.vp_study)
+    ViewPager vpStudy;
+    @BindView(R.id.tab)
+    TabLayout tab;
 
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.refresh)
-    SwipeRefreshLayout refresh;
-
-    // private List<String> mList = new ArrayList<>();
-    private LearningGardenAdapter adapter;
-
-    private List<StudyBean> mList = new ArrayList<>();
-    private int pageCount = 0;
+    private List<Fragment> list = new ArrayList<>();
+    private ZhiDuFragment zhiDuFragment;
+    private ZhengCeFragment zhengCeFragment;
+    private XinWenFragment xinWenFragment;
+    private TabFragmentAdapter adapter;
+    private List<String> lt_str = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_help_history;
+        return R.layout.activity_study;
     }
 
     @Override
     public void initView() {
         setCenterTitle("学习园地");
-        initAdapter();
-        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                pageCount = 1;
-                mList.clear();
-                getNetData(false, true, false);
-            }
-        });
+        initTab();
     }
 
     @Override
     public void initData() {
-        getNetData(true, false, false);
+
     }
 
     @Override
@@ -67,73 +72,29 @@ public class LearningGardenActivity extends BaseActivity {
 
     }
 
+    private void initTab() {
+        lt_str.add("党建制度");
+        lt_str.add("最新政策");
+        lt_str.add("党建新闻");
 
-    /**
-     * 处理网络请求
-     */
-    private void getNetData(final boolean isfirst, final boolean isrefresh, final boolean isloadMore) {
-        if (isfirst || isrefresh) {
-            pageCount = 1;
-            mList.clear();
-        }
+        zhiDuFragment = new ZhiDuFragment();
+        zhengCeFragment = new ZhengCeFragment();
+        xinWenFragment = new XinWenFragment();
+        list.add(zhiDuFragment);
+        list.add(zhengCeFragment);
+        list.add(xinWenFragment);
 
-        if (isloadMore) {
-            pageCount++;
-        }
-        RetrofitClient.getInstance().createApi().studyGarden("2")
-                .compose(RxUtils.<HttpResult<List<StudyBean>>>io_main())
-                .subscribe(new BaseObjObserver<List<StudyBean>>(this, refresh) {
-                    @Override
-                    protected void onHandleSuccess(List<StudyBean> chatListBeans) {
-
-                        if (chatListBeans.size() > 0) {
-                            mList.addAll(chatListBeans);
-                            adapter.notifyDataSetChanged();
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        if (isfirst || isrefresh) {
-                            //展示空数据view
-                        }
-                        if (isloadMore) {
-                            adapter.setEnableLoadMore(false);
-                        }
-                    }
-                });
+        adapter = new TabFragmentAdapter(getSupportFragmentManager(), list, lt_str);
+        vpStudy.setAdapter(adapter);//给ViewPager设置适配器
+        vpStudy.setOffscreenPageLimit(3);
+//        vpmanager.setPageTransformer(true, new ScaleInTransformer());
+        tab.setupWithViewPager(vpStudy);//将TabLayout和ViewPager关联起来。
+        tab.setTabsFromPagerAdapter(adapter);//给Tab
     }
 
-    /**
-     * 初始化适配器
-     */
-    private void initAdapter() {
-        adapter = new LearningGardenAdapter(R.layout.item_news, mList, this);
-        adapter.setEnableLoadMore(true);
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                getNetData(false, false, true);
-            }
-        }, recyclerView);
-        adapter.disableLoadMoreIfNotFullPage();
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                StudyBean allListBean = mList.get(position);
-                Intent intent = new Intent(LearningGardenActivity.this, NewsDetalActivity.class);
-                intent.putExtra("id", allListBean.getId());
-                intent.putExtra("title", allListBean.getTitle());
-                intent.putExtra("content", allListBean.getContent());
-                intent.putExtra("time", allListBean.getAdd_time());
-                intent.putExtra("flag",1);
-                startActivity(intent);
-            }
-        });
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerView.addItemDecoration(rvDivider(1));
-        recyclerView.setAdapter(adapter);
+    @OnClick(R.id.iv_back)
+    public void onViewClicked() {
+        finish();
     }
+
 }

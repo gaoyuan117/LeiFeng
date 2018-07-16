@@ -30,9 +30,10 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="\t\t\t姓名："
+                    android:gravity="right"
+                    android:text="姓名："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -42,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -69,9 +70,10 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="\t\t\t性别："
+                    android:gravity="right"
+                    android:text="性别："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -112,9 +114,10 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="\t\t\t民族："
+                    android:gravity="right"
+                    android:text="民族："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -155,13 +158,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="24dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="证件类型："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -203,13 +207,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="24dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="证件号码："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -220,7 +225,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -240,13 +245,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="24dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="手机号码："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -257,9 +263,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
                     android:inputType="number"
                     android:maxLength="11"
+                    android:padding="8dp"
                     android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -280,13 +286,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="24dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="政治面貌："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -323,11 +330,62 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_xueli"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="24dp"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="学历："
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_gray"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:id="@+id/tv_xueli"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/dp_10"
+                        android:drawableRight="@mipmap/sanjiaoxiabiao"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="@dimen/sp_12"
+                        android:paddingTop="4dp"
+                        android:textColor="@color/text_black"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="*"
+                    android:textColor="@color/global"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="34dp"
                 android:paddingTop="10dp">
 
@@ -343,7 +401,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -361,9 +419,10 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="\t\t\t职业："
+                    android:gravity="right"
+                    android:text="职业："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -381,7 +440,7 @@
                         android:drawablePadding="@dimen/dp_10"
                         android:drawableRight="@mipmap/sanjiaoxiabiao"
                         android:paddingBottom="4dp"
-                        android:paddingLeft="6dp"
+                        android:paddingLeft="8dp"
                         android:paddingRight="@dimen/sp_12"
                         android:paddingTop="4dp"
                         android:textColor="@color/text_black"
@@ -394,13 +453,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="34dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="通讯地址："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -410,7 +470,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -422,13 +482,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="32dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="电子邮箱："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -438,7 +499,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -450,14 +511,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="35dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="34dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="\t\tQQ号："
+                    android:gravity="right"
+                    android:text="QQ号："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -467,7 +529,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -479,14 +541,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="34dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="     微信号："
+                    android:gravity="right"
+                    android:text="微信号："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -496,7 +559,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -509,13 +572,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="24dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="所在区域："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -557,13 +621,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="24dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="所属机构："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -605,13 +670,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="35dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="专业能力："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -637,13 +703,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="32dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="专业证书："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -665,13 +732,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="24dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="登录密码："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -682,9 +750,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
-                    android:text=""
                     android:inputType="textPassword"
+                    android:padding="8dp"
+                    android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
 
@@ -704,13 +772,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingLeft="32dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="24dp"
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:text="确认密码："
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -721,8 +790,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
                     android:inputType="textPassword"
+                    android:padding="8dp"
                     android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -759,8 +828,5 @@
                 android:textSize="16sp" />
 
         </LinearLayout>
-
     </ScrollView>
-
-
 </LinearLayout>

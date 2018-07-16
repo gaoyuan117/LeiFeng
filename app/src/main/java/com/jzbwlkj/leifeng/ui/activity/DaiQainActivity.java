@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -92,7 +93,7 @@ public class DaiQainActivity extends BaseActivity {
     @Override
     public int getLayoutId() {
         id = getIntent().getIntExtra("id", 0);
-        return R.layout.activity_manager_user;
+        return R.layout.activity_daiqian;
     }
 
     @Override
@@ -187,9 +188,9 @@ public class DaiQainActivity extends BaseActivity {
                             showToastMsg("您还没有选择签到，签退时间");
                             return;
                         }
-                        long ss = signInfoBean.getTime_s();
-                        long ee = signInfoBean.getTime_e();
-                        postData(String.valueOf(id), String.valueOf(ss), String.valueOf(ee), String.valueOf(userBean.getId()));
+                        String ss = signInfoBean.getData_s();
+                        String ee = signInfoBean.getData_e();
+                        postData(String.valueOf(id), ss, ee, String.valueOf(userBean.getUid()));
                         break;
                 }
 
@@ -205,6 +206,7 @@ public class DaiQainActivity extends BaseActivity {
      * 提交审核结果1 已审核 -1 已拒绝
      */
     private void postData(String id, String start, String end, String uid) {
+        Log.i("sun","activity_id=="+id+"==uid=="+uid+"==ss=="+start+"==ee=="+end);
         RetrofitClient.getInstance().createApi().daiqian(BaseApp.token, id, uid, start, end)
                 .compose(RxUtils.<HttpResult<CommonBean>>io_main())
                 .subscribe(new BaseObjObserver<CommonBean>(getActivity(), "代签") {
@@ -232,9 +234,9 @@ public class DaiQainActivity extends BaseActivity {
                     bean = new JoinProjectUserBean.SignInfoBean();
                 }
                 if(type == 1){
-                    bean.setTime_s(FormatUtils.getStringToStamp(time));
+                    bean.setData_s(time);
                 }else if(type == 2){
-                    bean.setTime_e(FormatUtils.getStringToStamp(time));
+                    bean.setData_e(time);
                 }
                 userBean.setSign_info(bean);
                 handler.sendEmptyMessage(type);

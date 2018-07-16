@@ -69,8 +69,8 @@ public class ProjectDetialBean {
     private int join_time_e;
     private int start_time;
     private int end_time;
-    private int day_start_time;
-    private int day_end_time;
+    private long day_start_time;
+    private long day_end_time;
     private int service_hour;
     private int service_num;
     private int city_id;
@@ -199,19 +199,19 @@ public class ProjectDetialBean {
         this.end_time = end_time;
     }
 
-    public int getDay_start_time() {
+    public long getDay_start_time() {
         return day_start_time;
     }
 
-    public void setDay_start_time(int day_start_time) {
+    public void setDay_start_time(long day_start_time) {
         this.day_start_time = day_start_time;
     }
 
-    public int getDay_end_time() {
+    public long getDay_end_time() {
         return day_end_time;
     }
 
-    public void setDay_end_time(int day_end_time) {
+    public void setDay_end_time(long day_end_time) {
         this.day_end_time = day_end_time;
     }
 

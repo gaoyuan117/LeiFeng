@@ -286,7 +286,7 @@ public class ProjectRecruitActivity extends BaseActivity {
                         }
                         all = projectBean.getTotal();
                         ll = projectBean.getPer_page();
-                        if (projectBean.getData().size() > 0) {
+                        if (projectBean.getData() != null&&projectBean.getData().size() > 0) {
                             mList.addAll(projectBean.getData());
                         } else {
                             showToastMsg("暂无相关数据");

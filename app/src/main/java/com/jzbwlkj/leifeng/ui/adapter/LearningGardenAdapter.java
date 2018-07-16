@@ -33,7 +33,7 @@ public class LearningGardenAdapter extends BaseQuickAdapter<StudyBean,BaseViewHo
         String path = item.getPic();
         if(!TextUtils.equals("null",path)&&!TextUtils.isEmpty(path)){
             Glide.with(activity).load(path).bitmapTransform(new RoundCornesTransFormation(activity,10,10))
-                    .error(R.mipmap.cover_default).into((ImageView)baseViewHolder.getView(R.id.img_news));
+                    .error(R.mipmap.logo).into((ImageView)baseViewHolder.getView(R.id.img_news));
         }
         baseViewHolder.setText(R.id.tv_news_title,item.getTitle());
         String ss = item.getDesc();

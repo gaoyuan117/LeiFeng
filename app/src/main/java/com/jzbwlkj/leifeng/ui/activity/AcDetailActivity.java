@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.Gson;
 import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
@@ -26,6 +25,7 @@ import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.adapter.AcDetailAdapter;
 import com.jzbwlkj.leifeng.ui.bean.CommitBean;
 import com.jzbwlkj.leifeng.ui.bean.ProjectDetialBean;
+import com.jzbwlkj.leifeng.utils.FormatUtils;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -111,6 +111,8 @@ public class AcDetailActivity extends BaseActivity {
     TextView tvCancelPost;
     @BindView(R.id.ll_ing)
     LinearLayout llIng;
+    @BindView(R.id.tv_ac_service_time)
+    TextView tvAcServiceTime;
 
     private List<ProjectDetialBean.MessageListBean> mList = new ArrayList<>();
     private AcDetailAdapter adapter;
@@ -201,6 +203,9 @@ public class AcDetailActivity extends BaseActivity {
                         setweb(tvAcDemand, projectDetialBean.getRequirement());
                         all = projectDetialBean.getService_num();
                         already = projectDetialBean.getPraise_num();
+                        String ss = FormatUtils.formatTime3(projectDetialBean.getDay_start_time());
+                        String ee = FormatUtils.formatTime3(projectDetialBean.getDay_end_time());
+                        tvAcServiceTime.setText(ss+"-"+ee);
                         int dian = projectDetialBean.getIs_praise();
                         ProjectDetialBean.JoinInfoBean beandd = projectDetialBean.getJoin_info();
                         if (beandd == null) {
@@ -435,4 +440,5 @@ public class AcDetailActivity extends BaseActivity {
                 });
 
     }
+
 }

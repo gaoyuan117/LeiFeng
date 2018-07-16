@@ -193,7 +193,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void initView() {
         initDialog();
         getQuanxian();
-
         mList = new ArrayList<>();
         mRadioButtos = new ArrayList<>();
         homeFragment = new HomeFragment();
@@ -261,7 +260,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 mRadioButtos.get(3).setChecked(false);
                 String phone = SharedPreferencesUtil.getInstance().getString("phone");
-                helpDialog(phone, BaseApp.address);
+                helpDialog(BaseApp.config.getService_tel(), BaseApp.address);
 
                 break;
             case R.id.tv_main_sign:
@@ -275,6 +274,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 if (projectList == null || projectList.size() <= 0) {
                     showToastMsg("您当前尚未参加任何活动与项目");
+                    return;
+                }
+
+                if (showList == null || showList.size() <= 0) {
+                    showToastMsg("没有将要进行的活动与项目");
                     return;
                 }
                 popType.show();
@@ -330,7 +334,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         View view = View.inflate(this, R.layout.dialog_help, null);
         dialog.setContentView(view);
         dialog.show();
-
+        Log.e("gy", "手机号：" + phone);
         final TextView tvPhone = view.findViewById(R.id.tv_help_phone);
         TextView tvLocation = view.findViewById(R.id.tv_help_location);
         tvPhone.setText(BaseApp.config.getService_tel());
@@ -338,6 +342,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tvPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 CommonApi.takePhone(MainActivity.this, phone);
             }
         });
@@ -446,7 +451,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 Intent in = new Intent(MainActivity.this, SignActivity.class);
                 in.putExtra("id", acId);
-                Log.i("sun","距离1=="+model.getPid());
+                Log.i("sun", "距离1==" + model.getPid());
                 in.putExtra("dis", model.getPid());
                 in.putExtra("lat", model.getLat());
                 in.putExtra("lng", model.getLng());
@@ -457,7 +462,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         lvContent.setAdapter(lvAdapter);
         popType = new Dialog(this, R.style.wx_dialog);
         popType.setContentView(viewType);
-        popType.setCanceledOnTouchOutside(false);
+//        popType.setCanceledOnTouchOutside(false);
 
         ViewGroup.LayoutParams layoutParams = viewType.getLayoutParams();
         layoutParams.width = getResources().getDisplayMetrics().widthPixels;
@@ -574,17 +579,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             return;
                         }
                         projectList.addAll(projectBeans);
-                        for (MainUserBean bean : projectBeans) {
-                            for (MainUserBean.ListBean listBean : bean.getList()) {
-                                QianDaoModel model = new QianDaoModel();
-                                model.setId(listBean.getActivity_id() + "");
-                                model.setName(listBean.getActivity_info().getTitle());
-                                model.setPid(listBean.getActivity_info().getSign_scope() + "");
-                                model.setLat(Double.parseDouble(listBean.getActivity_info().getLat()));
-                                model.setLng(Double.parseDouble(listBean.getActivity_info().getLng()));
-                                showList.add(model);
+
+                        for (int i1 = 0; i1 < projectBeans.size(); i1++) {
+                            if (projectList.get(i1).getStatus_text().equals("已通过")) {
+                                for (MainUserBean.ListBean listBean : projectBeans.get(i1).getList()) {
+                                    if (listBean.getActivity_info() == null) continue;
+                                    QianDaoModel model = new QianDaoModel();
+                                    model.setId(listBean.getActivity_id() + "");
+                                    model.setName(listBean.getActivity_info().getTitle());
+                                    model.setPid(listBean.getActivity_info().getSign_scope() + "");
+                                    model.setLat(Double.parseDouble(listBean.getActivity_info().getLat()));
+                                    model.setLng(Double.parseDouble(listBean.getActivity_info().getLng()));
+                                    showList.add(model);
+                                }
                             }
                         }
+
 
                         lvAdapter.notifyDataSetChanged();
                     }
@@ -601,7 +611,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 MainActivity.this.finish();
             }
         }
-
     }
 
 

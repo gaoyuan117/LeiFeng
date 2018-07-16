@@ -21,6 +21,7 @@ import com.jzbwlkj.leifeng.ui.bean.CommitBean;
 import com.jzbwlkj.leifeng.ui.bean.ConfigBean;
 import com.jzbwlkj.leifeng.utils.CommonApi;
 import com.jzbwlkj.leifeng.utils.StringCheckUtil;
+import com.jzbwlkj.leifeng.view.OnDyClickListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,9 +94,9 @@ public class CommitHelpActivity extends BaseActivity {
                 break;
             case R.id.tv_commit:
                 if(checkCondition()){
-                    CommonApi.commonDialog(this, "确认发布留言吗?", "确定", new View.OnClickListener() {
+                    CommonApi.commonDialog(this, "确认发布留言吗?", "确定", new OnDyClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View v, int operate) {
                             postHelp();
                         }
                     });

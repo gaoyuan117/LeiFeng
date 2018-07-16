@@ -56,7 +56,7 @@ public class PhoneCameraUtil {
             if (TextUtils.isEmpty(imageCaptureUri.getPath())) {
                 Log.i("sun","1");
                 File mediaFile = new File(
-                        getFileAddress(5,"suoluomen", mActivity),"img" + System.currentTimeMillis() + ".jpg");
+                        getFileAddress(5,"leifeng", mActivity),"img" + System.currentTimeMillis() + ".jpg");
                 if (!mediaFile.mkdirs()) {
                     mediaFile.createNewFile();
                 }

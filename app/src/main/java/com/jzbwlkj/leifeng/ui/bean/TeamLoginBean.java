@@ -8,16 +8,20 @@ public class TeamLoginBean {
 
     /**
      * team_id : 6
-     * team_name : 我的队伍
-     * pic : http://leifeng.jzbwlkj.com/upload/default/20180531/4197b464c5c34ef1b58d7eef006a074b.jpg
+     * team_name : 密水队伍
+     * pic : http://leifeng.jzbwlkj.com/upload/default/20180605/ccb238fa14063668407c9e991c2ae075.jpg
      * status : 1
-     * team_token : c7b4c855313dbc64b5535a77fa4bd8e05484b9a9ea9f90c7acdd58bea977fb33
+     * contact_mobile : 15628801370
+     * sign_auth : 1
+     * team_token : cdb1f918bd3e3c6be52de7607e879a9f6ebcfd7b436d80c441e05975ca4134ec
      */
 
     private int team_id;
     private String team_name;
     private String pic;
     private int status;
+    private String contact_mobile;
+    private int sign_auth;
     private String team_token;
 
     public int getTeam_id() {
@@ -50,6 +54,22 @@ public class TeamLoginBean {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getContact_mobile() {
+        return contact_mobile;
+    }
+
+    public void setContact_mobile(String contact_mobile) {
+        this.contact_mobile = contact_mobile;
+    }
+
+    public int getSign_auth() {
+        return sign_auth;
+    }
+
+    public void setSign_auth(int sign_auth) {
+        this.sign_auth = sign_auth;
     }
 
     public String getTeam_token() {

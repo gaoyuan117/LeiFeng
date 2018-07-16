@@ -23,6 +23,7 @@ import com.jzbwlkj.leifeng.ui.bean.CommitBean;
 import com.jzbwlkj.leifeng.utils.CommonApi;
 import com.jzbwlkj.leifeng.utils.FormatUtils;
 import com.jzbwlkj.leifeng.utils.RoundCornesTransFormation;
+import com.jzbwlkj.leifeng.view.OnDyClickListener;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -71,16 +72,16 @@ public class TrainingDetailsActivity extends BaseActivity {
         }else if(sstatus == 1){
             showToastMsg("已报名");
         }else if(sstatus == -1){
-            CommonApi.commonDialog(activity, "确认报名培训吗？", "确定", new View.OnClickListener() {
+            CommonApi.commonDialog(activity, "确认报名培训吗？", "确定", new OnDyClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v, int operate) {
                     postTrain();
                 }
             });
         }else{
-            CommonApi.commonDialog(activity, "确认报名培训吗？", "确定", new View.OnClickListener() {
+            CommonApi.commonDialog(activity, "确认报名培训吗？", "确定", new OnDyClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v, int operate) {
                     postTrain();
                 }
             });

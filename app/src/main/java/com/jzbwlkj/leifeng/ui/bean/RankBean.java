@@ -8,7 +8,6 @@ import java.util.List;
 
 public class RankBean {
 
-
     private List<RankUserBean> rank_user;
     private List<RankTeamBean> rank_team;
 
@@ -30,12 +29,12 @@ public class RankBean {
 
     public static class RankUserBean {
         /**
-         * id : 4
-         * user_nickname : 张三
-         * avatar : admin/20180331/5b657db4b37d382f71f1f3d16b47556a.jpg
+         * id : 14
+         * user_nickname : 喻仕瑜
+         * avatar :
          * sex : 1
          * polital_status : 0
-         * service_hour : 0.00
+         * service_hour : 72967.01
          */
 
         private int id;
@@ -96,10 +95,10 @@ public class RankBean {
 
     public static class RankTeamBean {
         /**
-         * id : 1
-         * team_name : 高密市志愿者协会
-         * pic : http://leifeng.test.com/upload/admin/20180331/5b657db4b37d382f71f1f3d16b47556a.jpg
-         * service_hour : 0.00
+         * id : 6
+         * team_name : 密水队伍
+         * pic : http://leifeng.jzbwlkj.com/upload/default/20180605/ccb238fa14063668407c9e991c2ae075.jpg
+         * service_hour : 2.00
          */
 
         private int id;

@@ -7,9 +7,12 @@
     android:background="@mipmap/login_bg"
     android:fitsSystemWindows="true">
 
-    <include
-        layout="@layout/layout_title"
-        android:visibility="gone" />
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:padding="14dp"
+        android:src="@mipmap/backdeep"/>
 
     <!--<ImageView-->
     <!--android:layout_width="match_parent"-->
@@ -71,7 +74,7 @@
                     android:id="@+id/tv_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="组织登录"
+                    android:text="队伍登录"
                     android:textColor="@color/text_black"
                     android:textSize="@dimen/sp_16" />
 

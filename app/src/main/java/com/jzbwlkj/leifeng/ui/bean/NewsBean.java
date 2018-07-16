@@ -8,6 +8,7 @@ import java.util.List;
 
 public class NewsBean {
 
+
     private List<AdInfoBean> ad_info;
     private List<NewsListBean> news_list;
 
@@ -29,11 +30,13 @@ public class NewsBean {
 
     public static class AdInfoBean {
         /**
-         * image : admin/20180410/7874cb041e4f84249237330f1c621ca7.jpg
-         * url :
+         * image : http://leifeng.jzbwlkj.com/upload/admin/20180622/297ccc5d57b169ed1bfabd54c7f8bf69.jpg
+         * type : 1
+         * url : 56
          */
 
         private String image;
+        private int type;
         private String url;
 
         public String getImage() {
@@ -42,6 +45,14 @@ public class NewsBean {
 
         public void setImage(String image) {
             this.image = image;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
         }
 
         public String getUrl() {
@@ -55,15 +66,15 @@ public class NewsBean {
 
     public static class NewsListBean {
         /**
-         * id : 1
+         * id : 59
          * type : 0
          * city_id : 0
-         * title : 测试志愿新闻
-         * pic : admin/20180331/5b657db4b37d382f71f1f3d16b47556a.jpg
-         * desc : 时代发生地方
-         * content : <p>是的根深蒂固大哥<br/></p>
-         * is_recommend : 1
-         * add_time : 0
+         * title : 市总工会志愿者端午节环保公益活动
+         * pic : http://leifeng.jzbwlkj.com/upload/admin/20180622/efe6b3f4400784e7b9d3bcf0a56b9fa3.jpg
+         * desc : 市总工会在端午期间组织本单位党员在凤凰公园进行志愿服务活动。
+         * content : <p><img src="http://leifeng.jzbwlkj.com/upload/default/20180622/c15cdeed1057201a2e0c56adae3b19e9.jpg" style="" title="3.jpg"/></p><p><img src="http://leifeng.jzbwlkj.com/upload/default/20180622/7abd0191e42a19aa55d187f7852e8ee0.jpg" style="" title="2.jpg"/></p><p><br/></p>
+         * is_recommend : 0
+         * add_time : 1529655122
          */
 
         private int id;

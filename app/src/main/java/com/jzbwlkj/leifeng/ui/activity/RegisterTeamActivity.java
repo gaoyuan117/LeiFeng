@@ -260,6 +260,10 @@ public class RegisterTeamActivity extends BaseActivity {
             ToastUtils.showToast("密码不得少于6位");
             return;
         }
+        if(pwd.length()>11){
+            ToastUtils.showToast("密码不得大于11位");
+            return;
+        }
 
         if(TextUtils.isEmpty(pwd2)){
             ToastUtils.showToast("请输入确认密码");
@@ -276,7 +280,6 @@ public class RegisterTeamActivity extends BaseActivity {
             return;
         }
 
-        map.put("token", BaseApp.token);
         map.put("team_name", teamName);
         map.put("pic", picUrl);
         map.put("parent_id", unitid);
@@ -291,6 +294,7 @@ public class RegisterTeamActivity extends BaseActivity {
 
 //        map.put("erji"); 二级地址
 //        map.put("sanji");三级地址
+
 
         RetrofitClient.getInstance().createApi().teamRegister(map)
                 .compose(RxUtils.<HttpResult<String>>io_main())
@@ -355,6 +359,11 @@ public class RegisterTeamActivity extends BaseActivity {
                             model.setId(teamListBean.getId() + "");
                             showList.add(model);
                         }
+                        MySelfModel model = new MySelfModel();
+                        model.setSelected(false);
+                        model.setName("本级");
+                        model.setId("0");
+                        showList.add(model);
                         lvAdapter.notifyDataSetChanged();
                     }
                 });

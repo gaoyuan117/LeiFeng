@@ -3,7 +3,6 @@ package com.jzbwlkj.leifeng.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -34,28 +33,8 @@ import cn.jpush.android.api.TagAliasCallback;
 
 public class LoginActivity extends BaseActivity {
 
-    @BindView(R.id.et_login_user)
-    EditText etLoginUser;
-    @BindView(R.id.et_login_pwd)
-    EditText etLoginPwd;
-    @BindView(R.id.tv_login_forget_pwd)
-    TextView tvLoginForgetPwd;
     @BindView(R.id.iv_back)
     ImageView ivBack;
-    @BindView(R.id.exit_layout)
-    LinearLayout exitLayout;
-    @BindView(R.id.tv_left_title)
-    TextView tvLeftTitle;
-    @BindView(R.id.center_title_tv)
-    TextView centerTitleTv;
-    @BindView(R.id.tv_right_text)
-    TextView tvRightText;
-    @BindView(R.id.iv_right2)
-    ImageView ivRight2;
-    @BindView(R.id.img_right)
-    ImageView imgRight;
-    @BindView(R.id.title_linLayout)
-    LinearLayout titleLinLayout;
     @BindView(R.id.tv_person)
     TextView tvPerson;
     @BindView(R.id.view_person)
@@ -68,14 +47,6 @@ public class LoginActivity extends BaseActivity {
     View viewUnit;
     @BindView(R.id.ll_unit)
     LinearLayout llUnit;
-    @BindView(R.id.img_user)
-    ImageView imgUser;
-    @BindView(R.id.img_pwd)
-    ImageView imgPwd;
-    @BindView(R.id.bt_login)
-    TextView btLogin;
-    @BindView(R.id.ll_date_person)
-    LinearLayout llDatePerson;
     @BindView(R.id.iv_unit)
     ImageView ivUnit;
     @BindView(R.id.et_login_unit)
@@ -90,7 +61,20 @@ public class LoginActivity extends BaseActivity {
     TextView btLoginUnit;
     @BindView(R.id.ll_date_unit)
     LinearLayout llDateUnit;
-
+    @BindView(R.id.img_user)
+    ImageView imgUser;
+    @BindView(R.id.et_login_user)
+    EditText etLoginUser;
+    @BindView(R.id.img_pwd)
+    ImageView imgPwd;
+    @BindView(R.id.et_login_pwd)
+    EditText etLoginPwd;
+    @BindView(R.id.tv_login_forget_pwd)
+    TextView tvLoginForgetPwd;
+    @BindView(R.id.bt_login)
+    TextView btLogin;
+    @BindView(R.id.ll_date_person)
+    LinearLayout llDatePerson;
     private Animation indoor, outdoor;
 
     @Override
@@ -100,7 +84,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        setCenterTitle("登录");
         initAnim();
     }
 
@@ -114,7 +97,8 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.tv_login_forget_pwd, R.id.bt_login,R.id.tv_login_forget_pwd_unit,R.id.bt_login_unit,R.id.ll_person,R.id.ll_unit})
+    @OnClick({R.id.tv_login_forget_pwd, R.id.bt_login, R.id.tv_login_forget_pwd_unit, R.id.bt_login_unit,
+            R.id.ll_person, R.id.ll_unit, R.id.iv_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_login_forget_pwd://个人忘记密码
@@ -191,6 +175,9 @@ public class LoginActivity extends BaseActivity {
                 });
 
                 break;
+            case R.id.iv_back:
+                finish();
+                break;
         }
     }
 
@@ -224,10 +211,10 @@ public class LoginActivity extends BaseActivity {
 
                             }
                         });
-
+                        SharedPreferencesUtil.getInstance().putString("personId", phone);
                         SharedPreferencesUtil.getInstance().putString("token", bean.getToken());
                         SharedPreferencesUtil.getInstance().putString("phone", bean.getMobile());
-                        SharedPreferencesUtil.getInstance().putInt("type",1);
+                        SharedPreferencesUtil.getInstance().putInt("type", 1);
                         BaseApp.type = 1;
                         BaseApp.token = bean.getToken();
                         toActivity(MainActivity.class);
@@ -240,7 +227,7 @@ public class LoginActivity extends BaseActivity {
     /**
      * 组织登录
      */
-    private void loginUnit(){
+    private void loginUnit() {
         final String acc = etLoginUnit.getText().toString();
         String pwd = etLoginPwdUnit.getText().toString();
 
@@ -259,20 +246,21 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(new BaseObjObserver<TeamLoginBean>(activity) {
                     @Override
                     protected void onHandleSuccess(TeamLoginBean bean) {
+                        String phone = bean.getContact_mobile();
                         Set<String> strings = new HashSet<>();
-                        strings.add(acc);
+                        strings.add(phone);
                         //对于队伍用不到定点推送
-//                        JPushInterface.setAliasAndTags(activity, acc, strings, new TagAliasCallback() {
-//                            @Override
-//                            public void gotResult(int i, String s, Set<String> set) {
-//
-//                            }
-//                        });
+                        JPushInterface.setAliasAndTags(activity, phone, strings, new TagAliasCallback() {
+                            @Override
+                            public void gotResult(int i, String s, Set<String> set) {
+
+                            }
+                        });
 
                         SharedPreferencesUtil.getInstance().putString("token", bean.getTeam_token());
-                        SharedPreferencesUtil.getInstance().putInt("type",2);
-                        SharedPreferencesUtil.getInstance().putInt("team_id",bean.getTeam_id());
-                    //    SharedPreferencesUtil.getInstance().putString("phone", bean.getMobile());
+                        SharedPreferencesUtil.getInstance().putInt("type", 2);
+                        SharedPreferencesUtil.getInstance().putInt("team_id", bean.getTeam_id());
+                        SharedPreferencesUtil.getInstance().putString("phone", bean.getContact_mobile());
                         BaseApp.token = bean.getTeam_token();
                         BaseApp.type = 2;
                         BaseApp.team_id = bean.getTeam_id();
@@ -283,7 +271,7 @@ public class LoginActivity extends BaseActivity {
                 });
     }
 
-    private void initAnim(){
+    private void initAnim() {
         indoor = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.login_in);
         outdoor = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.login_out);
 

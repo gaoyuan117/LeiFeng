@@ -14,7 +14,6 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-
         <include layout="@layout/layout_title" />
 
         <LinearLayout
@@ -60,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="201030201839201043"
+                    android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>
@@ -90,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="291021913290428102"
+                        android:text=""
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>
@@ -115,7 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="18239232132"
+                        android:text=""
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>
@@ -139,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="0小时"
+                        android:text=""
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>
@@ -163,7 +162,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="团员"
+                        android:text=""
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>
@@ -211,7 +210,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="2017年8月17号 12:23:22"
+                        android:text=""
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>
@@ -237,7 +236,7 @@
                         android:lineSpacingExtra="3dp"
                         android:maxLines="2"
                         android:paddingLeft="10dp"
-                        android:text="山东省济南市历下区凤凰路海信创智谷"
+                        android:text=""
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>

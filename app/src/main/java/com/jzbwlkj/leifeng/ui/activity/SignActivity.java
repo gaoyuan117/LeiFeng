@@ -1,10 +1,14 @@
 package com.jzbwlkj.leifeng.ui.activity;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,16 +21,12 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.CircleOptions;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.jzbwlkj.leifeng.BaseApp;
@@ -37,8 +37,10 @@ import com.jzbwlkj.leifeng.retrofit.CommonBean;
 import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
+import com.jzbwlkj.leifeng.ui.bean.UserSignBean;
+import com.jzbwlkj.leifeng.utils.FormatUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,17 +73,46 @@ public class SignActivity extends BaseActivity {
     TextView tvQiandao;
     @BindView(R.id.tv_jieshu)
     TextView tvJieshu;
+    @BindView(R.id.tv_shijian)
+    TextView tvShijian;
+    @BindView(R.id.ll_time)
+    LinearLayout llTime;
 
     private BaiduMap mBaiduMap;
     public LocationClient mLocationClient = null;
     private MyLocationListener myListener = new MyLocationListener();
     private LatLng latLng;
-    private int flag ;
+    private int flag;
     private int distence;//签到范围
     private long signEndTime;//签到截止时间
     private String id;
     private double lat;
     private double lng;
+    private double dd;
+
+    private View view;
+    private TextView tvMessage;
+    private TextView tvCancel;
+    private TextView tvOk;
+    private Dialog dialog;
+
+    private long signStartTime;//签到时间；
+    private long currentTime;//当前时间
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 88:
+                    long tt = System.currentTimeMillis() / 1000 - signStartTime;
+                    Log.i("sun", "时间差==" + tt);
+                    String ss = FormatUtils.formatTime5(tt);
+                    tvShijian.setText(ss);
+                    handler.sendEmptyMessageDelayed(88, 1000);
+                    break;
+            }
+        }
+    };
+
     /**
      * 签到的时候需要活动地点的经纬度，和签到范围，至于用户的位置是否在签到范围，需要计算，就是看是在后台计算还是在手机端计算
      *
@@ -96,17 +127,18 @@ public class SignActivity extends BaseActivity {
     public void initData() {
         id = getIntent().getStringExtra("id");
         String ss = getIntent().getStringExtra("dis");
-        Log.i("sun","距离2=="+ss);
-        if(!TextUtils.isEmpty(ss)){
+        Log.i("sun", "距离2==" + ss);
+        if (!TextUtils.isEmpty(ss)) {
             distence = Integer.parseInt(ss);
         }
-        lat = getIntent().getDoubleExtra("lat",0);
-        lng = getIntent().getDoubleExtra("lng",0);
-
+        lat = getIntent().getDoubleExtra("lat", 0);
+        lng = getIntent().getDoubleExtra("lng", 0);
+        drawPoint(new LatLng(lat, lng));//活动目标点
     }
 
     @Override
     public void initView() {
+        initDialog();
         centerTitleTv.setText("签到");
         mBaiduMap = baiduMap.getMap();
         mLocationClient = new LocationClient(getApplicationContext());
@@ -114,8 +146,14 @@ public class SignActivity extends BaseActivity {
         mLocationClient.registerLocationListener(myListener);
         initBaiDuMap();
         mLocationClient.start();
+        getInfo();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+    }
 
     @Override
     public void configViews() {
@@ -130,10 +168,8 @@ public class SignActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_qiandao:
-//                BaseApp.signStatus = 1;
-                double dd = getjuli(new LatLng(lat,lng),latLng);
-                if(distence>dd){
-                    showToastMsg("您当前还不在签到范围");
+                if (distence < dd) {
+                    showToastMsg("您当前距离目的地" + dd + "米，不在签到范围");
                     return;
                 }
 //                if(System.currentTimeMillis()/1000>signEndTime){
@@ -141,12 +177,10 @@ public class SignActivity extends BaseActivity {
 //                    return;
 //                }
                 flag = 1;
-                sign(latLng);
+                sign(latLng, "0");
                 break;
             case R.id.tv_jieshu:
-//                BaseApp.signStatus = 2;
-                flag = 2;
-                sign(latLng);
+                dialog.show();
                 break;
         }
     }
@@ -206,6 +240,13 @@ public class SignActivity extends BaseActivity {
         //更多LocationClientOption的配置，请参照类参考中LocationClientOption类的详细说明
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
     public class MyLocationListener implements BDLocationListener {
 
         @Override
@@ -224,8 +265,9 @@ public class SignActivity extends BaseActivity {
             BaseApp.address = location.getAddrStr();
             Log.i("sun", BaseApp.address + "==" + 1);
             latLng = new LatLng(latitude, longitude);
-            drawPoint(latLng);
-            drawEnd(latLng);
+//            drawPoint(latLng);
+//            drawEnd(latLng);
+            dd = getjuli(new LatLng(lat, lng), latLng);
         }
     }
 
@@ -280,15 +322,15 @@ public class SignActivity extends BaseActivity {
 //        mBaiduMap.addOverlay(ooCircle);
     }
 
-    private void sign(LatLng ll){
-        RetrofitClient.getInstance().createApi().signProject(BaseApp.token,id,String.valueOf(ll.latitude),String.valueOf(ll.longitude))
+    private void sign(LatLng ll, String type) {
+        RetrofitClient.getInstance().createApi().signProject(BaseApp.token, id, String.valueOf(ll.latitude), String.valueOf(ll.longitude), type)
                 .compose(RxUtils.<HttpResult<CommonBean>>io_main())
-                .subscribe(new BaseObjObserver<CommonBean>(this,"签到") {
+                .subscribe(new BaseObjObserver<CommonBean>(this, "签到") {
                     @Override
                     protected void onHandleSuccess(CommonBean commonBean) {
-                        if(flag == 1){
+                        if (flag == 1) {
                             showToastMsg("签到成功");
-                        }else{
+                        } else {
                             showToastMsg("签退成功");
                         }
                         finish();
@@ -300,11 +342,58 @@ public class SignActivity extends BaseActivity {
 
     /**
      * 需要传活动得位置和用户当前的位置的点
+     *
      * @param point1 活动位置
-     * @param point2  用户位置
-     * @return  返回两者之间的距离  类型为double
+     * @param point2 用户位置
+     * @return 返回两者之间的距离  类型为double
      */
-    private double getjuli(LatLng point1,LatLng point2){
-        return DistanceUtil. getDistance(point1, point1);
+    private double getjuli(LatLng point1, LatLng point2) {
+        return DistanceUtil.getDistance(point1, point2);
+    }
+
+    private void initDialog() {
+        view = LayoutInflater.from(this).inflate(R.layout.dialog_common, null);
+        tvMessage = view.findViewById(R.id.tv_message);
+        tvCancel = view.findViewById(R.id.tv_no);
+        tvOk = view.findViewById(R.id.tv_yes);
+        tvMessage.setText("您是否确定进行签退操作");
+        tvOk.setText("确定");
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flag = 2;
+                sign(latLng, "1");
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog = new Dialog(this, R.style.wx_dialog);
+        dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(false);
+    }
+
+    private void getInfo() {
+        llTime.setVisibility(View.GONE);
+        RetrofitClient.getInstance().createApi().getServiceTime(BaseApp.token, id)
+                .compose(RxUtils.<HttpResult<UserSignBean>>io_main())
+                .subscribe(new BaseObjObserver<UserSignBean>(this, "签到详情") {
+                    @Override
+                    protected void onHandleSuccess(UserSignBean signBean) {
+                        List<UserSignBean.DataBean> beans = signBean.getData();
+                        if (beans == null || beans.size() <= 0) {
+                            return;
+                        }
+                        UserSignBean.DataBean bean = beans.get(0);
+                        if (bean.getTime_s() > 0 && bean.getTime_e() <= 0) {
+                            llTime.setVisibility(View.VISIBLE);
+                            signStartTime = bean.getTime_s();
+                            handler.sendEmptyMessage(88);
+                        }
+                    }
+                });
     }
 }

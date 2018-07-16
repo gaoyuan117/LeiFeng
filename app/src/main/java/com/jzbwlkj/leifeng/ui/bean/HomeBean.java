@@ -8,13 +8,12 @@ import java.util.List;
 
 public class HomeBean {
 
-
     /**
-     * team_count : 3
-     * user_count : 6
-     * user_polital_count : 6
-     * index_ad1 : [{"image":"https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1527842328514&amp;di=4bc1a35f252b86b4ff97c38509a29a25&amp;imgtype=0&amp;src=http%3A%2F%2Fpic28.photophoto.cn%2F20130706%2F0007020138947291_b.jpg","url":"https://www.baidu.com/"}]
-     * news_recommend_list : [{"id":5,"title":"剪纸\u201c走进\u201d养老院 八旬老人乐开怀","pic":"http://img1.cache.netease.com/catchpic/3/33/33F354A34F973B79319493AB61A11130.jpg"},{"id":4,"title":"高密市全国最美志愿者 助力全省乡村文明游","pic":"http://weifang.dzwww.com/gmxw/201804/W020180423581869362103.jpg"},{"id":1,"title":"高密市志愿者协会妇联积极响应市妇联\u201c巾帼美家\u201d的倡议","pic":"https://imgsa.baidu.com/forum/w%3D580/sign=52e936f98dcb39dbc1c0675ee01609a7/9e3c4c63f6246b60831ee067e7f81a4c510fa242.jpg"}]
+     * team_count : 8
+     * user_count : 24
+     * user_polital_count : 18
+     * index_ad1 : [{"image":"http://p0.so.qhimgs1.com/bdr/_240_/t0115a541834ffb65fc.jpg","type":0,"url":"http://www.chinaleifeng.com/"},{"image":"http://hbimg.b0.upaiyun.com/fcb1c6113ec2f6d46bef2561747b230dd73f40335110c-6XaEme_fw658","type":0,"url":"http://hbimg.b0.upaiyun.com/fcb1c6113ec2f6d46bef2561747b230dd73f40335110c-6XaEme_fw658"}]
+     * news_recommend_list : [{"id":5,"title":"剪纸\u201c走进\u201d养老院 八旬老人乐开怀","pic":"http://leifeng.jzbwlkj.com/upload/admin/20180603/219556ab97747ca8754986bb31ca6770.jpg"},{"id":4,"title":"高密市全国最美志愿者 助力全省乡村文明游","pic":"http://leifeng.jzbwlkj.com/upload/admin/20180604/487348c1f6b3aec5f56193fac3540c94.jpg"},{"id":1,"title":"高密市志愿者协会妇联积极响应市妇联\u201c巾帼美家\u201d的倡议","pic":"http://leifeng.jzbwlkj.com/upload/admin/20180604/cda37c168542cdd833881351cac3dd32.jpg"}]
      * new_message_num : 0
      */
 
@@ -75,11 +74,13 @@ public class HomeBean {
 
     public static class IndexAd1Bean {
         /**
-         * image : https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1527842328514&amp;di=4bc1a35f252b86b4ff97c38509a29a25&amp;imgtype=0&amp;src=http%3A%2F%2Fpic28.photophoto.cn%2F20130706%2F0007020138947291_b.jpg
-         * url : https://www.baidu.com/
+         * image : http://p0.so.qhimgs1.com/bdr/_240_/t0115a541834ffb65fc.jpg
+         * type : 0
+         * url : http://www.chinaleifeng.com/
          */
 
         private String image;
+        private int type;
         private String url;
 
         public String getImage() {
@@ -88,6 +89,14 @@ public class HomeBean {
 
         public void setImage(String image) {
             this.image = image;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
         }
 
         public String getUrl() {
@@ -103,7 +112,7 @@ public class HomeBean {
         /**
          * id : 5
          * title : 剪纸“走进”养老院 八旬老人乐开怀
-         * pic : http://img1.cache.netease.com/catchpic/3/33/33F354A34F973B79319493AB61A11130.jpg
+         * pic : http://leifeng.jzbwlkj.com/upload/admin/20180603/219556ab97747ca8754986bb31ca6770.jpg
          */
 
         private int id;

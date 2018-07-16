@@ -27,10 +27,13 @@ import com.jzbwlkj.leifeng.utils.SharedPreferencesUtil;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.internal.observers.BlockingBaseObserver;
@@ -47,6 +50,7 @@ public class SplashActivity extends BaseActivity {
     private String token;
     private int type;
     private int team_id;
+    private String phone;//手机号作为别名
 
     @Override
     public int getLayoutId() {
@@ -60,6 +64,11 @@ public class SplashActivity extends BaseActivity {
         type = SharedPreferencesUtil.getInstance().getInt("type");
         if (type == 2) {
             team_id = SharedPreferencesUtil.getInstance().getInt("team_id");
+        }
+        phone = SharedPreferencesUtil.getInstance().getString("phone");
+
+        if(!TextUtils.isEmpty(phone)){
+            setBieming(phone);
         }
         Observable.timer(1, TimeUnit.SECONDS)
                 .subscribe(new Consumer<Long>() {
@@ -129,5 +138,18 @@ public class SplashActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 为极光推送设置别名
+     */
+    private void setBieming(String phone){
+        Set<String> strings = new HashSet<>();
+        strings.add(phone);
+        JPushInterface.setAliasAndTags(activity, phone, strings, new TagAliasCallback() {
+            @Override
+            public void gotResult(int i, String s, Set<String> set) {
+
+            }
+        });
+    }
 
 }

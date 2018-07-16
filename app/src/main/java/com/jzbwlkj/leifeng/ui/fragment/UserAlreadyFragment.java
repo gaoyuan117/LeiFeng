@@ -106,12 +106,12 @@ public class UserAlreadyFragment extends BaseFragment {
                     @Override
                     protected void onHandleSuccess(List<UserBean> rankBeans) {
                         if(rankBeans!= null&&rankBeans.size()>0){
-                            refresh.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
                             tvNodata.setVisibility(View.GONE);
                             list.addAll(rankBeans);
                             adapter.notifyDataSetChanged();
                         }else{
-                            refresh.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.GONE);
                             tvNodata.setVisibility(View.VISIBLE);
                         }
                     }

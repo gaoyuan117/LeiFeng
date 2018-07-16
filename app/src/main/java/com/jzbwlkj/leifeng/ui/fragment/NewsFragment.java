@@ -15,11 +15,14 @@ import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.activity.NewsDetalActivity;
+import com.jzbwlkj.leifeng.ui.activity.ShowBannerActivity;
 import com.jzbwlkj.leifeng.ui.adapter.NewsAdapter;
+import com.jzbwlkj.leifeng.ui.bean.HomeBean;
 import com.jzbwlkj.leifeng.ui.bean.NewsBean;
 import com.jzbwlkj.leifeng.ui.bean.TeamListBean;
 import com.jzbwlkj.leifeng.utils.CommonApi;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +76,6 @@ public class NewsFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     @Override
     public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
         NewsDetalActivity.toActivity(activity, mList.get(i).getTitle(), mList.get(i).getContent(),mList.get(i).getAdd_time());
-
     }
 
     private void newsList() {
@@ -81,7 +83,7 @@ public class NewsFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                 .compose(RxUtils.<HttpResult<NewsBean>>io_main())
                 .subscribe(new BaseObjObserver<NewsBean>(activity, refresh) {
                     @Override
-                    protected void onHandleSuccess(NewsBean newsBean) {
+                    protected void onHandleSuccess(final NewsBean newsBean) {
                         if (newsBean.getAd_info() != null) {
                             List<String> list = new ArrayList<>();
                             for (NewsBean.AdInfoBean bean:newsBean.getAd_info()){
@@ -96,6 +98,16 @@ public class NewsFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                             }
 
                             CommonApi.setBanner(banner, list);
+                            banner.setOnBannerClickListener(new OnBannerClickListener() {
+                                @Override
+                                public void OnBannerClick(int position) {
+                                    NewsBean.AdInfoBean bean = newsBean.getAd_info().get(position-1);
+                                    Intent intent = new Intent(getActivity(), ShowBannerActivity.class);
+                                    intent.putExtra("flag",bean.getType());
+                                    intent.putExtra("url",bean.getUrl());
+                                    startActivity(intent);
+                                }
+                            });
                         }
 
                         if (isEmpty(newsBean.getNews_list())) return;

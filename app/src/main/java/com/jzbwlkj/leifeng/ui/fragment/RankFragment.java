@@ -25,6 +25,8 @@ import com.jzbwlkj.leifeng.ui.activity.VoluntaryCardActivity;
 import com.jzbwlkj.leifeng.ui.adapter.RankAdapter;
 import com.jzbwlkj.leifeng.ui.bean.RankBean;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
+import com.jzbwlkj.leifeng.view.OnDyClickListener;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +41,12 @@ import butterknife.Unbinder;
 
 public class RankFragment extends BaseFragment {
     @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+    SwipeMenuRecyclerView recyclerView;
     @BindView(R.id.sr_layout)
     SwipeRefreshLayout srLayout;
+    private LinearLayoutManager layoutManager;
     private RankAdapter adapter;
+    private int page = 1;
     private List<RankBean.RankUserBean> list = new ArrayList<>();
     @Override
     public int getLayoutResId() {
@@ -53,19 +57,6 @@ public class RankFragment extends BaseFragment {
     @Override
     public void initView() {
         initAdapter();
-        srLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                list.clear();
-                getNetData();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        srLayout.setRefreshing(false);
-                    }
-                },1000);
-            }
-        });
     }
 
     @Override
@@ -82,7 +73,7 @@ public class RankFragment extends BaseFragment {
      * 获取网络数据
      */
     private void getNetData() {
-        RetrofitClient.getInstance().createApi().rankList(null)
+        RetrofitClient.getInstance().createApi().rankListP(null,String.valueOf(page))
                 .compose(RxUtils.<HttpResult<RankBean>>io_main())
                 .subscribe(new BaseObjObserver<RankBean>(getActivity(), "排行榜单") {
                     @Override
@@ -92,39 +83,61 @@ public class RankFragment extends BaseFragment {
                         }
                         if(rankBean.getRank_user().size()>0){
                             list.addAll(rankBean.getRank_user());
-                            adapter.notifyDataSetChanged();
+                            recyclerView.loadMoreFinish(false,true);
                         }else{
-                            ToastUtils.showToast("暂无相关数据");
-                            adapter.getEmptyView();
+                            if(page == 1){
+                                recyclerView.loadMoreFinish(true,false);
+                            }else{
+                                recyclerView.loadMoreFinish(false,false);
+                            }
                         }
+                        adapter.notifyDataSetChanged();
                     }
                 });
     }
 
     private void initAdapter(){
-        adapter = new RankAdapter(R.layout.item_rank, list,getActivity());
-        adapter.setEnableLoadMore(true);
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.loadMoreFinish(false, true);
+        srLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onLoadMoreRequested() {
+            public void onRefresh() {
+                page = 1;
+                list.clear();
+                getNetData();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        srLayout.setRefreshing(false);
+                    }
+                },1000);
+            }
+        });
+        recyclerView.useDefaultLoadMore();
+        recyclerView.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                page++;
                 getNetData();
             }
-        }, recyclerView);
-        adapter.disableLoadMoreIfNotFullPage();
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        });
+        adapter = new RankAdapter( list,getActivity());
+        adapter.setOnDyCLickListener(new OnDyClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onClick(View v, int operate) {
                 if(noLogin()){
                     toActivity(LoginActivity.class);
+                    return;
                 }
-                RankBean.RankUserBean userBean = list.get(position);
+                RankBean.RankUserBean userBean = list.get(operate);
                 Intent intent = new Intent(getActivity(), VoluntaryCardActivity.class);
                 intent.putExtra("id",userBean.getId()+"");
                 startActivity(intent);
             }
         });
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerView.addItemDecoration(rvDivider(1));
         recyclerView.setAdapter(adapter);
     }
+
 }

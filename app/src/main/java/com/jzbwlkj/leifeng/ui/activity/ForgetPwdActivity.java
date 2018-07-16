@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseActivity;
 import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
@@ -57,6 +58,12 @@ public class ForgetPwdActivity extends BaseActivity implements CountDownUtils.Co
         setCenterTitle("忘记密码");
         countDown = new CountDownUtils(tvYzm, "%s秒", 60);
         countDown.setCountdownListener(this);
+
+        if(TextUtils.equals(flag,"0")){
+            etPhone.setHint("请输入手机号");
+        }else if(TextUtils.equals(flag,"1")){
+            etPhone.setHint("请输入联系人手机号");
+        }
     }
 
     @Override
@@ -88,7 +95,7 @@ public class ForgetPwdActivity extends BaseActivity implements CountDownUtils.Co
                     ToastUtils.showToast(getResources().getString(R.string.please_input_phone));
                     return;
                 }
-                CommonApi.sendsms(this, "forgotten", phone);
+                CommonApi.sendsms(this, "forgotten", phone,flag);
                 countDown.start();
                 break;
             case R.id.tv_certain:
@@ -147,6 +154,11 @@ public class ForgetPwdActivity extends BaseActivity implements CountDownUtils.Co
 
         if (password.length() < 6) {
             ToastUtils.showToast("密码长度最少6位");
+            return;
+        }
+
+        if (password.length() > 11) {
+            ToastUtils.showToast("密码长度最多11位");
             return;
         }
 

@@ -222,6 +222,8 @@
                     android:text="职         业:" />
 
                 <TextView
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/arrow_right"
                     android:id="@+id/tv_my_info_job"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -233,6 +235,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_my_info_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -248,6 +251,8 @@
                     android:id="@+id/tv_my_info_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/arrow_right"
                     android:text="山东省济南市历下区" />
 
             </LinearLayout>
@@ -255,6 +260,7 @@
             <include layout="@layout/layout_line" />
 
             <LinearLayout
+                android:id="@+id/ll_my_info_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -270,6 +276,8 @@
                     android:id="@+id/tv_my_info_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/arrow_right"
                     android:text="1179074755@qq.com" />
 
             </LinearLayout>
@@ -277,6 +285,7 @@
             <include layout="@layout/layout_line" />
 
             <LinearLayout
+                android:id="@+id/ll_my_info_qq"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -292,6 +301,8 @@
                     android:id="@+id/tv_my_info_qq"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/arrow_right"
                     android:text="1179074755" />
 
             </LinearLayout>
@@ -299,6 +310,7 @@
             <include layout="@layout/layout_line" />
 
             <LinearLayout
+                android:id="@+id/ll_my_info_wx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -314,6 +326,8 @@
                     android:id="@+id/tv_my_info_wx"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/arrow_right"
                     android:text="1179074755" />
 
             </LinearLayout>
@@ -345,6 +359,7 @@
             <include layout="@layout/layout_line" />
 
             <LinearLayout
+                android:id="@+id/ll_my_info_address_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -360,6 +375,8 @@
                     android:id="@+id/tv_my_info_address_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/arrow_right"
                     android:text="海信" />
 
             </LinearLayout>
@@ -370,7 +387,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -386,9 +404,19 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_button"
+                style="@style/redButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="@dimen/dp_40"
+                android:text="申请成为专业志愿者" />
+
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp"/>
+                android:layout_height="20dp" />
 
         </LinearLayout>
     </ScrollView>

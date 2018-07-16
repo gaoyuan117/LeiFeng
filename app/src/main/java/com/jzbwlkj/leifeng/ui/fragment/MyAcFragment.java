@@ -26,6 +26,7 @@ import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
 import com.jzbwlkj.leifeng.utils.CommonApi;
 import com.jzbwlkj.leifeng.utils.LogUtils;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
+import com.jzbwlkj.leifeng.view.OnDyClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,9 +84,9 @@ public class MyAcFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
     @Override
     public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        CommonApi.commonDialog(activity, "确认重新申请吗?", "确定", new View.OnClickListener() {
+        CommonApi.commonDialog(activity, "确认重新申请吗?", "确定", new OnDyClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v, int operate) {
 
             }
         });
@@ -105,20 +106,20 @@ public class MyAcFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                             mList.clear();
                             mList.addAll(recycleList(projectBeans, "已通过"));
                             if (mList.size() <= 0) {
-                                ToastUtils.showToast("暂无相关数据");
+                       //         ToastUtils.showToast("暂无相关数据");
                             }
 
                         } else if (TextUtils.equals("1", type)) {//审核中
                             mList.clear();
                             mList.addAll(recycleList(projectBeans, "审核中"));
                             if (mList.size() <= 0) {
-                                ToastUtils.showToast("暂无相关数据");
+                      //          ToastUtils.showToast("暂无相关数据");
                             }
                         } else if (TextUtils.equals("2", type)) {//未通过
                             mList.clear();
                             mList.addAll(recycleList(projectBeans, "未通过"));
                             if (mList.size() <= 0) {
-                                ToastUtils.showToast("暂无相关数据");
+                      //          ToastUtils.showToast("暂无相关数据");
                             }
                         }
                         adapter.notifyDataSetChanged();
@@ -136,7 +137,12 @@ public class MyAcFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             if (projectBeans.size() > 0) {
                 for (JoinProjectBean projectBean : projectBeans) {
                     if (TextUtils.equals(type, projectBean.getStatus_text())) {
-                        listBeans.addAll(projectBean.getList());
+                        for (JoinProjectBean.ListBean bean:projectBean.getList()){
+                            JoinProjectBean.ListBean.ActivityInfoBean infoBean = bean.getActivity_info();
+                            if(infoBean != null){
+                                listBeans.add(bean);
+                            }
+                        }
                     }
                 }
             }

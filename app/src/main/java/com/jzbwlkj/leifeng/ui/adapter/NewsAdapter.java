@@ -38,7 +38,7 @@ public class NewsAdapter extends BaseQuickAdapter<NewsBean.NewsListBean, BaseVie
                 }
             }
             Glide.with(activity).load(path).bitmapTransform(new RoundCornesTransFormation(activity,10,10))
-                    .error(R.mipmap.cover_default).into(imageView);
+                    .error(R.mipmap.logo).into(imageView);
         }
         baseViewHolder.setText(R.id.tv_news_title, s.getTitle())
                 .setText(R.id.tv_news_des, s.getDesc());

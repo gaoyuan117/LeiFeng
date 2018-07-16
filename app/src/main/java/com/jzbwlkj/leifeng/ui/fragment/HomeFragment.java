@@ -42,6 +42,7 @@ import com.jzbwlkj.leifeng.ui.activity.RankActivity;
 import com.jzbwlkj.leifeng.ui.activity.RegisterPersonalActivity;
 import com.jzbwlkj.leifeng.ui.activity.RegisterTeamActivity;
 import com.jzbwlkj.leifeng.ui.activity.SelectAreaActivity;
+import com.jzbwlkj.leifeng.ui.activity.ShowBannerActivity;
 import com.jzbwlkj.leifeng.ui.activity.TrainingActivity;
 import com.jzbwlkj.leifeng.ui.activity.UsingHelpActivity;
 import com.jzbwlkj.leifeng.ui.adapter.HomeAdapter;
@@ -50,6 +51,7 @@ import com.jzbwlkj.leifeng.utils.CommonApi;
 import com.jzbwlkj.leifeng.utils.SharedPreferencesUtil;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,6 +143,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setFocusable(false);
+
     }
 
     @Override
@@ -173,19 +176,16 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     return;
                 }
                 toActivity(ChatListActivity.class);
+                ivChatStatus.setVisibility(View.GONE);
                 break;
             case R.id.tv_home_team_register://队伍注册
-                if (noLogin()) {
-                    toActivity(LoginActivity.class);
-                    return;
-                }
-
                 if(BaseApp.type == 2){
                     ToastUtils.showToast("您当前已注册队伍账号");
                     return;
                 }
                 flag = 0;
-                if(TextUtils.isEmpty(BaseApp.config.getZhuceshouze())||TextUtils.equals("null",BaseApp.config.getZhuceshouze())){
+                cbXieYi.setChecked(false);
+                if (TextUtils.isEmpty(BaseApp.config.getZhuceshouze()) || TextUtils.equals("null", BaseApp.config.getZhuceshouze())) {
                     BaseApp.config.setZhuceshouze("无");
                 }
                 web.setText(BaseApp.config.getZhuceshouze());
@@ -196,11 +196,11 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     personalRegisterDialog();
                 } else {
                     if (BaseApp.type == 1) {
-                        ToastUtils.showToast("您当前已注册账号");
+                        personalRegisterDialog();
+   //                     ToastUtils.showToast("您当前已注册账号");
                     } else {
                         ToastUtils.showToast("队伍不可以进行个人注册");
                     }
-
                 }
                 break;
             case R.id.tv_home_join_team://加入队伍
@@ -208,7 +208,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     toActivity(LoginActivity.class);
                     return;
                 }
-                if(BaseApp.type == 2){
+                if (BaseApp.type == 2) {
                     ToastUtils.showToast("您当前为队伍账号");
                     return;
                 }
@@ -220,7 +220,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     return;
                 }
 
-                if(BaseApp.type == 2){
+                if (BaseApp.type == 2) {
                     ToastUtils.showToast("队伍不可以参加志愿培训");
                     return;
                 }
@@ -232,7 +232,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     return;
                 }
 
-                if(BaseApp.type == 2){
+                if (BaseApp.type == 2) {
                     ToastUtils.showToast("队伍不可以参加活动招募");
                     return;
                 }
@@ -243,7 +243,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     toActivity(LoginActivity.class);
                     return;
                 }
-                if(BaseApp.type == 2){
+                if (BaseApp.type == 2) {
                     ToastUtils.showToast("队伍不可以参加项目招募");
                     return;
                 }
@@ -275,6 +275,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             public void onClick(View v) {//志愿者注册
                 flag = 1;
                 web.setText(BaseApp.config.getZhuceshouze());
+                cbXieYi.setChecked(false);
                 infoDialog.show();
                 dialog.dismiss();
             }
@@ -285,6 +286,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             public void onClick(View v) {//专业志愿者注册
                 flag = 2;
                 web.setText(BaseApp.config.getZhuceshouze());
+                cbXieYi.setChecked(false);
                 infoDialog.show();
                 dialog.dismiss();
             }
@@ -311,7 +313,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                 .compose(RxUtils.<HttpResult<HomeBean>>io_main())
                 .subscribe(new BaseObjObserver<HomeBean>(activity, refresh) {
                     @Override
-                    protected void onHandleSuccess(HomeBean homeBean) {
+                    protected void onHandleSuccess(final HomeBean homeBean) {
 
                         tvHomeZuzhiNum.setText("志愿组织:" + homeBean.getTeam_count() + "个");
                         tvHomeZhiyuanzheNum.setText("志愿者:" + homeBean.getUser_count() + "个");
@@ -324,6 +326,17 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                             }
                             CommonApi.setBanner(banner, bannerList);
                         }
+
+                        banner.setOnBannerClickListener(new OnBannerClickListener() {
+                            @Override
+                            public void OnBannerClick(int position) {
+                                HomeBean.IndexAd1Bean bean = homeBean.getIndex_ad1().get(position - 1);
+                                Intent intent = new Intent(getActivity(), ShowBannerActivity.class);
+                                intent.putExtra("flag", bean.getType());
+                                intent.putExtra("url", bean.getUrl());
+                                startActivity(intent);
+                            }
+                        });
 
                         if (homeBean.getNew_message_num() > 0) {
                             ivChatStatus.setVisibility(View.VISIBLE);
@@ -380,7 +393,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         infoDialog.setContentView(infoView);
 
         ViewGroup.LayoutParams layoutParams = infoView.getLayoutParams();
-        layoutParams.height = getResources().getDisplayMetrics().widthPixels+200;
+        layoutParams.height = getResources().getDisplayMetrics().widthPixels + 200;
         infoView.setLayoutParams(layoutParams);
     }
 

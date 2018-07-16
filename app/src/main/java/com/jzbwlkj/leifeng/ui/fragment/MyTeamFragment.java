@@ -27,6 +27,7 @@ import com.jzbwlkj.leifeng.ui.bean.ProjectBean;
 import com.jzbwlkj.leifeng.utils.CommonApi;
 import com.jzbwlkj.leifeng.utils.LogUtils;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
+import com.jzbwlkj.leifeng.view.OnDyClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,10 +83,11 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
 
     @Override
     public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        CommonApi.commonDialog(activity, "确认重新申请吗?", "确定", new View.OnClickListener() {
+        final JoinTeamListBean.ListBean dataBean= mList.get(i);
+        CommonApi.commonDialog(activity, "确认重新申请吗?", "确定", new OnDyClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View v, int operate) {
+                joinTeam(dataBean.getTeam_id()+"");
             }
         });
     }
@@ -104,20 +106,20 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
                             mList.clear();
                             mList.addAll(recycleList(joinTeamListBeans,"已通过"));
                             if(mList.size()<=0){
-                                ToastUtils.showToast("暂无相关数据");
+                             //   ToastUtils.showToast("暂无相关数据");
                             }
 
                         }else if(TextUtils.equals("1",type)){//审核中
                             mList.clear();
                             mList.addAll(recycleList(joinTeamListBeans,"审核中"));
                             if(mList.size()<=0){
-                                ToastUtils.showToast("暂无相关数据");
+                            //    ToastUtils.showToast("暂无相关数据");
                             }
                         }else if(TextUtils.equals("2",type)){//未通过
                             mList.clear();
                             mList.addAll(recycleList(joinTeamListBeans,"未通过"));
                             if(mList.size()<=0){
-                                ToastUtils.showToast("暂无相关数据");
+                            //    ToastUtils.showToast("暂无相关数据");
                             }
                         }
                         adapter.notifyDataSetChanged();
@@ -130,12 +132,13 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
      */
     private List<JoinTeamListBean.ListBean> recycleList(List<JoinTeamListBean> projectBeans, String type){
         List<JoinTeamListBean.ListBean> listBeans = new ArrayList<>();
-        for (JoinTeamListBean projectBean:projectBeans){
-            if(TextUtils.equals(type,projectBean.getStatus_text())){
-                listBeans.addAll(projectBean.getList());
-            };
+        if(projectBeans != null&&projectBeans.size()>0){
+            for (JoinTeamListBean projectBean:projectBeans){
+                if(TextUtils.equals(type,projectBean.getStatus_text())){
+                    listBeans.addAll(projectBean.getList());
+                };
+            }
         }
-
         return listBeans;
     }
 
@@ -154,7 +157,6 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
                 }else{
                     ToastUtils.showToast("没有更多数据了");
                 }
-
             }
         }, recyclerView);
         adapter.disableLoadMoreIfNotFullPage();
@@ -168,14 +170,6 @@ public class MyTeamFragment extends BaseFragment implements BaseQuickAdapter.OnI
             }
         });
 
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                //这里只有重新申请的时候会进行调用
-                JoinTeamListBean.ListBean dataBean= mList.get(position);
-                joinTeam(dataBean.getTeam_id()+"");
-            }
-        });
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(rvDivider(1));
         recyclerView.setAdapter(adapter);

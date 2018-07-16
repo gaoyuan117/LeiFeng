@@ -48,8 +48,8 @@ public class DaiQianAdapter extends BaseQuickAdapter<JoinProjectUserBean, BaseVi
         if(bean == null){
             helper.setVisible(R.id.tv_daiqian,true);
             helper.setText(R.id.tv_daiqian, "代签");
-            helper.setText(R.id.tv_qiandao, "获取签到时间");
-            helper.setText(R.id.tv_qiantui, "获取签退时间");
+            helper.setText(R.id.tv_qiandao, "选择签到时间");
+            helper.setText(R.id.tv_qiantui, "选择签退时间");
             helper.addOnClickListener(R.id.tv_qiandao);
             helper.addOnClickListener(R.id.tv_qiantui);
             helper.addOnClickListener(R.id.tv_daiqian);

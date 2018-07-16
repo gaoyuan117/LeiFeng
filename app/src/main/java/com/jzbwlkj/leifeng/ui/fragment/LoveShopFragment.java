@@ -75,7 +75,7 @@ public class LoveShopFragment extends BaseFragment {
                     @Override
                     protected void onHandleSuccess(List<MallBean> mallBeans) {
                         if(mallBeans.size()<=0){
-                            ToastUtils.showToast("暂时没有相关数据");
+                        //    ToastUtils.showToast("暂时没有相关数据");
                         }else{
                             for (MallBean mallBean:mallBeans){
                                 if(TextUtils.equals("0",type)&&TextUtils.equals("生活用品",mallBean.getType_name())){

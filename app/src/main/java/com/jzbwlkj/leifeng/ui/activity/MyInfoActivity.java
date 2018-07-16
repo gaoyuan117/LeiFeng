@@ -48,7 +48,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -115,14 +117,17 @@ public class MyInfoActivity extends BaseActivity {
     ImageView imgRight;
     @BindView(R.id.title_linLayout)
     LinearLayout titleLinLayout;
+    @BindView(R.id.tv_button)
+    TextView tvButton;
 
     private View viewType;
     private ListView lvContent;
-    private PopupWindow popType;
+    private PopupWindow popType,popJob;
 
     private String unitid;//单位Id
     private ListViewAdapter lvAdapter;
     private List<MySelfModel> showList = new ArrayList<>();
+    private List<MySelfModel> jobList = new ArrayList<>();
     private UserInfoBean bean2;
 
     private String city_id;
@@ -161,11 +166,11 @@ public class MyInfoActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        if(BaseApp.config.getCity_list() != null&&BaseApp.config.getCity_list().size()>0){
+        if (BaseApp.config.getCity_list() != null && BaseApp.config.getCity_list().size() > 0) {
             for (ConfigBean.CityListBean cityListBean : BaseApp.config.getCity_list()) {
                 MySelfModel model = new MySelfModel();
-                model.setPid(cityListBean.getPid()+"");
-                model.setId(cityListBean.getId()+"");
+                model.setPid(cityListBean.getPid() + "");
+                model.setId(cityListBean.getId() + "");
                 model.setName(cityListBean.getName());
                 model.setSelected(false);
                 showList.add(model);
@@ -181,7 +186,13 @@ public class MyInfoActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.ll_my_info_avatar, R.id.tv_my_info_phone, R.id.tv_my_info_area})
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUserInfo();
+    }
+
+    @OnClick({R.id.ll_my_info_avatar, R.id.tv_my_info_job, R.id.tv_my_info_phone, R.id.tv_my_info_area, R.id.tv_button, R.id.ll_my_info_address, R.id.ll_my_info_email, R.id.ll_my_info_address_detail, R.id.ll_my_info_qq, R.id.ll_my_info_wx})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_my_info_avatar:
@@ -191,6 +202,21 @@ public class MyInfoActivity extends BaseActivity {
                 Intent intent = new Intent(this, ModifyPhoneActivity.class);
                 startActivityForResult(intent, 100);
                 break;
+            case R.id.ll_my_info_address_detail:
+                startActivity(new Intent(this, ModifyUserInfoActivity.class).putExtra("key", "worker_address"));
+                break;
+            case R.id.ll_my_info_wx:
+                startActivity(new Intent(this, ModifyUserInfoActivity.class).putExtra("key", "wechat"));
+                break;
+            case R.id.ll_my_info_address:
+                startActivity(new Intent(this, ModifyUserInfoActivity.class).putExtra("key", "address"));
+                break;
+            case R.id.ll_my_info_qq:
+                startActivity(new Intent(this, ModifyUserInfoActivity.class).putExtra("key", "qq"));
+                break;
+            case R.id.ll_my_info_email:
+                startActivity(new Intent(this, ModifyUserInfoActivity.class).putExtra("key", "email"));
+                break;
             case R.id.tv_my_info_area:
                 popType.setWidth(tvMyInfoArea.getMeasuredWidth() + 100);
                 if (showList.size() > 6) {
@@ -199,6 +225,13 @@ public class MyInfoActivity extends BaseActivity {
                     popType.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
                 }
                 popType.showAsDropDown(tvMyInfoArea, -12, 40);
+                break;
+            case R.id.tv_my_info_job:
+                initPop2();
+                break;
+            case R.id.tv_button:
+                Intent become = new Intent(this, BecomeZhuanActivity.class);
+                startActivity(become);
                 break;
         }
     }
@@ -241,8 +274,14 @@ public class MyInfoActivity extends BaseActivity {
         tvMyInfoWx.setText(bean.getWechat());//微信
         tvMyInfoArea.setText(bean.getCity_text());
         tvMyInfoAddressDetail.setText(bean.getWorker_address());
+
         tvMyInfoSsjg.setText("所属机构");
         tvMyInfoSex.setText(bean.getSex_text());
+        if (bean.getIs_personnel() == 0) {//0代表志愿者   1  专业志愿者
+            tvButton.setVisibility(View.VISIBLE);
+        } else {
+            tvButton.setVisibility(View.GONE);
+        }
     }
 
     private void winSelectPic() {
@@ -452,7 +491,6 @@ public class MyInfoActivity extends BaseActivity {
         }
     }
 
-
     /**
      * 初始化popupwindow
      */
@@ -475,7 +513,7 @@ public class MyInfoActivity extends BaseActivity {
                 popType.dismiss();
                 tvMyInfoArea.setText(model.getName());
                 unitid = model.getId();
-                upData(null,unitid);
+                upData(null, unitid);
             }
         });
         lvContent.setAdapter(lvAdapter);
@@ -485,5 +523,68 @@ public class MyInfoActivity extends BaseActivity {
         popType.setFocusable(true);
         popType.setContentView(viewType);
     }
+
+
+    private void initPop2() {
+        List<ConfigBean.JobListBean> job_list = BaseApp.config.getJob_list();
+        jobList.clear();
+        for (int i = 0; i < job_list.size(); i++) {
+            MySelfModel model = new MySelfModel();
+            ConfigBean.JobListBean jobListBean = job_list.get(i);
+            model.setName(jobListBean.getName());
+            model.setId(jobListBean.getId() + "");
+            jobList.add(model);
+        }
+        View viewType = LayoutInflater.from(this).inflate(R.layout.pop_list, null);
+        ListView lvContent = viewType.findViewById(R.id.lv_content);
+        final ListViewAdapter lvAdapter = new ListViewAdapter(jobList, this);
+        lvContent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MySelfModel model = jobList.get(position);
+                for (MySelfModel model1 : jobList) {
+                    if (TextUtils.equals(model.getName(), model1.getName())) {
+                        model1.setSelected(true);
+                    } else {
+                        model1.setSelected(false);
+                    }
+                }
+                lvAdapter.notifyDataSetChanged();
+                popJob.dismiss();
+                tvMyInfoJob.setText(model.getName());
+                unitid = model.getId();
+                updateJob(unitid);
+            }
+        });
+        lvContent.setAdapter(lvAdapter);
+         popJob = new PopupWindow(this);
+        popJob.setFocusable(true);
+        popJob.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景防止出现黑色边框
+        popJob.setFocusable(true);
+        popJob.setContentView(viewType);
+
+        popJob.setWidth(tvMyInfoJob.getMeasuredWidth() + 100);
+        if (showList.size() > 6) {
+            popJob.setHeight(500);
+        } else {
+            popJob.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        popJob.showAsDropDown(tvMyInfoJob, -12, 40);
+    }
+
+    private void updateJob(String city_id) {
+        Map<String, String> map = new HashMap<>();
+        map.put("job", city_id);
+        RetrofitClient.getInstance().createApi().upDatePerson(BaseApp.token, map)
+                .compose(RxUtils.<HttpResult<CommitBean>>io_main())
+                .subscribe(new BaseObjObserver<CommitBean>(this, "更新个人信息") {
+                    @Override
+                    protected void onHandleSuccess(CommitBean commitBean) {
+                        showToastMsg("个人信息更新成功");
+                        getUserInfo();
+                    }
+                });
+    }
+
 
 }

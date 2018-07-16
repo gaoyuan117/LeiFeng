@@ -28,6 +28,6 @@ public class HomeAdapter extends BaseQuickAdapter<HomeBean.NewsRecommendListBean
     @Override
     protected void convert(BaseViewHolder baseViewHolder, HomeBean.NewsRecommendListBean s) {
         baseViewHolder.setText(R.id.tv_title,s.getTitle());
-        Glide.with(activity).load(s.getPic()).error(R.mipmap.cover_default).into((ImageView) baseViewHolder.getView(R.id.img_home));
+        Glide.with(activity).load(s.getPic()).error(R.mipmap.logo).into((ImageView) baseViewHolder.getView(R.id.img_home));
     }
 }

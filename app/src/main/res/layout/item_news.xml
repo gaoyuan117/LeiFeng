@@ -16,7 +16,7 @@
         android:layout_height="80dp"
         android:layout_marginRight="10dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/cover_default" />
+        android:src="@mipmap/logo" />
 
     <TextView
         android:id="@+id/tv_news_title"

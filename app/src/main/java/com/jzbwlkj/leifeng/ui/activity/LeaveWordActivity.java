@@ -193,7 +193,7 @@ public class LeaveWordActivity extends BaseActivity implements BaseQuickAdapter.
     /**
      * 上传的参数都是String类型的字符串，不过要以数组格式"[\"id\":id,\"status\":1],[]"这样来拼接
      */
-    private void postResult(List<AuditListBean> list) {
+    private void postResult(final List<AuditListBean> list) {
         String ss = "";
         for (int i = 0; i < list.size(); i++) {
             AuditListBean bean = list.get(i);
@@ -210,7 +210,9 @@ public class LeaveWordActivity extends BaseActivity implements BaseQuickAdapter.
                     @Override
                     protected void onHandleSuccess(String commonBean) {
                         showToastMsg("审核提交成功");
-                        finish();//结束当前界面，或者清空提交审核的结果结合resultList，重新获取数据，刷新当前界面，因为这是没有审核的列表，社和通过的不在这里展示
+         //               finish();//结束当前界面，或者清空提交审核的结果结合resultList，重新获取数据，刷新当前界面，因为这是没有审核的列表，社和通过的不在这里展示
+                        mList.clear();
+                        getNetData();
                     }
                 });
     }

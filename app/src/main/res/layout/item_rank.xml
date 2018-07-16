@@ -2,16 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
     android:background="@drawable/white_gray_background_selector"
-    android:orientation="horizontal"
-    android:padding="10dp">
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="12dp"
+        android:paddingBottom="@dimen/sp_12"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_weight="1"
+        android:paddingRight="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -38,10 +46,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
@@ -63,7 +71,8 @@
         android:id="@+id/tv_rank_sex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:paddingRight="@dimen/sp_14"
+        android:paddingLeft="@dimen/sp_14"
         android:text="男" />
 
     <TextView
@@ -72,5 +81,10 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:text="222小时" />
+    </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:background="@color/line_color"/>
 </LinearLayout>

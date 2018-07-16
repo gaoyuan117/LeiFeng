@@ -3,13 +3,15 @@ package com.jzbwlkj.leifeng.ui.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +28,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.geocode.GeoCodeOption;
-import com.baidu.mapapi.search.geocode.GeoCodeResult;
-import com.baidu.mapapi.search.geocode.GeoCoder;
-import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.haibin.calendarview.Calendar;
@@ -53,12 +49,13 @@ import com.jzbwlkj.leifeng.ui.bean.UploadBean;
 import com.jzbwlkj.leifeng.utils.LogUtils;
 import com.jzbwlkj.leifeng.utils.RoundCornesTransFormation;
 import com.jzbwlkj.leifeng.utils.StringCheckUtil;
-import com.jzbwlkj.leifeng.utils.ToastUtils;
 import com.jzbwlkj.leifeng.view.CustomDatePicker;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -167,6 +164,8 @@ public class LaunchEventActivity extends BaseActivity {
     EditText etDayStart;
     @BindView(R.id.et_day_end)
     EditText etDayEnd;
+    @BindView(R.id.tv_biaozhu)
+    ImageView tvBiaozhu;
     private Map<String, Object> map = new HashMap<>();
     private int flag = 0;//1  餐补  2 交通补  3 保险   4  培训
     private int flag2 = 0;// 1 类型  2 服务周期  3  签到范围   4 城市   5 队伍
@@ -185,7 +184,6 @@ public class LaunchEventActivity extends BaseActivity {
     private ListView lvContent;
     private PopupWindow popType;
 
-    private LatLng location;//活动的经纬度
     private String picPath;//活动宣传图片
     private String now;
     private int type = 0;
@@ -274,7 +272,8 @@ public class LaunchEventActivity extends BaseActivity {
 
     @OnClick({R.id.img_launch_event, R.id.tv_launch_event_publish, R.id.tv_range, R.id.tv_project_type,
             R.id.tv_cycle_time, R.id.tv_team, R.id.tv_project_area, R.id.et_launch_event_baoming_time,
-            R.id.et_launch_event_jiezhi_time, R.id.et_launch_event_end_time, R.id.et_launch_event_start_time})
+            R.id.et_launch_event_jiezhi_time, R.id.et_launch_event_end_time, R.id.et_launch_event_start_time,
+            R.id.tv_biaozhu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_launch_event:
@@ -371,6 +370,10 @@ public class LaunchEventActivity extends BaseActivity {
             case R.id.et_launch_event_end_time:
                 type = 4;
                 customDatePicker1.show(etLaunchEventEndTime.getText().toString());
+                break;
+            case R.id.tv_biaozhu:
+                Intent intent = new Intent(this,MapActivity.class);
+                startActivityForResult(intent,100);
                 break;
         }
     }
@@ -505,42 +508,42 @@ public class LaunchEventActivity extends BaseActivity {
             showToastMsg("位置信息获取失败，请重新填写");
             return false;
         } else {
-            if(etCanNum.getVisibility() == View.GONE){
-                map.put("canbu","-1");
-            }else if(etCanNum.getVisibility() == View.VISIBLE){
+            if (etCanNum.getVisibility() == View.GONE) {
+                map.put("canbu", "-1");
+            } else if (etCanNum.getVisibility() == View.VISIBLE) {
                 String ss = etCanNum.getText().toString();
-                if(!TextUtils.isEmpty(ss)&&TextUtils.equals("统一安排",ss)){
-                    map.put("canbu","0");
-                }else if(!TextUtils.isEmpty(ss)&&isNumeric(ss)){
-                    map.put("canbu",ss);
-                }else{
-                    map.put("canbu","-1");
+                if (!TextUtils.isEmpty(ss) && TextUtils.equals("统一安排", ss)) {
+                    map.put("canbu", "0");
+                } else if (!TextUtils.isEmpty(ss) && isNumeric(ss)) {
+                    map.put("canbu", ss);
+                } else {
+                    map.put("canbu", "-1");
                 }
             }
 
-            if(etTraNum.getVisibility() == View.GONE){
-                map.put("jiaotongbuzu","-1");
-            }else if(etTraNum.getVisibility() == View.VISIBLE){
+            if (etTraNum.getVisibility() == View.GONE) {
+                map.put("jiaotongbuzu", "-1");
+            } else if (etTraNum.getVisibility() == View.VISIBLE) {
                 String ss = etTraNum.getText().toString();
-                if(!TextUtils.isEmpty(ss)&&TextUtils.equals("统一安排",ss)){
-                    map.put("jiaotongbuzu","0");
-                }else if(!TextUtils.isEmpty(ss)&&isNumeric(ss)){
-                    map.put("jiaotongbuzu",ss);
-                }else{
-                    map.put("jiaotongbuzu","-1");
+                if (!TextUtils.isEmpty(ss) && TextUtils.equals("统一安排", ss)) {
+                    map.put("jiaotongbuzu", "0");
+                } else if (!TextUtils.isEmpty(ss) && isNumeric(ss)) {
+                    map.put("jiaotongbuzu", ss);
+                } else {
+                    map.put("jiaotongbuzu", "-1");
                 }
             }
 
-            if(etBaoNum.getVisibility() == View.GONE){
-                map.put("baoxianbuzu","-1");
-            }else if(etBaoNum.getVisibility() == View.VISIBLE){
+            if (etBaoNum.getVisibility() == View.GONE) {
+                map.put("baoxianbuzu", "-1");
+            } else if (etBaoNum.getVisibility() == View.VISIBLE) {
                 String ss = etBaoNum.getText().toString();
-                if(!TextUtils.isEmpty(ss)&&TextUtils.equals("统一安排",ss)){
-                    map.put("baoxianbuzu","0");
-                }else if(!TextUtils.isEmpty(ss)&&isNumeric(ss)){
-                    map.put("baoxianbuzu",ss);
-                }else{
-                    map.put("baoxianbuzu","-1");
+                if (!TextUtils.isEmpty(ss) && TextUtils.equals("统一安排", ss)) {
+                    map.put("baoxianbuzu", "0");
+                } else if (!TextUtils.isEmpty(ss) && isNumeric(ss)) {
+                    map.put("baoxianbuzu", ss);
+                } else {
+                    map.put("baoxianbuzu", "-1");
                 }
             }
             map.put("team_token", BaseApp.token);
@@ -560,9 +563,9 @@ public class LaunchEventActivity extends BaseActivity {
             map.put("note", "无");
             map.put("day_start_time", startt);//      服务当天开始时间   dddd
             map.put("day_end_time", endt);
-            map.put("contact",linkMan);
-            map.put("contact_mobile",linkPhone);
-            map.put("contact_email",email);
+            map.put("contact", linkMan);
+            map.put("contact_mobile", linkPhone);
+            map.put("contact_email", email);
             return true;
         }
     }
@@ -574,8 +577,7 @@ public class LaunchEventActivity extends BaseActivity {
         Matcher mat = pat.matcher(str);
         if (mat.find()) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -652,33 +654,33 @@ public class LaunchEventActivity extends BaseActivity {
             }
         });
 
-        etLaunchEventAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                String ss = etLaunchEventAddress.getText().toString();
-                if (!TextUtils.isEmpty(ss)) {
-                    if (!hasFocus) {
-                        if (ss.contains("市")) {
-                            final String[] cc = ss.split("市");
-                            if (cc.length == 2) {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        getjingWei(cc[0], cc[1]);
-                                    }
-                                }).start();
-
-                            } else {
-                                showToastMsg("请按照xx市xx区来填写地址");
-                            }
-                        } else {
-                            showToastMsg("请按照xx市xx区来填写地址");
-                        }
-
-                    }
-                }
-            }
-        });
+//        etLaunchEventAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                String ss = etLaunchEventAddress.getText().toString();
+//                if (!TextUtils.isEmpty(ss)) {
+//                    if (!hasFocus) {
+//                        if (ss.contains("市")) {
+//                            final String[] cc = ss.split("市");
+//                            if (cc.length == 2) {
+//                                new Thread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        getjingWei(cc[0], cc[1]);
+//                                    }
+//                                }).start();
+//
+//                            } else {
+//                                showToastMsg("请按照xx市xx区来填写地址");
+//                            }
+//                        } else {
+//                            showToastMsg("请按照xx市xx区来填写地址");
+//                        }
+//
+//                    }
+//                }
+//            }
+//        });
         etCanNum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -790,7 +792,7 @@ public class LaunchEventActivity extends BaseActivity {
 
     }
 
-    private void etEdit(EditText editText){
+    private void etEdit(EditText editText) {
         editText.setFocusable(true);
         editText.setCursorVisible(true);
         editText.setFocusableInTouchMode(true);
@@ -820,9 +822,20 @@ public class LaunchEventActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             List<String> list = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-            Glide.with(activity).load(list.get(0)).bitmapTransform(new RoundCornesTransFormation(this, 10, 10))
+            String imgFileUrl = list.get(0);
+            File file = new File(imgFileUrl);
+            Log.i("sun", "长度==" + file.length());
+            if (file.length() > (1024 * 1024)) {
+                imgFileUrl = saveBitmapToFile(file, imgFileUrl);
+            }
+            Glide.with(activity).load(imgFileUrl).bitmapTransform(new RoundCornesTransFormation(this, 10, 10))
                     .into(imgLaunchEvent);
             updateAvatar(list);
+        }else if(requestCode == 100&&resultCode == 100){
+            double lat = data.getDoubleExtra("lat",0);
+            double lng = data.getDoubleExtra("lng",0);
+            map.put("lat", lat + "");
+            map.put("lng", lng + "");
         }
     }
 
@@ -855,51 +868,113 @@ public class LaunchEventActivity extends BaseActivity {
     }
 
     /**
-     * 获取经纬度
+     * 压缩图片
+     *
+     * @param file    要压缩的文件
+     * @param newpath 压缩后的保存路径
+     * @return 返回压缩文件路径
      */
+    public static String saveBitmapToFile(File file, String newpath) {
+        try {
+            // BitmapFactory options to downsize the image
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            o.inSampleSize = 6;
+            // factor of downsizing the image
 
-    private void getjingWei(String shi, String detical) {
-        GeoCoder mSearch = GeoCoder.newInstance();
-        OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
-            public void onGetGeoCodeResult(GeoCodeResult result) {
-                if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ToastUtils.showToast("当前位置无法获取经纬度信息，请重新填写");
-                        }
-                    });
-                } else {
-                    location = result.getLocation();
-                    map.put("lat", location.latitude + "");
-                    map.put("lng", location.longitude + "");
-                }
+            FileInputStream inputStream = new FileInputStream(file);
+            //Bitmap selectedBitmap = null;
+            BitmapFactory.decodeStream(inputStream, null, o);
+            inputStream.close();
+
+            // The new size we want to scale to
+            final int REQUIRED_SIZE = 75;
+
+            // Find the correct scale value. It should be the power of 2.
+            int scale = 1;
+            while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
+                    o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                scale *= 2;
             }
 
-            @Override
-            public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
-                if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ToastUtils.showToast("当前位置无法获取经纬度信息，请重新填写");
-                        }
-                    });
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            inputStream = new FileInputStream(file);
 
-                } else {
-                    location = result.getLocation();
-                    map.put("lat", location.latitude + "");
-                    map.put("lng", location.longitude + "");
-                }
+            Bitmap selectedBitmap = BitmapFactory.decodeStream(inputStream, null, o2);
+            inputStream.close();
 
-            }
-        };
-        mSearch.setOnGetGeoCodeResultListener(listener);
-        mSearch.geocode(new GeoCodeOption()
-                .city(shi)
-                .address(detical));
-        mSearch.destroy();
+            // here i override the original image file
+//            file.createNewFile();
+//
+//
+//            FileOutputStream outputStream = new FileOutputStream(file);
+//
+//            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100 , outputStream);
+
+            File aa = new File(newpath);
+            FileOutputStream outputStream = new FileOutputStream(aa);
+
+            //choose another format if PNG doesn't suit you
+
+            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+
+            String filepath = aa.getAbsolutePath();
+            Log.e("getAbsolutePath", aa.getAbsolutePath());
+
+            return filepath;
+        } catch (Exception e) {
+            return null;
+        }
     }
+
+//    /**
+//     * 获取经纬度
+//     */
+//
+//    private void getjingWei(String shi, String detical) {
+//        GeoCoder mSearch = GeoCoder.newInstance();
+//        OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
+//            public void onGetGeoCodeResult(GeoCodeResult result) {
+//                if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+//                    new Handler().post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            ToastUtils.showToast("当前位置无法获取经纬度信息，请重新填写");
+//                        }
+//                    });
+//                } else {
+//                    location = result.getLocation();
+//                    map.put("lat", location.latitude + "");
+//                    map.put("lng", location.longitude + "");
+//                }
+//            }
+//
+//            @Override
+//            public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+//                if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+//                    new Handler().post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            ToastUtils.showToast("当前位置无法获取经纬度信息，请重新填写");
+//                        }
+//                    });
+//
+//                } else {
+//                    location = result.getLocation();
+//                    map.put("lat", location.latitude + "");
+//                    map.put("lng", location.longitude + "");
+//                }
+//
+//            }
+//        };
+//        mSearch.setOnGetGeoCodeResultListener(listener);
+//        mSearch.geocode(new GeoCodeOption()
+//                .city(shi)
+//                .address(detical));
+//        mSearch.destroy();
+//    }
 
     /**
      * 初始化时间选择器
@@ -977,4 +1052,10 @@ public class LaunchEventActivity extends BaseActivity {
         riliDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

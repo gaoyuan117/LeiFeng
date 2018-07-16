@@ -31,6 +31,7 @@ import com.jzbwlkj.leifeng.retrofit.HttpResult;
 import com.jzbwlkj.leifeng.retrofit.RetrofitClient;
 import com.jzbwlkj.leifeng.retrofit.RxUtils;
 import com.jzbwlkj.leifeng.ui.bean.CodeBean;
+import com.jzbwlkj.leifeng.view.OnDyClickListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -55,8 +56,10 @@ public class CommonApi {
     /**
      * 获取验证码
      */
-    public static void sendsms(Context context, String type, String phone) {
-        RetrofitClient.getInstance().createApi().sendsms(phone, type)
+    public static void sendsms(Context context, String type, String phone,String tt) {
+
+        Log.i("sun","tt=="+tt);
+        RetrofitClient.getInstance().createApi().sendsms(phone, type,tt)
                 .compose(RxUtils.<HttpResult<CodeBean>>io_main())
                 .subscribe(new BaseObjObserver<CodeBean>(context) {
                     @Override
@@ -113,18 +116,24 @@ public class CommonApi {
 //        });
 //
 //    }
-    public static void commonDialog(final Context context, String msg, String text, View.OnClickListener listener) {
+    public static void commonDialog(final Context context, String msg, String text, final OnDyClickListener listener) {
 
         View view = View.inflate(context, R.layout.dialog_common, null);
         TextView tvMessage = (TextView) view.findViewById(R.id.tv_message);
         tvMessage.setText(msg);
         TextView tv = (TextView) view.findViewById(R.id.tv_yes);
         tv.setText(text);
-        Dialog dialog = new Dialog(context, R.style.wx_dialog);
+        final Dialog dialog = new Dialog(context, R.style.wx_dialog);
         dialog.setContentView(view);
         dialog.show();
 
-        view.findViewById(R.id.tv_yes).setOnClickListener(listener);
+        view.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                listener.onClick(v, 0);
+            }
+        });
 
         final Dialog finalDialog = dialog;
         view.findViewById(R.id.tv_no).setOnClickListener(new View.OnClickListener() {
@@ -148,12 +157,12 @@ public class CommonApi {
             oks.setPlatform(name);
         }
         oks.setTitle(context.getString(R.string.app_name));
-        oks.setText("我正在这里阅读小说，大家一起来啊！");
-        oks.setImageUrl("http://www.ildoudou.com/20171123170134.png");
+        oks.setText(BaseApp.config.getShare_desc());
+        oks.setImageUrl("http://leifeng.jzbwlkj.com/logo.png");
 
-        oks.setUrl("https://www.baidu.com/");
-        oks.setSiteUrl("https://www.baidu.com/");
-        oks.setTitleUrl("https://www.baidu.com/");
+        oks.setUrl(BaseApp.config.getApp_url_android());
+        oks.setSiteUrl(BaseApp.config.getApp_url_android());
+        oks.setTitleUrl(BaseApp.config.getApp_url_android());
 
         oks.setSite(context.getString(R.string.app_name));
         if (listener != null)
@@ -420,7 +429,7 @@ public class CommonApi {
                     //                .setBannerTitles(titles)//设置标题集合（当banner样式有显示title时）
                     .isAutoPlay(true)//设置自动轮播，默认为true
                     .setDelayTime(4000)//设置轮播时间
-                    .start() ;  //banner设置方法全部调用完毕时最后调用
+                    .start();  //banner设置方法全部调用完毕时最后调用
             banner.setTag(1);
         } else {
             if (ltPath.size() > 0) {

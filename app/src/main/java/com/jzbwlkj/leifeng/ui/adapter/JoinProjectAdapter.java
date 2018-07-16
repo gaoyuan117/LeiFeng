@@ -23,15 +23,22 @@ import java.util.List;
 public class JoinProjectAdapter extends BaseQuickAdapter<JoinProjectBean.ListBean, BaseViewHolder> {
     private String type;
     private Activity activity;
+    private List<JoinProjectBean.ListBean> data;
     public JoinProjectAdapter(int layoutResId, @Nullable List<JoinProjectBean.ListBean> data, String type, Activity activity) {
         super(layoutResId, data);
         this.type = type;
         this.activity = activity;
+        this.data = data;
     }
 
     @Override
     protected void convert(BaseViewHolder holder, JoinProjectBean.ListBean bean) {
         JoinProjectBean.ListBean.ActivityInfoBean item = bean.getActivity_info();
+        if(item == null){
+            data.remove(item);
+            notifyDataSetChanged();
+            return;
+        }
         LinearLayout layout = holder.getView(R.id.ll_my_team_refuse);
         if (type.equals("2")) {
             layout.setVisibility(View.VISIBLE);

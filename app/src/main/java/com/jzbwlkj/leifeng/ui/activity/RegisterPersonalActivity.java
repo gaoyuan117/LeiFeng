@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,6 +34,7 @@ import com.jzbwlkj.leifeng.ui.bean.MySelfModel;
 import com.jzbwlkj.leifeng.ui.bean.TeamListBean;
 import com.jzbwlkj.leifeng.ui.bean.UploadBean;
 import com.jzbwlkj.leifeng.utils.LogUtils;
+import com.jzbwlkj.leifeng.utils.SharedPreferencesUtil;
 import com.jzbwlkj.leifeng.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -121,6 +121,10 @@ public class RegisterPersonalActivity extends BaseActivity {
     CheckBox cbPersonal;
     @BindView(R.id.tv_personal_register)
     TextView tvPersonalRegister;
+    @BindView(R.id.tv_xueli)
+    TextView tvXueli;
+    @BindView(R.id.ll_xueli)
+    LinearLayout llXueli;
     private String type;
 
     private int sex = 1;//1男 2女
@@ -142,12 +146,14 @@ public class RegisterPersonalActivity extends BaseActivity {
     private ListViewAdapter lvAdapter;
     private List<MySelfModel> showList = new ArrayList<>();
     private List<MySelfModel> mingzuList = new ArrayList<>();
+    private List<MySelfModel> xueliList = new ArrayList<>();
     private List<MySelfModel> cardList = new ArrayList<>();
     private List<MySelfModel> shenfenList = new ArrayList<>();
     private List<MySelfModel> jobList = new ArrayList<>();
     private List<MySelfModel> cityList = new ArrayList<>();
     private List<MySelfModel> unitList = new ArrayList<>();
-
+    private String xueliId;
+    private String acc;
     @Override
     public int getLayoutId() {
         return R.layout.activity_register_personal;
@@ -155,6 +161,7 @@ public class RegisterPersonalActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        acc = SharedPreferencesUtil.getInstance().getString("personId");
         initPop();
         type = getIntent().getStringExtra("type");
         setData();
@@ -171,7 +178,7 @@ public class RegisterPersonalActivity extends BaseActivity {
     }
 
     @OnClick({R.id.rb_personal_man, R.id.rb_personal_women, R.id.img_personal, R.id.cb_personal, R.id.tv_personal_register,
-            R.id.tv_national, R.id.tv_job, R.id.tv_shenfen, R.id.tv_unit, R.id.tv_city, R.id.tv_card_type})
+            R.id.tv_national, R.id.tv_job, R.id.tv_shenfen, R.id.tv_unit, R.id.tv_city, R.id.tv_card_type,R.id.tv_xueli})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rb_personal_man:
@@ -190,33 +197,37 @@ public class RegisterPersonalActivity extends BaseActivity {
                 break;
             case R.id.tv_card_type:
                 flag = 2;
-                refrushData(cardList,tvCardType);
+                refrushData(cardList, tvCardType);
                 break;
             case R.id.tv_unit:
                 flag = 6;
-                refrushData(unitList,tvUnit);
+                refrushData(unitList, tvUnit);
                 break;
             case R.id.tv_national:
                 flag = 1;
-                refrushData(mingzuList,tvNational);
+                refrushData(mingzuList, tvNational);
                 break;
             case R.id.tv_shenfen:
                 flag = 3;
-                refrushData(shenfenList,tvShenfen);
+                refrushData(shenfenList, tvShenfen);
                 break;
             case R.id.tv_job:
                 flag = 4;
-                refrushData(jobList,tvJob);
+                refrushData(jobList, tvJob);
                 break;
             case R.id.tv_city:
                 flag = 5;
-                refrushData(cityList,tvCity);
+                refrushData(cityList, tvCity);
+                break;
+            case R.id.tv_xueli:
+                flag = 7;
+                refrushData(xueliList, tvXueli);
                 break;
 
         }
     }
 
-    private void refrushData(List<MySelfModel> list,TextView view) {
+    private void refrushData(List<MySelfModel> list, TextView view) {
         showList.clear();
         showList.addAll(list);
         lvAdapter.notifyDataSetChanged();
@@ -272,6 +283,7 @@ public class RegisterPersonalActivity extends BaseActivity {
             setCenterTitle("志愿者注册");
             is_personnel = 0;
         } else {
+            llXueli.setVisibility(View.VISIBLE);
             setCenterTitle("专业志愿者注册");
             is_personnel = 1;
         }
@@ -299,7 +311,7 @@ public class RegisterPersonalActivity extends BaseActivity {
         for (int i = 0; i < BaseApp.config.getPolital_status().size(); i++) {
             String natinalListBean = BaseApp.config.getPolital_status().get(i);
             MySelfModel model = new MySelfModel();
-            model.setId(i+"");
+            model.setId(i + "");
             model.setSelected(false);
             model.setName(natinalListBean);
             shenfenList.add(model);
@@ -312,8 +324,18 @@ public class RegisterPersonalActivity extends BaseActivity {
             model.setSelected(false);
             model.setName(natinalListBean.getName());
             model.setId(natinalListBean.getId() + "");
-            model.setPid(i+"");
+            model.setPid(i + "");
             jobList.add(model);
+        }
+
+        //学历
+        for (int i = 0; i < BaseApp.config.getEducation().size(); i++) {
+            String ss = BaseApp.config.getEducation().get(i);
+            MySelfModel model = new MySelfModel();
+            model.setSelected(false);
+            model.setName(ss);
+            model.setId(i + "");
+            xueliList.add(model);
         }
 
         //所在区域
@@ -337,7 +359,7 @@ public class RegisterPersonalActivity extends BaseActivity {
             return;
         }
         String mingzu = tvNational.getText().toString();
-        if(TextUtils.isEmpty(mingzu)){
+        if (TextUtils.isEmpty(mingzu)) {
             showToastMsg("请选择您的民族");
             return;
         }
@@ -358,7 +380,7 @@ public class RegisterPersonalActivity extends BaseActivity {
 
         String shen = tvShenfen.getText().toString();
 
-        if(TextUtils.isEmpty(shen)){
+        if (TextUtils.isEmpty(shen)) {
             showToastMsg("请选择政治面貌");
             return;
         }
@@ -380,17 +402,24 @@ public class RegisterPersonalActivity extends BaseActivity {
 
         //专业志愿者需要填写的信息
 
+        String xueli = tvXueli.getText().toString();
+        if (is_personnel == 1) {
+            if(TextUtils.isEmpty(xueli)){
+                showToastMsg("请选择您的学历水平");
+                return;
+            }
+        }
         //专业能力
         String power = etPersonalNengli.getText().toString();
 
         String cc = tvCity.getText().toString();
-        if(TextUtils.isEmpty(cc)){
+        if (TextUtils.isEmpty(cc)) {
             showToastMsg("请选择所在区域");
             return;
         }
 
         String jigou = tvUnit.getText().toString();
-        if(TextUtils.isEmpty(jigou)){
+        if (TextUtils.isEmpty(jigou)) {
             showToastMsg("请选择所属机构");
             return;
         }
@@ -404,6 +433,11 @@ public class RegisterPersonalActivity extends BaseActivity {
 
         if (pwd.length() < 6) {
             ToastUtils.showToast("密码长度不得少于6位");
+            return;
+        }
+
+        if(pwd.length()>11){
+            ToastUtils.showToast("密码长度不得大于11位");
             return;
         }
 
@@ -424,6 +458,11 @@ public class RegisterPersonalActivity extends BaseActivity {
             return;
         }
 
+        if(!TextUtils.isEmpty(acc)&&TextUtils.equals(no,acc)){
+            showToastMsg("此账号已登录");
+            return;
+        }
+
         Map<String, Object> map = new HashMap<>();
 
 //                 证书
@@ -436,11 +475,11 @@ public class RegisterPersonalActivity extends BaseActivity {
         map.put("sex", sex);
         map.put("natinal", nationalId);
         map.put("polital_status", shenfen);
-        if(!TextUtils.equals("null",job)&&!TextUtils.isEmpty(job)){
+        if (!TextUtils.equals("null", job) && !TextUtils.isEmpty(job)) {
             map.put("worker_address", job);
         }
 
-        if(!TextUtils.isEmpty(address)&&!TextUtils.equals("null",address)){
+        if (!TextUtils.isEmpty(address) && !TextUtils.equals("null", address)) {
             map.put("address", address);
         }
 
@@ -449,7 +488,11 @@ public class RegisterPersonalActivity extends BaseActivity {
         map.put("wechat", wx);
         map.put("special_skill", power);
         map.put("city_id", cityId);
-        if(!TextUtils.isEmpty(jobid)&&!TextUtils.equals("null",jobid)){
+        if (is_personnel == 1) {
+            map.put("education", xueliId);
+        }
+
+        if (!TextUtils.isEmpty(jobid) && !TextUtils.equals("null", jobid)) {
             map.put("job", jobid);
         }
         map.put("team_id", unitid);
@@ -545,6 +588,9 @@ public class RegisterPersonalActivity extends BaseActivity {
                 } else if (flag == 6) {
                     tvUnit.setText(model.getName());
                     unitid = model.getId();
+                }else if(flag == 7){
+                    tvXueli.setText(model.getName());
+                    xueliId = model.getId();
                 }
 
             }

@@ -177,6 +177,25 @@ public class JoinProjectUserBean {
         private int manager_type;
         private int manager_uid;
 
+        public String getData_s() {
+            return data_s;
+        }
+
+        public void setData_s(String data_s) {
+            this.data_s = data_s;
+        }
+
+        public String getData_e() {
+            return data_e;
+        }
+
+        public void setData_e(String data_e) {
+            this.data_e = data_e;
+        }
+
+        private String data_s;
+        private String data_e;
+
         public long getTime_s() {
             return time_s;
         }

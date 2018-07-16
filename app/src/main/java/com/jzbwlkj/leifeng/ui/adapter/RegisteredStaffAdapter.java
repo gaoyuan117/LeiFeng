@@ -29,44 +29,59 @@ public class RegisteredStaffAdapter extends BaseQuickAdapter<JoinProjectUserBean
     @Override
     protected void convert(BaseViewHolder holder, JoinProjectUserBean item) {
         int status = item.getStatus();
+        TextView tvAgree = holder.getView(R.id.tv_register_staff_agree);
+        TextView tvRefuse = holder.getView(R.id.tv_register_staff_refuse);
+        TextView tvStatus = holder.getView(R.id.tv_register_staff_status);
         if(status == 1&&item.getMyStatus() == 0){//通过
-            holder.setVisible(R.id.tv_register_staff_agree,false);
-            holder.setVisible(R.id.tv_register_staff_refuse,false);
-            holder.setVisible(R.id.tv_register_staff_status,true);
+//            holder.setVisible(R.id.tv_register_staff_agree,false);
+//            holder.setVisible(R.id.tv_register_staff_refuse,false);
+//            holder.setVisible(R.id.tv_register_staff_status,true);
+            tvAgree.setVisibility(View.GONE);
+            tvRefuse.setVisibility(View.GONE);
+            tvStatus.setVisibility(View.VISIBLE);
             holder.setText(R.id.tv_register_staff_status,"已通过");
             holder.setBackgroundRes(R.id.tv_register_staff_agree,R.drawable.shape_gray);
             holder.setBackgroundRes(R.id.tv_register_staff_refuse,R.drawable.shape_gray);
             holder.setTextColor(R.id.tv_register_staff_agree,activity.getResources().getColor(R.color.gray));
             holder.setTextColor(R.id.tv_register_staff_refuse,activity.getResources().getColor(R.color.gray));
         }else if(status == -1&&item.getMyStatus() == 0){//拒绝
-            holder.setVisible(R.id.tv_register_staff_agree,false);
-            holder.setVisible(R.id.tv_register_staff_refuse,false);
-            holder.setVisible(R.id.tv_register_staff_status,true);
+//            holder.setVisible(R.id.tv_register_staff_agree,false);
+//            holder.setVisible(R.id.tv_register_staff_refuse,false);
+//            holder.setVisible(R.id.tv_register_staff_status,true);
+            tvAgree.setVisibility(View.GONE);
+            tvRefuse.setVisibility(View.GONE);
+            tvStatus.setVisibility(View.VISIBLE);
             holder.setText(R.id.tv_register_staff_status,"已拒绝");
             holder.setBackgroundRes(R.id.tv_register_staff_agree,R.drawable.shape_gray);
             holder.setBackgroundRes(R.id.tv_register_staff_refuse,R.drawable.shape_gray);
             holder.setTextColor(R.id.tv_register_staff_agree,activity.getResources().getColor(R.color.gray));
             holder.setTextColor(R.id.tv_register_staff_refuse,activity.getResources().getColor(R.color.gray));
         }else if(status == 0&&item.getMyStatus() == 0){
-            holder.setVisible(R.id.tv_register_staff_agree,true);
-            holder.setVisible(R.id.tv_register_staff_refuse,true);
-            holder.setVisible(R.id.tv_register_staff_status,false);
+//            holder.setVisible(R.id.tv_register_staff_agree,true);
+//            holder.setVisible(R.id.tv_register_staff_refuse,true);
+//            holder.setVisible(R.id.tv_register_staff_status,false);
+            tvAgree.setVisibility(View.VISIBLE);
+            tvRefuse.setVisibility(View.VISIBLE);
+            tvStatus.setVisibility(View.GONE);
             holder.setBackgroundRes(R.id.tv_register_staff_agree,R.drawable.shape_gray);
             holder.setBackgroundRes(R.id.tv_register_staff_refuse,R.drawable.shape_gray);
             holder.setTextColor(R.id.tv_register_staff_agree,activity.getResources().getColor(R.color.gray));
             holder.setTextColor(R.id.tv_register_staff_refuse,activity.getResources().getColor(R.color.gray));
         }else if(status == 1&&item.getMyStatus() == 1){//点击通过
-            holder.setVisible(R.id.tv_register_staff_agree,true);
-            holder.setVisible(R.id.tv_register_staff_refuse,true);
-            holder.setVisible(R.id.tv_register_staff_status,false);
+//            holder.setVisible(R.id.tv_register_staff_agree,true);
+//            holder.setVisible(R.id.tv_register_staff_refuse,true);
+//            holder.setVisible(R.id.tv_register_staff_status,false);
+            tvAgree.setVisibility(View.VISIBLE);
+            tvRefuse.setVisibility(View.VISIBLE);
+            tvStatus.setVisibility(View.GONE);
             holder.setBackgroundRes(R.id.tv_register_staff_agree,R.drawable.shape_global);
             holder.setBackgroundRes(R.id.tv_register_staff_refuse,R.drawable.shape_gray);
             holder.setTextColor(R.id.tv_register_staff_agree,activity.getResources().getColor(R.color.global));
             holder.setTextColor(R.id.tv_register_staff_refuse,activity.getResources().getColor(R.color.gray));
         }else if(status == -1&&item.getMyStatus() == 2){//点击拒绝
-            holder.setVisible(R.id.tv_register_staff_agree,true);
-            holder.setVisible(R.id.tv_register_staff_refuse,true);
-            holder.setVisible(R.id.tv_register_staff_status,false);
+            tvAgree.setVisibility(View.VISIBLE);
+            tvRefuse.setVisibility(View.VISIBLE);
+            tvStatus.setVisibility(View.GONE);
             holder.setBackgroundRes(R.id.tv_register_staff_agree,R.drawable.shape_gray);
             holder.setBackgroundRes(R.id.tv_register_staff_refuse,R.drawable.shape_global);
             holder.setTextColor(R.id.tv_register_staff_agree,activity.getResources().getColor(R.color.gray));

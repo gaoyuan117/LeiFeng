@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
@@ -354,7 +354,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
                         android:background="@null"
-                        android:padding="6dp"
+                        android:padding="8dp"
                         android:textColor="@color/text_black"
                         android:textSize="13sp" />
 
@@ -400,7 +400,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:padding="6dp"
+                        android:padding="8dp"
                         android:textColor="@color/text_black"
                         android:textSize="13sp" />
 
@@ -436,7 +436,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:padding="6dp"
+                        android:padding="8dp"
                         android:textColor="@color/text_black"
                         android:textSize="13sp" />
 
@@ -510,7 +510,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
                     android:inputType="number"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
 
@@ -521,6 +521,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
+                android:gravity="center_vertical"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:paddingTop="10dp"
@@ -533,15 +534,32 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
-
-                <EditText
-                    android:id="@+id/et_launch_event_address"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_gray"
-                    android:padding="6dp"
-                    android:textColor="@color/text_black"
-                    android:textSize="13sp" />
+                    android:orientation="horizontal"
+                    android:background="@drawable/shape_gray">
+                    <EditText
+                        android:id="@+id/et_launch_event_address"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:padding="6dp"
+                        android:textColor="@color/text_black"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:id="@+id/tv_biaozhu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:src="@mipmap/weizhi"/>
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -637,7 +655,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
 
@@ -668,7 +686,7 @@
                     android:background="@drawable/shape_gray"
                     android:inputType="number"
                     android:maxLength="11"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
 
@@ -696,7 +714,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_gray"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:textColor="@color/text_black"
                     android:textSize="13sp" />
 

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.jzbwlkj.leifeng.BaseApp;
 import com.jzbwlkj.leifeng.R;
 import com.jzbwlkj.leifeng.base.BaseFragment;
 import com.jzbwlkj.leifeng.retrofit.BaseObjObserver;
@@ -79,7 +80,7 @@ public class AcManagementFragment extends BaseFragment {
      * 获取网络数据,这是对于队伍来说的，team_id不为null，此时应该为token，待确定
      */
     private void getNetData(){
-        RetrofitClient.getInstance().createApi().projevtList("1",type,page,null,null,null,null,null)
+        RetrofitClient.getInstance().createApi().projevtList("1",type,page,null,null,null, BaseApp.team_id+"",null)
                 .compose(RxUtils.<HttpResult<ProjectBean>>io_main())
                 .subscribe(new BaseObjObserver<ProjectBean>(getActivity(),refresh) {
                     @Override
@@ -89,10 +90,10 @@ public class AcManagementFragment extends BaseFragment {
                         }
                         all = projectBean.getTotal();
                         ll = projectBean.getPer_page();
-                        if(projectBean.getData().size()>0){
+                        if(projectBean.getData() != null&&projectBean.getData().size()>0){
                             mList.addAll(projectBean.getData());
                         }else{
-                            ToastUtils.showToast("暂无相关数据");
+                  //          ToastUtils.showToast("暂无相关数据");
                         }
                         adapter.notifyDataSetChanged();
 

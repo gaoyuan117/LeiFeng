@@ -123,6 +123,11 @@ public class ChangePwdActivity extends BaseActivity {
             return;
         }
 
+        if (newPwd.length() > 11) {
+            ToastUtils.showToast("密码长度最多11位");
+            return;
+        }
+
         RetrofitClient.getInstance().createApi().modifyPwd(BaseApp.token, oldPwd, newPwd)
                 .compose(RxUtils.<HttpResult<CommonBean>>io_main())
                 .subscribe(new BaseObjObserver<CommonBean>(activity, "修改中") {

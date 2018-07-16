@@ -24,6 +24,8 @@ public class FormatUtils {
     public final static String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
     public final static String FORMAT_DATE_TIME2 = "yyyy-MM-dd HH:mm";
     public final static String FORMAT_DATE_TIME3 = "yyyy-MM-dd";
+    public final static String FORMAT_DATE_TIME4 = "HH:mm";
+
     /**
      * 获取当前日期的指定格式的字符串
      *
@@ -77,21 +79,64 @@ public class FormatUtils {
      * @param time
      * @return
      */
-    public static String formatTime2(long time) {
+    public static String formatTime3(long time) {
         if (time == 0) return "";
-        sdf.applyPattern(FORMAT_DATE_TIME3);
+        sdf.applyPattern(FORMAT_DATE_TIME4);
         return sdf.format(time * 1000);
     }
 
+    /**
+     * 转换时间差
+     *
+     * @param time
+     * @return
+     */
+    public static String formatTime2(long time) {
+        if (time == 0) return "";
+        sdf.applyPattern(FORMAT_DATE_TIME4);
+        return sdf.format(time * 1000);
+    }
+
+    /**
+     * 格式化时间
+     *
+     * @param time
+     * @return
+     */
+    public static String formatTime5(long time) {
+        if (time == 0) return "";
+        long miao = time % 60 % 60;//剩余秒数
+        long fen = time / 60 % 60;//剩余分数
+        long hh = time / 60 / 60;//小时数
+        String mm = "";
+        if (miao < 10) {
+            mm = "0" + miao;
+        } else {
+            mm = miao + "";
+        }
+        String ff = "";
+        if (fen < 10) {
+            ff = "0" + fen;
+        } else {
+            ff = fen + "";
+        }
+        String shi = "";
+        if (hh < 10) {
+            shi = "0" + hh;
+        } else {
+            shi = hh + "";
+        }
+        String ss = shi + ":" + ff + ":" + mm;
+        return ss;
+    }
+
     /*将字符串转为时间戳*/
-    public static long getStringToStamp(String time)
-    {
+    public static long getStringToStamp(String time) {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date date = new Date();
-        try{
+        try {
             date = sf.parse(time);
-        }
-        catch(ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return date.getTime();
